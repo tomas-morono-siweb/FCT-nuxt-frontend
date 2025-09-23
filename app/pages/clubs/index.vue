@@ -7,11 +7,9 @@ const pageSize = 10;
 const { list, remove } = useClubs();
 
 const key = computed(() => `clubs-${q.value}-${page.value}`);
-const { data, pending, error, refresh } = await useAsyncData<Club[]>(
-  key,
-  () => list(q.value, page.value, pageSize),
-  { watch: [q, page] },
-);
+const { data, pending, error, refresh } = await useAsyncData<Club[]>(key, () => list(q.value, page.value, pageSize), {
+  watch: [q, page],
+});
 
 async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este club?")) return;
@@ -56,34 +54,19 @@ async function onDelete(id: number) {
                 <td class="td" colspan="5">Cargando…</td>
               </tr>
               <tr v-else-if="error">
-                <td class="td text-red-600" colspan="5">
-                  Error: {{ error.message }}
-                </td>
+                <td class="td text-red-600" colspan="5">Error: {{ error.message }}</td>
               </tr>
-              <tr
-                v-else
-                v-for="club in data"
-                :key="club.id"
-                class="hover:bg-gray-50"
-              >
+              <tr v-else v-for="club in data" :key="club.id" class="hover:bg-gray-50">
                 <td class="td font-medium">
-                  <NuxtLink :to="`/clubs/${club.id}`" class="hover:underline">{{
-                    club.nombre
-                  }}</NuxtLink>
+                  <NuxtLink :to="`/clubs/${club.id}`" class="hover:underline">{{ club.nombre }}</NuxtLink>
                 </td>
                 <td class="td">{{ club.ciudad }}</td>
                 <td class="td">{{ club.estadio }}</td>
                 <td class="td">{{ new Date(club.fundacion).getFullYear() }}</td>
                 <td class="td">
                   <div class="flex justify-end gap-2">
-                    <NuxtLink
-                      :to="`/clubs/${club.id}/editar`"
-                      class="btn btn-ghost"
-                      >Editar</NuxtLink
-                    >
-                    <button class="btn btn-danger" @click="onDelete(club.id)">
-                      Borrar
-                    </button>
+                    <NuxtLink :to="`/clubs/${club.id}/editar`" class="btn btn-ghost">Editar</NuxtLink>
+                    <button class="btn btn-danger" @click="onDelete(club.id)">Borrar</button>
                   </div>
                 </td>
               </tr>

@@ -7,11 +7,9 @@ const pageSize = 10;
 const { list, remove } = useCoaches();
 
 const key = computed(() => `coaches-${q.value}-${page.value}`);
-const { data, pending, error, refresh } = await useAsyncData<Coach[]>(
-  key,
-  () => list(q.value, page.value, pageSize),
-  { watch: [q, page] },
-);
+const { data, pending, error, refresh } = await useAsyncData<Coach[]>(key, () => list(q.value, page.value, pageSize), {
+  watch: [q, page],
+});
 
 async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este entrenador?")) return;
@@ -24,9 +22,7 @@ async function onDelete(id: number) {
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
       <h1 class="text-2xl font-semibold">Entrenadores</h1>
-      <NuxtLink to="/coaches/nuevo" class="btn btn-primary"
-        >Nuevo entrenador</NuxtLink
-      >
+      <NuxtLink to="/coaches/nuevo" class="btn btn-primary">Nuevo entrenador</NuxtLink>
     </div>
 
     <div class="card">
@@ -58,36 +54,21 @@ async function onDelete(id: number) {
                 <td class="td" colspan="5">Cargando…</td>
               </tr>
               <tr v-else-if="error">
-                <td class="td text-red-600" colspan="5">
-                  Error: {{ error.message }}
-                </td>
+                <td class="td text-red-600" colspan="5">Error: {{ error.message }}</td>
               </tr>
-              <tr
-                v-else
-                v-for="coach in data"
-                :key="coach.id"
-                class="hover:bg-gray-50"
-              >
+              <tr v-else v-for="coach in data" :key="coach.id" class="hover:bg-gray-50">
                 <td class="td font-medium">
-                  <NuxtLink :to="`/coaches/${coach.id}`" class="hover:underline"
-                    >{{ coach.nombre }} {{ coach.apellidos }}</NuxtLink
-                  >
+                  <NuxtLink :to="`/coaches/${coach.id}`" class="hover:underline">
+                    {{ coach.nombre }} {{ coach.apellidos }}
+                  </NuxtLink>
                 </td>
                 <td class="td">{{ coach.nacionalidad }}</td>
-                <td class="td">
-                  €{{ coach.salario?.toLocaleString() ?? "-" }}
-                </td>
+                <td class="td">€{{ coach.salario?.toLocaleString() ?? "-" }}</td>
                 <td class="td">{{ coach.id_club ?? "-" }}</td>
                 <td class="td">
                   <div class="flex justify-end gap-2">
-                    <NuxtLink
-                      :to="`/coaches/${coach.id}/editar`"
-                      class="btn btn-ghost"
-                      >Editar</NuxtLink
-                    >
-                    <button class="btn btn-danger" @click="onDelete(coach.id)">
-                      Borrar
-                    </button>
+                    <NuxtLink :to="`/coaches/${coach.id}/editar`" class="btn btn-ghost">Editar</NuxtLink>
+                    <button class="btn btn-danger" @click="onDelete(coach.id)">Borrar</button>
                   </div>
                 </td>
               </tr>

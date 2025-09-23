@@ -8,11 +8,9 @@ const pageSize = 10;
 const { list, remove } = usePlayers();
 
 const key = computed(() => `players-${q.value}-${page.value}`);
-const { data, pending, error, refresh } = await useAsyncData<Player[]>(
-  key,
-  () => list(q.value, page.value, pageSize),
-  { watch: [q, page] },
-);
+const { data, pending, error, refresh } = await useAsyncData<Player[]>(key, () => list(q.value, page.value, pageSize), {
+  watch: [q, page],
+});
 
 async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este jugador?")) return;
@@ -25,9 +23,7 @@ async function onDelete(id: number) {
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
       <h1 class="text-2xl font-semibold">Players</h1>
-      <NuxtLink to="/jugadores/nuevo" class="btn btn-primary"
-        >Nuevo jugador</NuxtLink
-      >
+      <NuxtLink to="/jugadores/nuevo" class="btn btn-primary">Nuevo jugador</NuxtLink>
     </div>
 
     <div class="card">
@@ -59,15 +55,11 @@ async function onDelete(id: number) {
                 <td class="td" colspan="5">Cargando…</td>
               </tr>
               <tr v-else-if="error">
-                <td class="td text-red-600" colspan="5">
-                  Error: {{ error.message }}
-                </td>
+                <td class="td text-red-600" colspan="5">Error: {{ error.message }}</td>
               </tr>
               <tr v-else v-for="j in data" :key="j.id" class="hover:bg-gray-50">
                 <td class="td font-medium">
-                  <NuxtLink :to="`/players/${j.id}`" class="hover:underline"
-                    >{{ j.nombre }} {{ j.apellido }}</NuxtLink
-                  >
+                  <NuxtLink :to="`/players/${j.id}`" class="hover:underline">{{ j.nombre }} {{ j.apellido }}</NuxtLink>
                 </td>
                 <td class="td">
                   <span class="badge badge-neutral">{{ j.posicion }}</span>
@@ -76,14 +68,8 @@ async function onDelete(id: number) {
                 <td class="td">{{ j.clubId ?? "-" }}</td>
                 <td class="td">
                   <div class="flex justify-end gap-2">
-                    <NuxtLink
-                      :to="`/players/${j.id}/editar`"
-                      class="btn btn-ghost"
-                      >Editar</NuxtLink
-                    >
-                    <button class="btn btn-danger" @click="onDelete(j.id)">
-                      Borrar
-                    </button>
+                    <NuxtLink :to="`/players/${j.id}/editar`" class="btn btn-ghost">Editar</NuxtLink>
+                    <button class="btn btn-danger" @click="onDelete(j.id)">Borrar</button>
                   </div>
                 </td>
               </tr>
