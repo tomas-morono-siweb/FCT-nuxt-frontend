@@ -20,9 +20,7 @@ export default defineNuxtConfig({
       prefix: 'X'
     }
   ],
-  modules: [
-    'nuxt-icon'
-  ],
+  modules: [],
   runtimeConfig: {
     apiSecret: 'abc123.',
     public: {
