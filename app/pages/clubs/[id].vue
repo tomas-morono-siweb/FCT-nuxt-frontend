@@ -2,7 +2,7 @@
 const { id } = useRoute().params;
 const query = ref("");
 async function search() {
-  const response = await $fetch(`/players/${id}`, {
+  const response = await $fetch(`/clubs/${id}`, {
     method: "GET",
     query: {
       id: id,

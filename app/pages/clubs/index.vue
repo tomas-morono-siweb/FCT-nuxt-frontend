@@ -1,21 +1,20 @@
-<!-- pages/jugadores/index.vue -->
 <script setup lang="ts">
-import type { Player } from "~/interfaces/player";
+import type { Club } from "~/interfaces/club";
 
 const q = ref("");
 const page = ref(1);
 const pageSize = 10;
-const { list, remove } = usePlayers();
+const { list, remove } = useClubs();
 
-const key = computed(() => `players-${q.value}-${page.value}`);
-const { data, pending, error, refresh } = await useAsyncData<Player[]>(
+const key = computed(() => `clubs-${q.value}-${page.value}`);
+const { data, pending, error, refresh } = await useAsyncData<Club[]>(
   key,
   () => list(q.value, page.value, pageSize),
   { watch: [q, page] },
 );
 
 async function onDelete(id: number) {
-  if (!confirm("¿Seguro que deseas borrar este jugador?")) return;
+  if (!confirm("¿Seguro que deseas borrar este club?")) return;
   await remove(id);
   await refresh();
 }
@@ -24,10 +23,8 @@ async function onDelete(id: number) {
 <template>
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
-      <h1 class="text-2xl font-semibold">Players</h1>
-      <NuxtLink to="/jugadores/nuevo" class="btn btn-primary"
-        >Nuevo jugador</NuxtLink
-      >
+      <h1 class="text-2xl font-semibold">Clubs</h1>
+      <NuxtLink to="/clubs/nuevo" class="btn btn-primary">Nuevo club</NuxtLink>
     </div>
 
     <div class="card">
@@ -35,7 +32,7 @@ async function onDelete(id: number) {
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <div class="field">
             <label class="label">Buscar</label>
-            <input v-model="q" class="input" placeholder="Nombre o apellido" />
+            <input v-model="q" class="input" placeholder="Nombre del club" />
           </div>
         </div>
       </div>
@@ -47,10 +44,10 @@ async function onDelete(id: number) {
           <table class="table">
             <thead class="bg-gray-50">
               <tr>
-                <th class="th">Player</th>
-                <th class="th">Posición</th>
-                <th class="th">Dorsal</th>
                 <th class="th">Club</th>
+                <th class="th">Ciudad</th>
+                <th class="th">Estadio</th>
+                <th class="th">Fundación</th>
                 <th class="th text-right">Acciones</th>
               </tr>
             </thead>
@@ -63,25 +60,28 @@ async function onDelete(id: number) {
                   Error: {{ error.message }}
                 </td>
               </tr>
-              <tr v-else v-for="j in data" :key="j.id" class="hover:bg-gray-50">
+              <tr
+                v-else
+                v-for="club in data"
+                :key="club.id"
+                class="hover:bg-gray-50"
+              >
                 <td class="td font-medium">
-                  <NuxtLink :to="`/players/${j.id}`" class="hover:underline"
-                    >{{ j.nombre }} {{ j.apellido }}</NuxtLink
-                  >
+                  <NuxtLink :to="`/clubs/${club.id}`" class="hover:underline">{{
+                    club.nombre
+                  }}</NuxtLink>
                 </td>
-                <td class="td">
-                  <span class="badge badge-neutral">{{ j.posicion }}</span>
-                </td>
-                <td class="td">{{ j.dorsal ?? "-" }}</td>
-                <td class="td">{{ j.clubId ?? "-" }}</td>
+                <td class="td">{{ club.ciudad }}</td>
+                <td class="td">{{ club.estadio }}</td>
+                <td class="td">{{ new Date(club.fundacion).getFullYear() }}</td>
                 <td class="td">
                   <div class="flex justify-end gap-2">
                     <NuxtLink
-                      :to="`/players/${j.id}/editar`"
+                      :to="`/clubs/${club.id}/editar`"
                       class="btn btn-ghost"
                       >Editar</NuxtLink
                     >
-                    <button class="btn btn-danger" @click="onDelete(j.id)">
+                    <button class="btn btn-danger" @click="onDelete(club.id)">
                       Borrar
                     </button>
                   </div>
@@ -94,3 +94,5 @@ async function onDelete(id: number) {
     </div>
   </section>
 </template>
+
+<style scoped></style>
