@@ -20,4 +20,13 @@ export default defineNuxtConfig({
       prefix: 'X'
     }
   ],
+  modules: [
+    'nuxt-icon'
+  ],
+  runtimeConfig: {
+    apiSecret: 'abc123.',
+    public: {
+      apiBase: 'http://localhost:8000'
+    }
+  }
 })
