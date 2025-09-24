@@ -1,7 +1,7 @@
 export interface Club {
   id: number;
   nombre: string;
-  fundacion: Date;
+  fundacion: string;
   ciudad: string;
   estadio: string;
   presupuesto: number;
