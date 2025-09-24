@@ -219,6 +219,7 @@ const handleSubmit = async () => {
               submit-text="Guardar Cambios"
               cancel-text="Cancelar"
               :cancel-to="`/players/${id}`"
+              @submit="handleSubmit"
             />
           </form>
         </div>

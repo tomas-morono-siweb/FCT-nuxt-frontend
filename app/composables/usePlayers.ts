@@ -1,12 +1,31 @@
 import type { Player } from "~/interfaces/player";
+import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const usePlayers = () => {
   const list = (q?: string, page = 1, pageSize = 10) =>
-    $fetch<Player[]>("/api/players", { query: { q, page, pageSize } });
-  const get = (id: number) => $fetch<Player>(`/api/players/${id}`);
-  const create = (payload: Partial<Player>) => $fetch<Player>("/api/players", { method: "POST", body: payload });
+    $fetch<Player[]>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
+      query: { q, page, pageSize }
+    });
+
+  const get = (id: number) =>
+    $fetch<Player>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id));
+
+  const create = (payload: Partial<Player>) =>
+    $fetch<Player>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
+      method: "POST",
+      body: payload
+    });
+
   const update = (id: number, payload: Partial<Player>) =>
-    $fetch<Player>(`/api/players/${id}`, { method: "PUT", body: payload });
-  const remove = (id: number) => $fetch(`/api/players/${id}`, { method: "DELETE" });
+    $fetch<Player>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id), {
+      method: "PUT",
+      body: payload
+    });
+
+  const remove = (id: number) =>
+    $fetch(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id), {
+      method: "DELETE"
+    });
+
   return { list, get, create, update, remove };
 };

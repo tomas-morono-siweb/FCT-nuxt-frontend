@@ -169,6 +169,7 @@ const handleSubmit = async () => {
               submit-text="Crear Entrenador"
               cancel-text="Cancelar"
               cancel-to="/coaches"
+              @submit="handleSubmit"
             />
           </form>
         </div>

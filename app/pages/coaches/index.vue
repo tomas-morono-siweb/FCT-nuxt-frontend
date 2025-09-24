@@ -33,7 +33,7 @@ async function onDelete(id: number) {
         title="Entrenadores"
         description="Gestiona la información de los entrenadores del equipo"
         action-text="Nuevo Entrenador"
-        action-to="/coaches/nuevo"
+        action-to="/coaches/new"
         action-icon="plus"
       />
 

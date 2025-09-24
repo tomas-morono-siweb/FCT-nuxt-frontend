@@ -33,7 +33,7 @@ async function onDelete(id: number) {
         title="Clubs"
         description="Gestiona la información de los clubs del equipo"
         action-text="Nuevo Club"
-        action-to="/clubs/nuevo"
+        action-to="/clubs/new"
         action-icon="plus"
       />
 

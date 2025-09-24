@@ -38,8 +38,8 @@ const { data: club } = await useAsyncData<Club | null>(
         :badges="
           player
             ? [
-                { text: player.posicion, color: 'blue' },
-                ...(player.dorsal ? [{ text: `Dorsal ${player.dorsal}`, color: 'gray' }] : []),
+                { text: player.posicion, color: 'blue' as const },
+                ...(player.dorsal ? [{ text: `${player.dorsal}`, color: 'gray' as const }] : []),
               ]
             : []
         "
@@ -113,7 +113,7 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-gray-800">Letras en Posición</div>
             </div>
             <div class="rounded-lg bg-blue-50 p-4 text-center">
-              <div class="text-2xl font-bold text-blue-600">{{ player.dorsal ? "#" : "N/A" }}</div>
+              <div class="text-2xl font-bold text-blue-600">{{ player.dorsal || "N/A" }}</div>
               <div class="text-sm text-blue-800">Dorsal Asignado</div>
             </div>
           </div>

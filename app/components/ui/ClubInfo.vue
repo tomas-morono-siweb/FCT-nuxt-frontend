@@ -2,7 +2,7 @@
 import type { Club } from "~/interfaces/club";
 
 interface Props {
-  club: Club | null;
+  club: Club | null | undefined;
   clubId?: number;
 }
 

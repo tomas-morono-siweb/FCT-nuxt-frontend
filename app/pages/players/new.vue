@@ -181,6 +181,7 @@ const handleSubmit = async () => {
               submit-text="Crear Jugador"
               cancel-text="Cancelar"
               cancel-to="/players"
+              @submit="handleSubmit"
             />
           </form>
         </div>

@@ -68,7 +68,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               :items="[
                 {
                   label: 'Presupuesto',
-                  value: club.presupuesto ? `€${club.presupuesto.toLocaleString()}` : 'No disponible',
+                  value: club.presupuesto ? `${club.presupuesto.toLocaleString()}€` : 'No disponible',
                 },
                 { label: 'ID del Club', value: club.id },
               ]"
@@ -93,8 +93,8 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               <div class="text-sm text-gray-800">Letras en Ciudad</div>
             </div>
             <div class="rounded-lg bg-orange-50 p-4 text-center">
-              <div class="text-2xl font-bold text-orange-600">{{ club.nombre.length }}</div>
-              <div class="text-sm text-orange-800">Letras en Nombre</div>
+              <div class="text-2xl font-bold text-orange-600">{{ club.presupuesto.toLocaleString() }}€</div>
+              <div class="text-sm text-orange-800">Presupuesto anual</div>
             </div>
           </div>
         </UiDataCard>

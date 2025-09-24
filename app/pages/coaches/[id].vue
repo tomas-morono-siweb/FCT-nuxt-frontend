@@ -38,8 +38,8 @@ const { data: club } = await useAsyncData<Club | null>(
         :badges="
           coach
             ? [
-                { text: coach.nacionalidad, color: 'green' },
-                ...(coach.salario ? [{ text: `€${coach.salario.toLocaleString()}`, color: 'gray' }] : []),
+                { text: coach.nacionalidad, color: 'green' as const },
+                ...(coach.salario ? [{ text: `€${coach.salario.toLocaleString()}`, color: 'gray' as const }] : []),
               ]
             : []
         "
@@ -91,7 +91,7 @@ const { data: club } = await useAsyncData<Club | null>(
           >
             <UiInfoGrid
               :items="[
-                { label: 'Salario', value: coach.salario ? `€${coach.salario.toLocaleString()}` : 'No disponible' },
+                { label: 'Salario', value: coach.salario ? `${coach.salario.toLocaleString()}€` : 'No disponible' },
                 { label: 'Club Asignado', value: coach.id_club ? `Club ID: ${coach.id_club}` : 'Sin club asignado' },
               ]"
             />
@@ -113,7 +113,7 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-gray-800">Letras en Nacionalidad</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
-              <div class="text-2xl font-bold text-green-600">{{ coach.salario ? "€" : "N/A" }}</div>
+              <div class="text-2xl font-bold text-green-600">{{ coach.salario.toLocaleString() }}€</div>
               <div class="text-sm text-green-800">Salario Configurado</div>
             </div>
           </div>
