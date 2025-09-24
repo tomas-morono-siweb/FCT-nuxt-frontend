@@ -74,6 +74,6 @@ This is a **football club management application** built with Nuxt.js that allow
 
 - **Manage Players** (🔵 Blue theme) - Create, edit, view player information
 - **Manage Coaches** (🟢 Green theme) - Handle coaching staff data
-- **Manage Clubs** (🟣 Purple theme) - Organize club information
+- **Manage Clubs** (🟠 Orange theme) - Organize club information
 
 Each section includes full CRUD operations (Create, Read, Update, Delete) with a modern, responsive interface.
