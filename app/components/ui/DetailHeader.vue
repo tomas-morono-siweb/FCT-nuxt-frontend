@@ -3,10 +3,10 @@ interface Props {
   title: string;
   description?: string;
   avatarText: string;
-  avatarColor: "blue" | "green" | "purple";
+  avatarColor: "blue" | "green" | "orange";
   badges?: Array<{
     text: string;
-    color: "blue" | "green" | "purple" | "gray";
+    color: "blue" | "green" | "orange" | "gray";
   }>;
   editTo?: string;
   backTo?: string;
@@ -17,13 +17,13 @@ const props = defineProps<Props>();
 const avatarClasses = {
   blue: "bg-blue-100 text-blue-600",
   green: "bg-green-100 text-green-600",
-  purple: "bg-purple-100 text-purple-600",
+  orange: "bg-orange-100 text-orange-600",
 };
 
 const badgeClasses = {
   blue: "bg-blue-100 text-blue-800",
   green: "bg-green-100 text-green-800",
-  purple: "bg-purple-100 text-purple-800",
+  orange: "bg-orange-100 text-orange-800",
   gray: "bg-gray-100 text-gray-800",
 };
 </script>

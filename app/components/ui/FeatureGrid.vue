@@ -3,7 +3,7 @@ interface Feature {
   icon: string;
   title: string;
   description: string;
-  color: "blue" | "green" | "purple" | "gray";
+  color: "blue" | "green" | "orange" | "gray";
 }
 
 interface Props {
@@ -17,7 +17,7 @@ const props = defineProps<Props>();
 const colorClasses = {
   blue: "bg-blue-100 text-blue-600",
   green: "bg-green-100 text-green-600",
-  purple: "bg-purple-100 text-purple-600",
+  orange: "bg-orange-100 text-orange-600",
   gray: "bg-gray-100 text-gray-600",
 };
 

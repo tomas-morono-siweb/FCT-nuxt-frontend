@@ -18,8 +18,8 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-green-600">
-    <div class="absolute inset-0 bg-black/20"/>
+  <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-orange-600 to-green-600">
+    <div class="absolute inset-0 bg-black/20" />
     <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">{{ title }}</h1>
@@ -88,6 +88,6 @@ const props = defineProps<Props>();
     </div>
 
     <!-- Decorative Elements -->
-    <div class="absolute right-0 -bottom-1 left-0 h-12 bg-gray-50"/>
+    <div class="absolute right-0 -bottom-1 left-0 h-12 bg-gray-50" />
   </div>
 </template>

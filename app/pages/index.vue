@@ -51,7 +51,7 @@
           title="Clubes"
           description="Gestiona información completa de clubes: estadios, ciudades, presupuestos y años de fundación. Control total de las instituciones deportivas."
           icon="building"
-          color="purple"
+          color="orange"
           link-to="/clubs"
           link-text="Ver Clubes"
         />
@@ -79,7 +79,7 @@
           icon: 'mobile',
           title: 'Responsive',
           description: 'Funciona perfectamente en todos los dispositivos',
-          color: 'purple',
+          color: 'orange',
         },
         {
           icon: 'heart',

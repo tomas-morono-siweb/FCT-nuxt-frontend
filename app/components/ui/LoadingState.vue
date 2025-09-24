@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
   message?: string;
-  color?: "blue" | "green" | "purple" | "red";
+  color?: "blue" | "green" | "orange" | "red";
   variant?: "card" | "inline" | "table";
 }
 
@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 const colorClasses = {
   blue: "border-blue-600",
   green: "border-green-600",
-  purple: "border-purple-600",
+  orange: "border-orange-600",
   red: "border-red-600",
 };
 </script>

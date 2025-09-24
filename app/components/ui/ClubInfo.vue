@@ -12,15 +12,15 @@ const props = defineProps<Props>();
 <template>
   <UiDataCard
     v-if="clubId"
-    color="purple"
+    color="orange"
   >
     <div class="-mx-8 -mt-8 mb-8 border-b border-gray-200 px-6 py-4">
       <h3 class="text-lg font-semibold text-gray-900">Información del Club</h3>
     </div>
     <div class="flex items-center space-x-4">
       <div class="h-12 w-12 flex-shrink-0">
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-          <span class="text-sm font-medium text-purple-600">
+        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
+          <span class="text-sm font-medium text-orange-600">
             {{ club?.nombre?.charAt(0) || clubId }}
           </span>
         </div>

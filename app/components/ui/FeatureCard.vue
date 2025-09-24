@@ -3,7 +3,7 @@ interface Props {
   title: string;
   description: string;
   icon: string;
-  color: "blue" | "green" | "purple";
+  color: "blue" | "green" | "orange";
   linkTo: string;
   linkText: string;
 }
@@ -23,11 +23,11 @@ const colorClasses = {
     iconColor: "text-green-600",
     link: "text-green-600 hover:text-green-900",
   },
-  purple: {
-    gradient: "from-purple-50 to-purple-100",
-    icon: "bg-purple-100 group-hover:bg-purple-200",
-    iconColor: "text-purple-600",
-    link: "text-purple-600 hover:text-purple-900",
+  orange: {
+    gradient: "from-orange-50 to-orange-100",
+    icon: "bg-orange-100 group-hover:bg-orange-200",
+    iconColor: "text-orange-600",
+    link: "text-orange-600 hover:text-orange-900",
   },
 };
 

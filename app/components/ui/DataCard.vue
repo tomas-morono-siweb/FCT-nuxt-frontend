@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
   title?: string;
-  color?: "blue" | "green" | "purple" | "gray";
+  color?: "blue" | "green" | "orange" | "gray";
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 const colorClasses = {
   blue: "from-blue-50 to-blue-100",
   green: "from-green-50 to-green-100",
-  purple: "from-purple-50 to-purple-100",
+  orange: "from-orange-50 to-orange-100",
   gray: "from-gray-50 to-gray-100",
 };
 </script>

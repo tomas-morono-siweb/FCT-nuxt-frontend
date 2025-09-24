@@ -15,7 +15,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
         title="Detalle del Club"
         description="Información completa del club seleccionado"
         :avatar-text="club?.nombre?.charAt(0) || 'C'"
-        avatar-color="purple"
+        avatar-color="orange"
         :edit-to="`/clubs/${club?.id}/edit`"
         back-to="/clubs"
       >
@@ -28,7 +28,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
       <UiLoadingState
         v-if="pending"
         message="Cargando información del club..."
-        color="purple"
+        color="orange"
       />
 
       <!-- Error State -->
@@ -47,7 +47,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
           <!-- Basic Information -->
           <UiDataCard
             title="Información Básica"
-            color="purple"
+            color="orange"
           >
             <UiInfoGrid
               :items="[
@@ -62,7 +62,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
           <!-- Financial Information -->
           <UiDataCard
             title="Información Financiera"
-            color="purple"
+            color="orange"
           >
             <UiInfoGrid
               :items="[
@@ -79,22 +79,22 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
         <!-- Additional Information -->
         <UiDataCard
           title="Información Adicional"
-          color="purple"
+          color="orange"
         >
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-lg bg-purple-50 p-4 text-center">
-              <div class="text-2xl font-bold text-purple-600">
+            <div class="rounded-lg bg-orange-50 p-4 text-center">
+              <div class="text-2xl font-bold text-orange-600">
                 {{ new Date().getFullYear() - new Date(club.fundacion).getFullYear() }}
               </div>
-              <div class="text-sm text-purple-800">Años de Historia</div>
+              <div class="text-sm text-orange-800">Años de Historia</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
               <div class="text-2xl font-bold text-gray-600">{{ club.ciudad.length }}</div>
               <div class="text-sm text-gray-800">Letras en Ciudad</div>
             </div>
-            <div class="rounded-lg bg-purple-50 p-4 text-center">
-              <div class="text-2xl font-bold text-purple-600">{{ club.nombre.length }}</div>
-              <div class="text-sm text-purple-800">Letras en Nombre</div>
+            <div class="rounded-lg bg-orange-50 p-4 text-center">
+              <div class="text-2xl font-bold text-orange-600">{{ club.nombre.length }}</div>
+              <div class="text-sm text-orange-800">Letras en Nombre</div>
             </div>
           </div>
         </UiDataCard>

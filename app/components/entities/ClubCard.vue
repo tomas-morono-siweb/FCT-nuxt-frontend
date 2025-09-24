@@ -28,8 +28,8 @@ const handleDelete = () => {
     <td class="px-6 py-4 whitespace-nowrap">
       <div class="flex items-center">
         <div class="h-10 w-10 flex-shrink-0">
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
-            <span class="text-sm font-medium text-purple-600">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
+            <span class="text-sm font-medium text-orange-600">
               {{ club.nombre.charAt(0) }}
             </span>
           </div>
@@ -45,7 +45,7 @@ const handleDelete = () => {
       </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
-      <span class="inline-flex rounded-full bg-purple-100 px-2 py-1 text-xs font-semibold text-purple-800">
+      <span class="inline-flex rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-orange-800">
         {{ club.ciudad }}
       </span>
     </td>
@@ -79,8 +79,8 @@ const handleDelete = () => {
     <div class="flex items-start justify-between">
       <div class="flex items-center space-x-3">
         <div class="h-12 w-12 flex-shrink-0">
-          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-            <span class="text-sm font-medium text-purple-600">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
+            <span class="text-sm font-medium text-orange-600">
               {{ club.nombre.charAt(0) }}
             </span>
           </div>
@@ -96,7 +96,7 @@ const handleDelete = () => {
             <span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-800">
               {{ club.ciudad }}
             </span>
-            <span class="inline-flex rounded-full bg-purple-100 px-2 py-1 text-xs font-semibold text-purple-800">
+            <span class="inline-flex rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-orange-800">
               {{ new Date(club.fundacion).getFullYear() }}
             </span>
           </div>

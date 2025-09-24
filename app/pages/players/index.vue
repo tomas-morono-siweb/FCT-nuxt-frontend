@@ -34,7 +34,7 @@ async function onDelete(id: number) {
         title="Jugadores"
         description="Gestiona la información de los jugadores del equipo"
         action-text="Nuevo Jugador"
-        action-to="/jugadores/nuevo"
+        action-to="/players/nuevo"
         action-icon="plus"
       />
 
