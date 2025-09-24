@@ -3,8 +3,8 @@
 export interface Player {
   id: number;
   nombre: string;
-  apellido: string;
-  posicion: string;
+  apellidos: string;
   dorsal?: number;
-  clubId?: number;
+  salario?: number;
+  id_club?: string;
 }
