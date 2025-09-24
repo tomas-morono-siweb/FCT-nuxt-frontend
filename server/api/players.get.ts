@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       apellido: "Messi",
       posicion: "Delantero",
       dorsal: 10,
-      clubId: 1,
+      clubId: 2,
     },
     {
       id: 2,
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       apellido: "Ronaldo",
       posicion: "Delantero",
       dorsal: 7,
-      clubId: 2,
+      clubId: 1,
     },
     {
       id: 3,
@@ -38,8 +38,8 @@ export default defineEventHandler(async (event) => {
     },
     {
       id: 5,
-      nombre: "Erling",
-      apellido: "Haaland",
+      nombre: "Antoine",
+      apellido: "Griezmann",
       posicion: "Delantero",
       dorsal: 9,
       clubId: 2,
