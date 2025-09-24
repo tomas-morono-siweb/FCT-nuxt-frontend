@@ -1,9 +1,10 @@
 import type { Player } from "~/interfaces/player";
+import type { PaginatedResponse } from "~/interfaces/pagination";
 import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const usePlayers = () => {
   const list = (q?: string, page = 1, pageSize = 10) =>
-    $fetch<Player[]>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
+    $fetch<PaginatedResponse<Player>>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
       query: { q, page, pageSize }
     });
 

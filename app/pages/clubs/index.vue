@@ -5,11 +5,30 @@ const q = ref("");
 const page = ref(1);
 const pageSize = 10;
 const { list, remove } = useClubs();
+const { withLoading } = useGlobalLoading();
 
 const key = computed(() => `clubs-${q.value}-${page.value}`);
-const { data, pending, error, refresh } = await useAsyncData<Club[]>(key, () => list(q.value, page.value, pageSize), {
-  watch: [q, page],
-});
+const { data, pending, error, refresh } = await useAsyncData(
+  key,
+  () => withLoading(() => list(q.value, page.value, pageSize), "Cargando clubes..."),
+  {
+    watch: [q, page],
+  }
+);
+
+// Extraer datos y metadatos de paginación
+const clubs = computed(() => data.value?.data || []);
+const pagination = computed(
+  () =>
+    data.value?.pagination || {
+      currentPage: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
+      hasNextPage: false,
+      hasPreviousPage: false,
+    }
+);
 
 const columns = [
   { key: "nombre", label: "Club" },
@@ -20,14 +39,27 @@ const columns = [
 
 async function onDelete(id: string) {
   if (!confirm("¿Seguro que deseas borrar este club?")) return;
-  await remove(id);
-  await refresh();
+  await withLoading(async () => {
+    await remove(id);
+    await refresh();
+  }, "Eliminando club...");
+}
+
+// Función para manejar cambio de página
+function onPageChange(newPage: number) {
+  page.value = newPage;
 }
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
+      <!-- Breadcrumb -->
+      <UiBreadcrumb
+        color="orange"
+        class="mb-4"
+      />
+
       <!-- Header Section -->
       <UiPageHeader
         title="Clubs"
@@ -53,7 +85,7 @@ async function onDelete(id: string) {
       >
         <!-- Desktop Table Rows -->
         <EntitiesClubCard
-          v-for="club in data"
+          v-for="club in clubs"
           :key="club.id"
           :club="club"
           variant="desktop"
@@ -63,7 +95,7 @@ async function onDelete(id: string) {
         <!-- Mobile Cards -->
         <template #mobile>
           <EntitiesClubCard
-            v-for="club in data"
+            v-for="club in clubs"
             :key="club.id"
             :club="club"
             variant="mobile"
@@ -71,6 +103,17 @@ async function onDelete(id: string) {
           />
         </template>
       </UiDataTable>
+
+      <!-- Paginación -->
+      <UiPagination
+        v-if="pagination.totalPages > 1"
+        :current-page="pagination.currentPage"
+        :total-pages="pagination.totalPages"
+        :total-items="pagination.totalItems"
+        :items-per-page="pagination.pageSize"
+        color="orange"
+        @page-change="onPageChange"
+      />
     </div>
   </div>
 </template>

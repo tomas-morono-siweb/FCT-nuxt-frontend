@@ -1,9 +1,10 @@
 import type { Coach } from "~/interfaces/coach";
+import type { PaginatedResponse } from "~/interfaces/pagination";
 import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useCoaches = () => {
   const list = (q?: string, page = 1, pageSize = 10) =>
-    $fetch<Coach[]>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
+    $fetch<PaginatedResponse<Coach>>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
       query: { q, page, pageSize }
     });
 

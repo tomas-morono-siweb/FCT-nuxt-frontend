@@ -27,11 +27,11 @@ const updateValue = (event: Event) => {
 
 <template>
   <div class="space-y-2">
-    <label class="block text-sm font-medium text-gray-700">
+    <label class="text-secondary-700 block text-sm font-semibold">
       {{ label }}
       <span
         v-if="required"
-        class="text-red-500"
+        class="text-error-500"
       >
         *
       </span>
@@ -44,7 +44,7 @@ const updateValue = (event: Event) => {
       :value="modelValue"
       :placeholder="placeholder"
       :required="required"
-      class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+      class="border-secondary-300 text-secondary-800 focus:border-primary-500 focus:ring-primary-200 block w-full rounded-lg border bg-white px-4 py-3 text-sm transition-all duration-200 focus:bg-white focus:ring-2"
       :class="{ 'border-red-500 focus:border-red-500 focus:ring-red-500': error }"
       @input="updateValue"
     />
@@ -54,7 +54,7 @@ const updateValue = (event: Event) => {
       v-else
       :value="modelValue"
       :required="required"
-      class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+      class="border-secondary-300 text-secondary-800 focus:border-primary-500 focus:ring-primary-200 block w-full rounded-lg border bg-white px-4 py-3 text-sm transition-all duration-200 focus:bg-white focus:ring-2"
       :class="{ 'border-red-500 focus:border-red-500 focus:ring-red-500': error }"
       @change="updateValue"
     >

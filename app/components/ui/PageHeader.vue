@@ -14,10 +14,10 @@ const props = defineProps<Props>();
   <div class="mb-8">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">{{ title }}</h1>
+        <h1 class="text-secondary-800 text-3xl font-bold">{{ title }}</h1>
         <p
           v-if="description"
-          class="mt-2 text-sm text-gray-600"
+          class="text-secondary-600 mt-2 text-sm"
         >
           {{ description }}
         </p>
@@ -25,7 +25,7 @@ const props = defineProps<Props>();
       <NuxtLink
         v-if="actionText && actionTo"
         :to="actionTo"
-        class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white shadow-sm transition-colors duration-200 hover:bg-blue-700"
+        class="from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 inline-flex items-center rounded-lg bg-gradient-to-r px-6 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl"
       >
         <svg
           v-if="actionIcon === 'plus'"

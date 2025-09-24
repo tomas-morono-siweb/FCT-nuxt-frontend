@@ -7,42 +7,42 @@ export default defineEventHandler(async (event) => {
     {
       id: 1,
       nombre: "Lionel",
-      apellido: "Messi",
-      posicion: "Delantero",
+      apellidos: "Messi",
       dorsal: 10,
-      clubId: 2,
+      salario: 50000000,
+      id_club: "2",
     },
     {
       id: 2,
       nombre: "Cristiano",
-      apellido: "Ronaldo",
-      posicion: "Delantero",
+      apellidos: "Ronaldo",
       dorsal: 7,
-      clubId: 1,
+      salario: 45000000,
+      id_club: "1",
     },
     {
       id: 3,
       nombre: "Neymar",
-      apellido: "Jr",
-      posicion: "Extremo",
+      apellidos: "Jr",
       dorsal: 11,
-      clubId: 3,
+      salario: 40000000,
+      id_club: "3",
     },
     {
       id: 4,
       nombre: "Kylian",
-      apellido: "Mbappé",
-      posicion: "Delantero",
+      apellidos: "Mbappé",
       dorsal: 7,
-      clubId: 1,
+      salario: 35000000,
+      id_club: "1",
     },
     {
       id: 5,
       nombre: "Antoine",
-      apellido: "Griezmann",
-      posicion: "Delantero",
+      apellidos: "Griezmann",
       dorsal: 9,
-      clubId: 2,
+      salario: 30000000,
+      id_club: "2",
     },
   ];
 
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
   if (q && typeof q === "string") {
     filteredPlayers = mockPlayers.filter(
       (player) =>
-        player.nombre.toLowerCase().includes(q.toLowerCase()) || player.apellido.toLowerCase().includes(q.toLowerCase())
+        player.nombre.toLowerCase().includes(q.toLowerCase()) || player.apellidos.toLowerCase().includes(q.toLowerCase())
     );
   }
 
@@ -60,5 +60,16 @@ export default defineEventHandler(async (event) => {
   const endIndex = startIndex + Number(pageSize);
   const paginatedPlayers = filteredPlayers.slice(startIndex, endIndex);
 
-  return paginatedPlayers;
+  // Return paginated data with metadata
+  return {
+    data: paginatedPlayers,
+    pagination: {
+      currentPage: Number(page),
+      pageSize: Number(pageSize),
+      totalItems: filteredPlayers.length,
+      totalPages: Math.ceil(filteredPlayers.length / Number(pageSize)),
+      hasNextPage: endIndex < filteredPlayers.length,
+      hasPreviousPage: startIndex > 0,
+    },
+  };
 });

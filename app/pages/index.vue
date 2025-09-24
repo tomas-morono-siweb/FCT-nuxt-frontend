@@ -12,7 +12,7 @@
       :secondary-action="{
         text: 'Gestionar Entrenadores',
         to: '/coaches',
-        icon: 'check',
+        icon: 'clipboard',
       }"
     />
 
@@ -40,7 +40,7 @@
         <UiFeatureCard
           title="Entrenadores"
           description="Organiza el equipo técnico, nacionalidades, salarios y asignaciones. Herramientas profesionales para la gestión del staff."
-          icon="check"
+          icon="clipboard"
           color="green"
           link-to="/coaches"
           link-text="Ver Entrenadores"
@@ -96,14 +96,14 @@
       subtitle="Comienza a gestionar tu equipo deportivo de manera profesional desde hoy mismo"
       :actions="[
         {
-          text: 'Crear Primer Jugador',
-          to: '/players',
+          text: 'Registrar un jugador',
+          to: '/players/new',
           variant: 'primary',
           icon: 'plus',
         },
         {
-          text: 'Registrar Club',
-          to: '/clubs',
+          text: 'Registrar un club',
+          to: '/clubs/new',
           variant: 'secondary',
           icon: 'building',
         },

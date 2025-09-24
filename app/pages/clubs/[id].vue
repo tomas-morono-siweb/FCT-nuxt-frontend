@@ -10,6 +10,12 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
 <template>
   <div class="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
+      <!-- Breadcrumb -->
+      <UiBreadcrumb
+        color="orange"
+        class="mb-4"
+      />
+
       <!-- Header Section -->
       <UiDetailHeader
         title="Detalle del Club"

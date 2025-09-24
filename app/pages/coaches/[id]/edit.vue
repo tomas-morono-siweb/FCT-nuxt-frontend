@@ -212,7 +212,7 @@ const handleSubmit = async () => {
               <UiFormField
                 v-model="form.id_club"
                 label="Club"
-                :options="clubs?.map((club) => ({ value: club.id, label: club.nombre })) || []"
+                :options="clubsResponse?.data?.map((club) => ({ value: club.id, label: club.nombre })) || []"
                 :error="
                   submitError && form.id_club && !clubs?.find((c) => c.id === form.id_club) ? 'Club no válido' : ''
                 "

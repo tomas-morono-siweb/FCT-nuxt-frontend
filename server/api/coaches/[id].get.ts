@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       apellidos: "Ancelotti",
       nacionalidad: "Italiana",
       salario: 12000000,
-      id_club: 1,
+      id_club: "1",
     },
     {
       id: 2,
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
       apellidos: "Hernández",
       nacionalidad: "Española",
       salario: 8000000,
-      id_club: 2,
+      id_club: "2",
     },
     {
       id: 3,
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       apellidos: "Simeone",
       nacionalidad: "Argentina",
       salario: 10000000,
-      id_club: 3,
+      id_club: "3",
     },
   ];
 

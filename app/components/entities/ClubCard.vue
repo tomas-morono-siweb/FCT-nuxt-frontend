@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  delete: [id: number];
+  delete: [id: string];
 }>();
 
 const handleDelete = () => {

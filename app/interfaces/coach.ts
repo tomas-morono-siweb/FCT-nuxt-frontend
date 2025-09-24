@@ -7,5 +7,5 @@ export interface Coach {
   apellidos: string;
   nacionalidad: string;
   salario: number;
-  id_club?: number;
+  id_club?: string;
 }

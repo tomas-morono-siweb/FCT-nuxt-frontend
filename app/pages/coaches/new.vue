@@ -20,7 +20,8 @@ const loading = ref(false);
 const error = ref("");
 
 // Load clubs for selection
-const { data: clubs } = await useAsyncData<Club[]>("clubs", () => listClubs());
+const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
+const clubs = computed(() => clubsResponse.value?.data || []);
 
 // Validation
 const validateForm = () => {
@@ -75,6 +76,12 @@ const handleSubmit = async () => {
 <template>
   <div class="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl">
+      <!-- Breadcrumb -->
+      <UiBreadcrumb
+        color="green"
+        class="mb-4"
+      />
+
       <!-- Header Section -->
       <UiPageHeader
         title="Nuevo Entrenador"

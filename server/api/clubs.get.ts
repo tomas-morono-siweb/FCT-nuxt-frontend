@@ -5,25 +5,25 @@ export default defineEventHandler(async (event) => {
   // Mock data for now - replace with actual database calls
   const mockClubs = [
     {
-      id: 1,
+      id: "1",
       nombre: "Real Madrid",
-      fundacion: new Date("1902-03-06"),
+      fundacion: 1902,
       ciudad: "Madrid",
       estadio: "Santiago Bernabéu",
       presupuesto: 800000000,
     },
     {
-      id: 2,
+      id: "2",
       nombre: "FC Barcelona",
-      fundacion: new Date("1899-11-29"),
+      fundacion: 1899,
       ciudad: "Barcelona",
       estadio: "Camp Nou",
       presupuesto: 750000000,
     },
     {
-      id: 3,
+      id: "3",
       nombre: "Atlético de Madrid",
-      fundacion: new Date("1903-04-26"),
+      fundacion: 1903,
       ciudad: "Madrid",
       estadio: "Wanda Metropolitano",
       presupuesto: 400000000,
@@ -44,5 +44,16 @@ export default defineEventHandler(async (event) => {
   const endIndex = startIndex + Number(pageSize);
   const paginatedClubs = filteredClubs.slice(startIndex, endIndex);
 
-  return paginatedClubs;
+  // Return paginated data with metadata
+  return {
+    data: paginatedClubs,
+    pagination: {
+      currentPage: Number(page),
+      pageSize: Number(pageSize),
+      totalItems: filteredClubs.length,
+      totalPages: Math.ceil(filteredClubs.length / Number(pageSize)),
+      hasNextPage: endIndex < filteredClubs.length,
+      hasPreviousPage: startIndex > 0,
+    },
+  };
 });
