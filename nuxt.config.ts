@@ -9,13 +9,16 @@ export default defineNuxtConfig({
   },
   components: [
     {
-      //Aqui jugaríamos con los prefijos de una ruta dada
-      path: "~/components",
-      pathPrefix: false,
+      path: "~/components/ui",
+      prefix: "Ui",
     },
     {
-      path: "~/components/my-ui-library",
-      prefix: "X",
+      path: "~/components/entities",
+      prefix: "Entities",
+    },
+    {
+      path: "~/components",
+      pathPrefix: false,
     },
   ],
   modules: ["@nuxt/eslint"],

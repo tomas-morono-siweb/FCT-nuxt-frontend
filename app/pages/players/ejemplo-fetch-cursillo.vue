@@ -27,7 +27,7 @@ async function deletePlayer(id) {
     <input
       v-model="query"
       type="text"
-    />
+    >
     <button @click="search">Search</button>
   </form>
 
