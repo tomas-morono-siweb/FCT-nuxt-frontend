@@ -54,7 +54,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
                 { label: 'Nombre del Club', value: club.nombre },
                 { label: 'Ciudad', value: club.ciudad },
                 { label: 'Estadio', value: club.estadio },
-                { label: 'Año de Fundación', value: new Date(club.fundacion).getFullYear() },
+                { label: 'Año de Fundación', value: club.fundacion.toString() },
               ]"
             />
           </UiDataCard>

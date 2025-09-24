@@ -7,6 +7,7 @@ const { list: listClubs } = useClubs();
 
 // Form data
 const form = reactive<Partial<Coach>>({
+  dni: "",
   nombre: "",
   apellidos: "",
   nacionalidad: "",
@@ -24,6 +25,11 @@ const { data: clubs } = await useAsyncData<Club[]>("clubs", () => listClubs());
 // Validation
 const validateForm = () => {
   error.value = "";
+
+  if (!form.dni?.trim()) {
+    error.value = "El DNI es obligatorio";
+    return false;
+  }
 
   if (!form.nombre?.trim()) {
     error.value = "El nombre es obligatorio";
@@ -118,6 +124,15 @@ const handleSubmit = async () => {
 
             <!-- Form Fields -->
             <div class="grid gap-6 sm:grid-cols-2">
+              <!-- DNI -->
+              <UiFormField
+                v-model="form.dni"
+                label="DNI"
+                placeholder="DNI del entrenador"
+                required
+                :error="error && !form.dni?.trim() ? 'El DNI es obligatorio' : ''"
+              />
+
               <!-- Nombre -->
               <UiFormField
                 v-model="form.nombre"

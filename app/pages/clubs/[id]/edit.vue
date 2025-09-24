@@ -2,7 +2,7 @@
 import type { Club } from "~/interfaces/club";
 
 const route = useRoute();
-const id = Number(route.params.id);
+const id = route.params.id as string;
 const { get, update } = useClubs();
 
 // Load club data
@@ -13,7 +13,7 @@ const form = reactive<Partial<Club>>({
   nombre: "",
   ciudad: "",
   estadio: "",
-  fundacion: "",
+  fundacion: undefined,
   presupuesto: undefined,
 });
 
@@ -55,16 +55,8 @@ const validateForm = () => {
     return false;
   }
 
-  if (!form.fundacion) {
-    submitError.value = "La fecha de fundación es obligatoria";
-    return false;
-  }
-
-  const fundacionYear = new Date(form.fundacion).getFullYear();
-  const currentYear = new Date().getFullYear();
-
-  if (fundacionYear < 1800 || fundacionYear > currentYear) {
-    submitError.value = "La fecha de fundación debe estar entre 1800 y el año actual";
+  if (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear()) {
+    submitError.value = "El año de fundación debe estar entre 1800 y el año actual";
     return false;
   }
 
@@ -192,10 +184,15 @@ const handleSubmit = async () => {
               <!-- Fundación -->
               <UiFormField
                 v-model="form.fundacion"
-                label="Fecha de Fundación"
-                type="date"
+                label="Año de Fundación"
+                type="number"
+                placeholder="Ej: 1900"
                 required
-                :error="submitError && !form.fundacion ? 'La fecha de fundación es obligatoria' : ''"
+                :error="
+                  submitError && (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear())
+                    ? 'El año de fundación debe estar entre 1800 y el año actual'
+                    : ''
+                "
               />
 
               <!-- Presupuesto -->

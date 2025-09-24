@@ -30,7 +30,7 @@ const handleDelete = () => {
         <div class="h-10 w-10 flex-shrink-0">
           <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
             <span class="text-sm font-medium text-blue-600">
-              {{ player.nombre.charAt(0) }}{{ player.apellido.charAt(0) }}
+              {{ player.nombre.charAt(0) }}{{ player.apellidos.charAt(0) }}
             </span>
           </div>
         </div>
@@ -39,21 +39,21 @@ const handleDelete = () => {
             :to="`/players/${player.id}`"
             class="text-sm font-medium text-gray-900 transition-colors duration-150 hover:text-blue-600"
           >
-            {{ player.nombre }} {{ player.apellido }}
+            {{ player.nombre }} {{ player.apellidos }}
           </NuxtLink>
         </div>
       </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
-        {{ player.posicion }}
+        {{ player.salario ? `${player.salario.toLocaleString()}€` : "Sin salario" }}
       </span>
     </td>
     <td class="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
       {{ player.dorsal ?? "-" }}
     </td>
     <td class="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-      {{ player.clubId ?? "-" }}
+      {{ player.id_club ?? "-" }}
     </td>
     <td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
       <div class="flex justify-end gap-2">
@@ -83,7 +83,7 @@ const handleDelete = () => {
         <div class="h-12 w-12 flex-shrink-0">
           <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
             <span class="text-sm font-medium text-blue-600">
-              {{ player.nombre.charAt(0) }}{{ player.apellido.charAt(0) }}
+              {{ player.nombre.charAt(0) }}{{ player.apellidos.charAt(0) }}
             </span>
           </div>
         </div>
@@ -92,11 +92,11 @@ const handleDelete = () => {
             :to="`/players/${player.id}`"
             class="text-base font-medium text-gray-900 transition-colors duration-150 hover:text-blue-600"
           >
-            {{ player.nombre }} {{ player.apellido }}
+            {{ player.nombre }} {{ player.apellidos }}
           </NuxtLink>
           <div class="mt-1 flex flex-wrap gap-2">
             <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
-              {{ player.posicion }}
+              {{ player.salario ? `${player.salario.toLocaleString()}€` : "Sin salario" }}
             </span>
             <span
               v-if="player.dorsal"
@@ -106,10 +106,10 @@ const handleDelete = () => {
             </span>
           </div>
           <p
-            v-if="player.clubId"
+            v-if="player.id_club"
             class="mt-1 text-sm text-gray-500"
           >
-            Club: {{ player.clubId }}
+            Club: {{ player.id_club }}
           </p>
         </div>
       </div>

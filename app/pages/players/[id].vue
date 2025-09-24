@@ -11,10 +11,10 @@ const { data: player, pending, error } = await useAsyncData<Player>(`player:${id
 
 // Obtener información del club si el player tiene uno asignado
 const { data: club } = await useAsyncData<Club | null>(
-  `club:${player.value?.clubId}`,
+  `club:${player.value?.id_club}`,
   async () => {
-    if (player.value?.clubId) {
-      return await getClub(player.value.clubId);
+    if (player.value?.id_club) {
+      return await getClub(player.value.id_club);
     }
     return null;
   },
@@ -31,21 +31,14 @@ const { data: club } = await useAsyncData<Club | null>(
       <UiDetailHeader
         title="Detalle del Jugador"
         description="Información completa del jugador seleccionado"
-        :avatar-text="player ? `${player.nombre.charAt(0)}${player.apellido.charAt(0)}` : 'J'"
+        :avatar-text="player ? `${player.nombre.charAt(0)}${player.apellidos.charAt(0)}` : 'J'"
         avatar-color="blue"
         :edit-to="`/players/${player?.id}/edit`"
         back-to="/players"
-        :badges="
-          player
-            ? [
-                { text: player.posicion, color: 'blue' as const },
-                ...(player.dorsal ? [{ text: `${player.dorsal}`, color: 'gray' as const }] : []),
-              ]
-            : []
-        "
+        :badges="player ? [...(player.dorsal ? [{ text: `${player.dorsal}`, color: 'gray' as const }] : [])] : []"
       >
         <template #title>
-          {{ player ? `${player.nombre} ${player.apellido}` : "Jugador" }}
+          {{ player ? `${player.nombre} ${player.apellidos}` : "Jugador" }}
         </template>
       </UiDetailHeader>
 
@@ -77,7 +70,7 @@ const { data: club } = await useAsyncData<Club | null>(
             <UiInfoGrid
               :items="[
                 { label: 'Nombre', value: player.nombre },
-                { label: 'Apellido', value: player.apellido },
+                { label: 'Apellidos', value: player.apellidos },
                 { label: 'ID del Jugador', value: player.id },
               ]"
             />
@@ -90,9 +83,9 @@ const { data: club } = await useAsyncData<Club | null>(
           >
             <UiInfoGrid
               :items="[
-                { label: 'Posición', value: player.posicion },
                 { label: 'Dorsal', value: player.dorsal ? `#${player.dorsal}` : 'Sin dorsal asignado' },
-                { label: 'Club', value: player.clubId ? `Club ID: ${player.clubId}` : 'Sin club asignado' },
+                { label: 'Salario', value: player.salario ? `${player.salario.toLocaleString()}€` : 'No disponible' },
+                { label: 'Club', value: player.id_club ? `Club ID: ${player.id_club}` : 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -105,12 +98,12 @@ const { data: club } = await useAsyncData<Club | null>(
         >
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div class="rounded-lg bg-blue-50 p-4 text-center">
-              <div class="text-2xl font-bold text-blue-600">{{ player.nombre.length + player.apellido.length }}</div>
+              <div class="text-2xl font-bold text-blue-600">{{ player.nombre.length + player.apellidos.length }}</div>
               <div class="text-sm text-blue-800">Total de Letras</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ player.posicion.length }}</div>
-              <div class="text-sm text-gray-800">Letras en Posición</div>
+              <div class="text-2xl font-bold text-gray-600">{{ player.apellidos.length }}</div>
+              <div class="text-sm text-gray-800">Letras en Apellidos</div>
             </div>
             <div class="rounded-lg bg-blue-50 p-4 text-center">
               <div class="text-2xl font-bold text-blue-600">{{ player.dorsal || "N/A" }}</div>
@@ -122,7 +115,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="player.clubId"
+          :club-id="player.id_club"
         />
       </div>
     </div>

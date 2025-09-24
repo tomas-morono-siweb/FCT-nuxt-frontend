@@ -29,7 +29,7 @@
         <!-- Players Card -->
         <UiFeatureCard
           title="Jugadores"
-          description="Administra fichas de jugadores, posiciones, dorsales y asignaciones a clubes. Control total sobre la información deportiva."
+          description="Administra fichas de jugadores, dorsales, salarios y asignaciones a clubes. Control total sobre la información deportiva."
           icon="users"
           color="blue"
           link-to="/players"

@@ -18,7 +18,7 @@ const columns = [
   { key: "fundacion", label: "Fundación" },
 ];
 
-async function onDelete(id: number) {
+async function onDelete(id: string) {
   if (!confirm("¿Seguro que deseas borrar este club?")) return;
   await remove(id);
   await refresh();

@@ -44,6 +44,9 @@ const handleDelete = () => {
         </div>
       </div>
     </td>
+    <td class="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+      {{ coach.dni }}
+    </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800">
         {{ coach.nacionalidad }}

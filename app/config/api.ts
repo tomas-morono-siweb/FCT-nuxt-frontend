@@ -14,6 +14,6 @@ export const buildApiUrl = (endpoint: string): string => {
 };
 
 // Helper function to build API URLs with ID
-export const buildApiUrlWithId = (endpoint: string, id: number): string => {
+export const buildApiUrlWithId = (endpoint: string, id: number | string): string => {
     return `${API_CONFIG.BASE_URL}${endpoint}/${id}`;
 };

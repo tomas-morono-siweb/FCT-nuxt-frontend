@@ -13,6 +13,7 @@ const { data, pending, error, refresh } = await useAsyncData<Coach[]>(key, () =>
 
 const columns = [
   { key: "nombre", label: "Entrenador" },
+  { key: "dni", label: "DNI" },
   { key: "nacionalidad", label: "Nacionalidad" },
   { key: "salario", label: "Salario" },
   { key: "id_club", label: "Club ID" },

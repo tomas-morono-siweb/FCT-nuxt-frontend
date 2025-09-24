@@ -3,7 +3,7 @@ import type { Club } from "~/interfaces/club";
 
 interface Props {
   club: Club | null | undefined;
-  clubId?: number;
+  clubId?: string;
 }
 
 const props = defineProps<Props>();
@@ -36,7 +36,7 @@ const props = defineProps<Props>();
           v-if="club"
           class="mt-1 text-xs text-gray-400"
         >
-          {{ club.ciudad }} • Fundado en {{ new Date(club.fundacion).getFullYear() }}
+          {{ club.ciudad }} • Fundado en {{ club.fundacion }}
         </p>
       </div>
     </div>

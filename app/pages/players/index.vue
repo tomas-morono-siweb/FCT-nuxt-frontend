@@ -14,9 +14,9 @@ const { data, pending, error, refresh } = await useAsyncData<Player[]>(key, () =
 
 const columns = [
   { key: "nombre", label: "Jugador" },
-  { key: "posicion", label: "Posición" },
+  { key: "apellidos", label: "Apellidos" },
   { key: "dorsal", label: "Dorsal" },
-  { key: "clubId", label: "Club" },
+  { key: "id_club", label: "Club" },
 ];
 
 async function onDelete(id: number) {

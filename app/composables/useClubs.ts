@@ -7,7 +7,7 @@ export const useClubs = () => {
       query: { q, page, pageSize }
     });
 
-  const get = (id: number) =>
+  const get = (id: string) =>
     $fetch<Club>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id));
 
   const create = (payload: Partial<Club>) =>
@@ -16,13 +16,13 @@ export const useClubs = () => {
       body: payload
     });
 
-  const update = (id: number, payload: Partial<Club>) =>
+  const update = (id: string, payload: Partial<Club>) =>
     $fetch<Club>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id), {
       method: "PUT",
       body: payload
     });
 
-  const remove = (id: number) =>
+  const remove = (id: string) =>
     $fetch(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id), {
       method: "DELETE"
     });

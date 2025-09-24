@@ -8,10 +8,10 @@ const { list: listClubs } = useClubs();
 // Form data
 const form = reactive<Partial<Player>>({
   nombre: "",
-  apellido: "",
-  posicion: "",
+  apellidos: "",
   dorsal: undefined,
-  clubId: undefined,
+  salario: undefined,
+  id_club: undefined,
 });
 
 // Loading states
@@ -21,13 +21,7 @@ const error = ref("");
 // Load clubs for selection
 const { data: clubs } = await useAsyncData<Club[]>("clubs", () => listClubs());
 
-// Position options
-const positionOptions = [
-  { value: "Portero", label: "Portero" },
-  { value: "Defensa", label: "Defensa" },
-  { value: "Centrocampista", label: "Centrocampista" },
-  { value: "Delantero", label: "Delantero" },
-];
+// No position options needed - API doesn't include position
 
 // Validation
 const validateForm = () => {
@@ -38,13 +32,8 @@ const validateForm = () => {
     return false;
   }
 
-  if (!form.apellido?.trim()) {
-    error.value = "El apellido es obligatorio";
-    return false;
-  }
-
-  if (!form.posicion?.trim()) {
-    error.value = "La posición es obligatoria";
+  if (!form.apellidos?.trim()) {
+    error.value = "Los apellidos son obligatorios";
     return false;
   }
 
@@ -135,22 +124,22 @@ const handleSubmit = async () => {
                 :error="error && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
               />
 
-              <!-- Apellido -->
+              <!-- Apellidos -->
               <UiFormField
-                v-model="form.apellido"
-                label="Apellido"
-                placeholder="Apellido del jugador"
+                v-model="form.apellidos"
+                label="Apellidos"
+                placeholder="Apellidos del jugador"
                 required
-                :error="error && !form.apellido?.trim() ? 'El apellido es obligatorio' : ''"
+                :error="error && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
               />
 
-              <!-- Posición -->
+              <!-- Salario -->
               <UiFormField
-                v-model="form.posicion"
-                label="Posición"
-                required
-                :options="positionOptions"
-                :error="error && !form.posicion?.trim() ? 'La posición es obligatoria' : ''"
+                v-model="form.salario"
+                label="Salario (€)"
+                type="number"
+                placeholder="Salario anual en euros"
+                :error="error && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
               />
 
               <!-- Dorsal -->
@@ -168,10 +157,10 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.clubId"
+                v-model="form.id_club"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.id, label: club.nombre })) || []"
-                :error="error && form.clubId && !clubs?.find((c) => c.id === form.clubId) ? 'Club no válido' : ''"
+                :error="error && form.id_club && !clubs?.find((c) => c.id === form.id_club) ? 'Club no válido' : ''"
               />
             </div>
 

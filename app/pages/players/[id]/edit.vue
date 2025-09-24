@@ -13,10 +13,10 @@ const { data: player, pending, error } = await useAsyncData<Player>(`player:${id
 // Form data - initialize with player data
 const form = reactive<Partial<Player>>({
   nombre: "",
-  apellido: "",
-  posicion: "",
+  apellidos: "",
   dorsal: undefined,
-  clubId: undefined,
+  salario: undefined,
+  id_club: undefined,
 });
 
 // Watch for player data changes to populate form
@@ -25,10 +25,10 @@ watch(
   (newPlayer) => {
     if (newPlayer) {
       form.nombre = newPlayer.nombre;
-      form.apellido = newPlayer.apellido;
-      form.posicion = newPlayer.posicion;
+      form.apellidos = newPlayer.apellidos;
       form.dorsal = newPlayer.dorsal;
-      form.clubId = newPlayer.clubId;
+      form.salario = newPlayer.salario;
+      form.id_club = newPlayer.id_club;
     }
   },
   { immediate: true }
@@ -41,13 +41,7 @@ const submitError = ref("");
 // Load clubs for selection
 const { data: clubs } = await useAsyncData<Club[]>("clubs", () => listClubs());
 
-// Position options
-const positionOptions = [
-  { value: "Portero", label: "Portero" },
-  { value: "Defensa", label: "Defensa" },
-  { value: "Centrocampista", label: "Centrocampista" },
-  { value: "Delantero", label: "Delantero" },
-];
+// No position options needed - API doesn't include position
 
 // Validation
 const validateForm = () => {
@@ -58,13 +52,8 @@ const validateForm = () => {
     return false;
   }
 
-  if (!form.apellido?.trim()) {
-    submitError.value = "El apellido es obligatorio";
-    return false;
-  }
-
-  if (!form.posicion?.trim()) {
-    submitError.value = "La posición es obligatoria";
+  if (!form.apellidos?.trim()) {
+    submitError.value = "Los apellidos son obligatorios";
     return false;
   }
 
@@ -101,7 +90,7 @@ const handleSubmit = async () => {
       <UiPageHeader
         title="Editar Jugador"
         :description="
-          player ? `Editando información de ${player.nombre} ${player.apellido}` : 'Editando información del jugador'
+          player ? `Editando información de ${player.nombre} ${player.apellidos}` : 'Editando información del jugador'
         "
         back-to="/players"
       />
@@ -173,22 +162,22 @@ const handleSubmit = async () => {
                 :error="submitError && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
               />
 
-              <!-- Apellido -->
+              <!-- Apellidos -->
               <UiFormField
-                v-model="form.apellido"
-                label="Apellido"
-                placeholder="Apellido del jugador"
+                v-model="form.apellidos"
+                label="Apellidos"
+                placeholder="Apellidos del jugador"
                 required
-                :error="submitError && !form.apellido?.trim() ? 'El apellido es obligatorio' : ''"
+                :error="submitError && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
               />
 
-              <!-- Posición -->
+              <!-- Salario -->
               <UiFormField
-                v-model="form.posicion"
-                label="Posición"
-                required
-                :options="positionOptions"
-                :error="submitError && !form.posicion?.trim() ? 'La posición es obligatoria' : ''"
+                v-model="form.salario"
+                label="Salario (€)"
+                type="number"
+                placeholder="Salario anual en euros"
+                :error="submitError && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
               />
 
               <!-- Dorsal -->
@@ -206,10 +195,12 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.clubId"
+                v-model="form.id_club"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.id, label: club.nombre })) || []"
-                :error="submitError && form.clubId && !clubs?.find((c) => c.id === form.clubId) ? 'Club no válido' : ''"
+                :error="
+                  submitError && form.id_club && !clubs?.find((c) => c.id === form.id_club) ? 'Club no válido' : ''
+                "
               />
             </div>
 

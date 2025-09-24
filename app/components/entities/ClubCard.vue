@@ -51,7 +51,7 @@ const handleDelete = () => {
     </td>
     <td class="px-6 py-4 text-sm whitespace-nowrap text-gray-900">{{ club.estadio }}</td>
     <td class="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-      {{ new Date(club.fundacion).getFullYear() }}
+      {{ club.fundacion }}
     </td>
     <td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
       <div class="flex justify-end gap-2">
@@ -97,7 +97,7 @@ const handleDelete = () => {
               {{ club.ciudad }}
             </span>
             <span class="inline-flex rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-orange-800">
-              {{ new Date(club.fundacion).getFullYear() }}
+              {{ club.fundacion }}
             </span>
           </div>
           <p class="mt-1 text-sm text-gray-500">{{ club.estadio }}</p>

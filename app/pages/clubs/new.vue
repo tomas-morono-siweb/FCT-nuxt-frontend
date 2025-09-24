@@ -8,7 +8,7 @@ const form = reactive<Partial<Club>>({
   nombre: "",
   ciudad: "",
   estadio: "",
-  fundacion: new Date().toISOString().split("T")[0], // Today's date as default
+  fundacion: new Date().getFullYear(), // Current year as default
   presupuesto: undefined,
 });
 
@@ -35,16 +35,8 @@ const validateForm = () => {
     return false;
   }
 
-  if (!form.fundacion) {
-    error.value = "La fecha de fundación es obligatoria";
-    return false;
-  }
-
-  const fundacionYear = new Date(form.fundacion).getFullYear();
-  const currentYear = new Date().getFullYear();
-
-  if (fundacionYear < 1800 || fundacionYear > currentYear) {
-    error.value = "La fecha de fundación debe estar entre 1800 y el año actual";
+  if (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear()) {
+    error.value = "El año de fundación debe estar entre 1800 y el año actual";
     return false;
   }
 
@@ -156,10 +148,15 @@ const handleSubmit = async () => {
               <!-- Fundación -->
               <UiFormField
                 v-model="form.fundacion"
-                label="Fecha de Fundación"
-                type="date"
+                label="Año de Fundación"
+                type="number"
+                placeholder="Ej: 1900"
                 required
-                :error="error && !form.fundacion ? 'La fecha de fundación es obligatoria' : ''"
+                :error="
+                  error && (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear())
+                    ? 'El año de fundación debe estar entre 1800 y el año actual'
+                    : ''
+                "
               />
 
               <!-- Presupuesto -->

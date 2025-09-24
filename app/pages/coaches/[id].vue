@@ -76,6 +76,7 @@ const { data: club } = await useAsyncData<Club | null>(
           >
             <UiInfoGrid
               :items="[
+                { label: 'DNI', value: coach.dni },
                 { label: 'Nombre', value: coach.nombre },
                 { label: 'Apellidos', value: coach.apellidos },
                 { label: 'Nacionalidad', value: coach.nacionalidad },
@@ -122,7 +123,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="coach.id_club"
+          :club-id="coach.id_club?.toString()"
         />
       </div>
     </div>
