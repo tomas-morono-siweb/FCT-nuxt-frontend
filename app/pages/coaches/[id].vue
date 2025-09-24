@@ -13,7 +13,10 @@ async function search() {
 
 <template>
   <form @submit.prevent="search">
-    <input type="text" v-model="query" />
+    <input
+      v-model="query"
+      type="text"
+    >
     <button @click="search">Search</button>
   </form>
 </template>

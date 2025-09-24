@@ -1,54 +1,57 @@
 @import "tailwindcss";
 
 :root {
-    --color-bg: #f8fafc;
-    --color-text: #334155;
-    --color-primary: #64748b;
-    --color-secondary: #94a3b8;
-    --color-accent: #a5b4fc;
+  --color-bg: #f8fafc;
+  --color-text: #334155;
+  --color-primary: #64748b;
+  --color-secondary: #94a3b8;
+  --color-accent: #a5b4fc;
 }
 
 body {
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-family: theme(font.sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: theme(font.sans);
 }
 
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    /* = py-2 px-4 */
-    border-radius: 0.5rem;
-    /* = rounded-lg */
-    font-weight: 500;
-    /* = font-medium */
-    transition: background-color .2s, color .2s, border-color .2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  /* = py-2 px-4 */
+  border-radius: 0.5rem;
+  /* = rounded-lg */
+  font-weight: 500;
+  /* = font-medium */
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 }
 
 .btn-primary {
-    background: var(--color-primary);
-    color: #fff;
+  background: var(--color-primary);
+  color: #fff;
 }
 
 .btn-primary:hover {
-    background: var(--color-secondary);
+  background: var(--color-secondary);
 }
 
 .btn-accent {
-    background: var(--color-accent);
-    color: #fff;
+  background: var(--color-accent);
+  color: #fff;
 }
 
 .btn-accent:hover {
-    background: #818cf8;
+  background: #818cf8;
 }
 
 .card {
-    background: #fff;
-    border: 1px solid var(--color-secondary);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, .05);
+  background: #fff;
+  border: 1px solid var(--color-secondary);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }

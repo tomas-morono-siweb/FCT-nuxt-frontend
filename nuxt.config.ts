@@ -1,30 +1,28 @@
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css'],
+  css: ["~/assets/css/main.css"],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
   },
   components: [
     {
       //Aqui jugaríamos con los prefijos de una ruta dada
-      path: '~/components',
-      pathPrefix: false
+      path: "~/components",
+      pathPrefix: false,
     },
     {
-      path: '~/components/my-ui-library',
-      prefix: 'X'
-    }
+      path: "~/components/my-ui-library",
+      prefix: "X",
+    },
   ],
-  modules: [],
+  modules: ["@nuxt/eslint"],
   runtimeConfig: {
-    apiSecret: 'abc123.',
+    apiSecret: "abc123.",
     public: {
-      apiBase: 'http://localhost:8000'
-    }
-  }
-})
+      apiBase: "http://localhost:8000",
+    },
+  },
+});

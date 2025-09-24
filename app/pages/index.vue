@@ -4,7 +4,12 @@
       <div class="card-body">
         <h2 class="mb-2 text-lg font-semibold">Jugadores</h2>
         <p class="mb-4 text-sm text-gray-600">Gestiona altas, bajas y datos de jugadores.</p>
-        <NuxtLink to="/players" class="btn btn-primary">Ir a Jugadores</NuxtLink>
+        <NuxtLink
+          to="/players"
+          class="btn btn-primary"
+        >
+          Ir a Jugadores
+        </NuxtLink>
       </div>
     </div>
 
@@ -12,7 +17,12 @@
       <div class="card-body">
         <h2 class="mb-2 text-lg font-semibold">Entrenadores</h2>
         <p class="mb-4 text-sm text-gray-600">Información y asignación a clubes.</p>
-        <NuxtLink to="/coaches" class="btn btn-primary">Ir a Entrenadores</NuxtLink>
+        <NuxtLink
+          to="/coaches"
+          class="btn btn-primary"
+        >
+          Ir a Entrenadores
+        </NuxtLink>
       </div>
     </div>
 
@@ -20,7 +30,12 @@
       <div class="card-body">
         <h2 class="mb-2 text-lg font-semibold">Clubes</h2>
         <p class="mb-4 text-sm text-gray-600">Alta de clubes y detalles.</p>
-        <NuxtLink to="/clubs" class="btn btn-primary">Ir a Clubes</NuxtLink>
+        <NuxtLink
+          to="/clubs"
+          class="btn btn-primary"
+        >
+          Ir a Clubes
+        </NuxtLink>
       </div>
     </div>
   </section>

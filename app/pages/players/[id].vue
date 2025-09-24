@@ -11,8 +11,18 @@ const { data: j, pending, error } = await useAsyncData<Player>(`player:${id}`, (
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-semibold">Ficha de player</h1>
       <div class="flex gap-2">
-        <NuxtLink :to="`/players/${j?.id}/editar`" class="btn btn-primary">Editar</NuxtLink>
-        <NuxtLink to="/players" class="btn btn-ghost">Volver</NuxtLink>
+        <NuxtLink
+          :to="`/players/${j?.id}/editar`"
+          class="btn btn-primary"
+        >
+          Editar
+        </NuxtLink>
+        <NuxtLink
+          to="/players"
+          class="btn btn-ghost"
+        >
+          Volver
+        </NuxtLink>
       </div>
     </div>
 
@@ -39,7 +49,17 @@ const { data: j, pending, error } = await useAsyncData<Player>(`player:${id}`, (
       </div>
     </div>
 
-    <div v-if="pending" class="text-gray-600">Cargando…</div>
-    <div v-if="error" class="text-red-600">Error: {{ error.message }}</div>
+    <div
+      v-if="pending"
+      class="text-gray-600"
+    >
+      Cargando…
+    </div>
+    <div
+      v-if="error"
+      class="text-red-600"
+    >
+      Error: {{ error.message }}
+    </div>
   </section>
 </template>

@@ -4,10 +4,10 @@ en la cual quisiéramos tener un layout distinto al default.
 -->
 <script setup>
 definePageMeta({
-    layout: 'blog',
-})
+  layout: "blog",
+});
 </script>
 
 <template>
-    <NuxtPage />
+  <NuxtPage />
 </template>

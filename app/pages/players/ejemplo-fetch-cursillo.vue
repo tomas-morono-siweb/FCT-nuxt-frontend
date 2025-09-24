@@ -24,12 +24,18 @@ async function deletePlayer(id) {
 
 <template>
   <form @submit.prevent="search">
-    <input type="text" v-model="query" />
+    <input
+      v-model="query"
+      type="text"
+    />
     <button @click="search">Search</button>
   </form>
 
   <ul>
-    <li v-for="player in players" :key="player.id">
+    <li
+      v-for="player in players"
+      :key="player.id"
+    >
       <NuxtLink :to="`/players/${player.id}`">{{ player.name }}</NuxtLink>
       <button @click="deletePlayer(player.id)">Delete</button>
     </li>

@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
-  const { q, page = 1, pageSize = 10 } = query
+  const query = getQuery(event);
+  const { q, page = 1, pageSize = 10 } = query;
 
   // Mock data for now - replace with actual database calls
   const mockCoaches = [
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       apellidos: "Ancelotti",
       nacionalidad: "Italiana",
       salario: 12000000,
-      id_club: 1
+      id_club: 1,
     },
     {
       id: 2,
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       apellidos: "Hernández",
       nacionalidad: "Española",
       salario: 8000000,
-      id_club: 2
+      id_club: 2,
     },
     {
       id: 3,
@@ -26,23 +26,23 @@ export default defineEventHandler(async (event) => {
       apellidos: "Simeone",
       nacionalidad: "Argentina",
       salario: 10000000,
-      id_club: 3
-    }
-  ]
+      id_club: 3,
+    },
+  ];
 
   // Simple filtering by query
-  let filteredCoaches = mockCoaches
-  if (q && typeof q === 'string') {
-    filteredCoaches = mockCoaches.filter(coach => 
-      coach.nombre.toLowerCase().includes(q.toLowerCase()) ||
-      coach.apellidos.toLowerCase().includes(q.toLowerCase())
-    )
+  let filteredCoaches = mockCoaches;
+  if (q && typeof q === "string") {
+    filteredCoaches = mockCoaches.filter(
+      (coach) =>
+        coach.nombre.toLowerCase().includes(q.toLowerCase()) || coach.apellidos.toLowerCase().includes(q.toLowerCase())
+    );
   }
 
   // Simple pagination
-  const startIndex = (Number(page) - 1) * Number(pageSize)
-  const endIndex = startIndex + Number(pageSize)
-  const paginatedCoaches = filteredCoaches.slice(startIndex, endIndex)
+  const startIndex = (Number(page) - 1) * Number(pageSize);
+  const endIndex = startIndex + Number(pageSize);
+  const paginatedCoaches = filteredCoaches.slice(startIndex, endIndex);
 
-  return paginatedCoaches
-})
+  return paginatedCoaches;
+});
