@@ -68,15 +68,6 @@ const handleDelete = () => {
         <span
           class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
         >
-          {{ coach.salario ? `€${coach.salario.toLocaleString()}` : "-" }}
-        </span>
-      </div>
-    </td>
-    <td class="px-8 py-6 whitespace-nowrap">
-      <div class="flex items-center space-x-2">
-        <span
-          class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
-        >
           {{ coach.club ?? "-" }}
         </span>
       </div>
