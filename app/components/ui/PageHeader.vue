@@ -25,7 +25,7 @@ const props = defineProps<Props>();
       <NuxtLink
         v-if="actionText && actionTo"
         :to="actionTo"
-        class="from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 inline-flex items-center rounded-lg bg-gradient-to-r px-6 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl"
+        class="from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 inline-flex items-center rounded-lg bg-gradient-to-r px-6 py-3 font-semibold shadow-lg transition-all duration-200 hover:shadow-xl"
       >
         <svg
           v-if="actionIcon === 'plus'"
