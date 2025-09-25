@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
               <th class="text-secondary-700 px-8 py-6 text-right text-xs font-bold tracking-wider uppercase">
                 <div class="flex items-center justify-end space-x-2">
                   <span>Acciones</span>
-                  <div class="bg-accent-500 h-2 w-2 rounded-full"></div>
+                  <div class="h-2 w-2 rounded-full"></div>
                 </div>
               </th>
             </tr>
