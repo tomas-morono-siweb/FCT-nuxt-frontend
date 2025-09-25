@@ -10,8 +10,11 @@ export default defineEventHandler(async (event) => {
     }).toString()}`;
 
     const response = await $fetch(apiUrl, {
-      timeout: 5000, // 5 segundos de timeout
-      retry: false
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Origin': 'http://localhost:8000'
+      }
     });
 
     // El backend devuelve la respuesta ya paginada, la devolvemos directamente

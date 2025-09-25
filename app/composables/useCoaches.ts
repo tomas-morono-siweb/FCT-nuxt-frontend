@@ -4,12 +4,22 @@ import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useCoaches = () => {
   const list = async (page = 1, pageSize = 10) => {
-    const response = await $fetch<PaginatedResponse<Coach>>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
+    const response = await $fetch<{ coaches: Coach[]; pagination: any }>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
       query: { page, pageSize },
     });
 
-    // La API devuelve la respuesta ya paginada, la devolvemos directamente
-    return response;
+    // Transformar la respuesta para que coincida con la interfaz esperada
+    return {
+      data: response.coaches,
+      pagination: {
+        currentPage: response.pagination.current_page,
+        pageSize: response.pagination.per_page,
+        totalItems: response.pagination.total_items,
+        totalPages: response.pagination.total_pages,
+        hasNextPage: response.pagination.has_next_page,
+        hasPreviousPage: response.pagination.has_prev_page,
+      },
+    } as PaginatedResponse<Coach>;
   };
 
   const get = (id: number) => $fetch<Coach>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.COACHES, id));
