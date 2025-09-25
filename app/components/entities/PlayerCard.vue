@@ -61,7 +61,7 @@ const handleDelete = () => {
       <span
         class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800"
       >
-        {{ player.id_club ?? "-" }}
+        {{ player.club ?? "-" }}
       </span>
     </td>
     <td class="px-6 py-4 text-right whitespace-nowrap">
@@ -115,10 +115,10 @@ const handleDelete = () => {
             </span>
           </div>
           <p
-            v-if="player.id_club"
+            v-if="player.club"
             class="mt-1 text-sm text-gray-500"
           >
-            Club: {{ player.id_club }}
+            Club: {{ player.club }}
           </p>
         </div>
       </div>

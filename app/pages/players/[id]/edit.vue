@@ -16,7 +16,7 @@ const form = reactive<Partial<Player>>({
   apellidos: "",
   dorsal: undefined,
   salario: undefined,
-  id_club: undefined,
+  club: undefined,
 });
 
 // Watch for player data changes to populate form
@@ -28,7 +28,7 @@ watch(
       form.apellidos = newPlayer.apellidos;
       form.dorsal = newPlayer.dorsal;
       form.salario = newPlayer.salario;
-      form.id_club = newPlayer.id_club;
+      form.club = newPlayer.club;
     }
   },
   { immediate: true }
@@ -202,12 +202,10 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.id_club"
+                v-model="form.club"
                 label="Club"
-                :options="clubs?.map((club) => ({ value: club.id, label: club.nombre })) || []"
-                :error="
-                  submitError && form.id_club && !clubs?.find((c) => c.id === form.id_club) ? 'Club no válido' : ''
-                "
+                :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
+                :error="submitError && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"
               />
             </div>
 

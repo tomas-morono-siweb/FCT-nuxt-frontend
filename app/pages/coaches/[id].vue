@@ -11,10 +11,10 @@ const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`,
 
 // Obtener información del club si el coach tiene uno asignado
 const { data: club } = await useAsyncData<Club | null>(
-  `club:${coach.value?.id_club}`,
+  `club:${coach.value?.club}`,
   async () => {
-    if (coach.value?.id_club) {
-      return await getClub(coach.value.id_club);
+    if (coach.value?.club) {
+      return await getClub(coach.value.club);
     }
     return null;
   },
@@ -43,10 +43,7 @@ const { data: club } = await useAsyncData<Club | null>(
         back-to="/coaches"
         :badges="
           coach
-            ? [
-                { text: coach.nacionalidad, color: 'green' as const },
-                ...(coach.salario ? [{ text: `€${coach.salario.toLocaleString()}`, color: 'gray' as const }] : []),
-              ]
+            ? [...(coach.salario ? [{ text: `€${coach.salario.toLocaleString()}`, color: 'gray' as const }] : [])]
             : []
         "
       >
@@ -85,7 +82,6 @@ const { data: club } = await useAsyncData<Club | null>(
                 { label: 'DNI', value: coach.dni },
                 { label: 'Nombre', value: coach.nombre },
                 { label: 'Apellidos', value: coach.apellidos },
-                { label: 'Nacionalidad', value: coach.nacionalidad },
                 { label: 'ID del Entrenador', value: coach.id },
               ]"
             />
@@ -99,7 +95,7 @@ const { data: club } = await useAsyncData<Club | null>(
             <UiInfoGrid
               :items="[
                 { label: 'Salario', value: coach.salario ? `${coach.salario.toLocaleString()}€` : 'No disponible' },
-                { label: 'Club Asignado', value: coach.id_club ? `Club ID: ${coach.id_club}` : 'Sin club asignado' },
+                { label: 'Club Asignado', value: coach.club ? `Club: ${coach.club}` : 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -116,8 +112,8 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-green-800">Total de Letras</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ coach.nacionalidad.length }}</div>
-              <div class="text-sm text-gray-800">Letras en Nacionalidad</div>
+              <div class="text-2xl font-bold text-gray-600">{{ coach.dni.length }}</div>
+              <div class="text-sm text-gray-800">Caracteres en DNI</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
               <div class="text-2xl font-bold text-green-600">{{ coach.salario.toLocaleString() }}€</div>
@@ -129,7 +125,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="coach.id_club?.toString()"
+          :club-id="coach.club?.toString()"
         />
       </div>
     </div>

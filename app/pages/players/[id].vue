@@ -11,10 +11,10 @@ const { data: player, pending, error } = await useAsyncData<Player>(`player:${id
 
 // Obtener información del club si el player tiene uno asignado
 const { data: club } = await useAsyncData<Club | null>(
-  `club:${player.value?.id_club}`,
+  `club:${player.value?.club}`,
   async () => {
-    if (player.value?.id_club) {
-      return await getClub(player.value.id_club);
+    if (player.value?.club) {
+      return await getClub(player.value.club);
     }
     return null;
   },
@@ -91,7 +91,7 @@ const { data: club } = await useAsyncData<Club | null>(
               :items="[
                 { label: 'Dorsal', value: player.dorsal ? `#${player.dorsal}` : 'Sin dorsal asignado' },
                 { label: 'Salario', value: player.salario ? `${player.salario.toLocaleString()}€` : 'No disponible' },
-                { label: 'Club', value: player.id_club ? `Club ID: ${player.id_club}` : 'Sin club asignado' },
+                { label: 'Club', value: player.club ? `Club: ${player.club}` : 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -121,7 +121,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="player.id_club"
+          :club-id="player.club"
         />
       </div>
     </div>

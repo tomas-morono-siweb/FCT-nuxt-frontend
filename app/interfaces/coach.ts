@@ -4,5 +4,5 @@ export interface Coach {
   nombre: string;
   apellidos: string;
   salario: number;
-  id_club?: string;
+  club: string;
 }

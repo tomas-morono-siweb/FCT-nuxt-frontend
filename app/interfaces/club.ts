@@ -1,8 +1,11 @@
 export interface Club {
-  id: string;
+  id: number;
+  id_club: string;
   nombre: string;
   fundacion: number;
   ciudad: string;
   estadio: string;
   presupuesto: number;
+  entrenador: string;
+  jugadores: string[];
 }

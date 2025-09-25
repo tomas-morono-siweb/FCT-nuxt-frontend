@@ -35,7 +35,7 @@ const columns = [
   { key: "nombre", label: "Jugador" },
   { key: "apellidos", label: "Apellidos" },
   { key: "dorsal", label: "Dorsal" },
-  { key: "id_club", label: "Club" },
+  { key: "club", label: "Club" },
 ];
 
 async function onDelete(id: number) {

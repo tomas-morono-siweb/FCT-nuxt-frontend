@@ -4,5 +4,6 @@ export interface Player {
   apellidos: string;
   dorsal: number;
   salario: number;
-  id_club?: string;
+  club: string;
+  entrenador: string;
 }
