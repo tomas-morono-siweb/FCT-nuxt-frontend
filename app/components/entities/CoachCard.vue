@@ -60,7 +60,7 @@ const handleDelete = () => {
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-        {{ coach.dni }}
+        {{ coach.salario ? `€${coach.salario.toLocaleString()}` : "-" }}
       </span>
     </td>
     <td class="px-8 py-6 whitespace-nowrap">

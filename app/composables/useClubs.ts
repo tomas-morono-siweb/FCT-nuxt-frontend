@@ -22,22 +22,22 @@ export const useClubs = () => {
     } as PaginatedResponse<Club>;
   };
 
-  const get = (id: string) => $fetch<Club>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id));
+  const get = (id: string) => $fetch<Club>(`/api/clubs/${id}`);
 
   const create = (payload: Partial<Club>) =>
-    $fetch<Club>(buildApiUrl(API_CONFIG.ENDPOINTS.CLUBS), {
+    $fetch<Club>('/api/clubs', {
       method: "POST",
       body: payload,
     });
 
   const update = (id: string, payload: Partial<Club>) =>
-    $fetch<Club>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id), {
+    $fetch<Club>(`/api/clubs/${id}`, {
       method: "PUT",
       body: payload,
     });
 
   const remove = (id: string) =>
-    $fetch(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id), {
+    $fetch(`/api/clubs/${id}`, {
       method: "DELETE",
     });
 

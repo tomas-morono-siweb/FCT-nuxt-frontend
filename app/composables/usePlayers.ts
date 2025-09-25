@@ -22,22 +22,22 @@ export const usePlayers = () => {
     } as PaginatedResponse<Player>;
   };
 
-  const get = (id: number) => $fetch<Player>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id));
+  const get = (id: number) => $fetch<Player>(`/api/players/${id}`);
 
   const create = (payload: Partial<Player>) =>
-    $fetch<Player>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
+    $fetch<Player>('/api/players', {
       method: "POST",
       body: payload,
     });
 
   const update = (id: number, payload: Partial<Player>) =>
-    $fetch<Player>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id), {
+    $fetch<Player>(`/api/players/${id}`, {
       method: "PUT",
       body: payload,
     });
 
   const remove = (id: number) =>
-    $fetch(buildApiUrlWithId(API_CONFIG.ENDPOINTS.PLAYERS, id), {
+    $fetch(`/api/players/${id}`, {
       method: "DELETE",
     });
 

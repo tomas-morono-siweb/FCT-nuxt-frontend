@@ -22,22 +22,22 @@ export const useCoaches = () => {
     } as PaginatedResponse<Coach>;
   };
 
-  const get = (id: number) => $fetch<Coach>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.COACHES, id));
+  const get = (id: number) => $fetch<Coach>(`/api/coaches/${id}`);
 
   const create = (payload: Partial<Coach>) =>
-    $fetch<Coach>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
+    $fetch<Coach>('/api/coaches', {
       method: "POST",
       body: payload,
     });
 
   const update = (id: number, payload: Partial<Coach>) =>
-    $fetch<Coach>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.COACHES, id), {
+    $fetch<Coach>(`/api/coaches/${id}`, {
       method: "PUT",
       body: payload,
     });
 
   const remove = (id: number) =>
-    $fetch(buildApiUrlWithId(API_CONFIG.ENDPOINTS.COACHES, id), {
+    $fetch(`/api/coaches/${id}`, {
       method: "DELETE",
     });
 
