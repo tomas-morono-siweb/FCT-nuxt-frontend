@@ -112,7 +112,7 @@ const handleDelete = () => {
       <div class="flex justify-end space-x-3">
         <NuxtLink
           :to="`/coaches/${coach.id}/edit`"
-          class="group/edit from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          class="group/edit from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
         >
           <svg
             class="mr-2 h-4 w-4"
