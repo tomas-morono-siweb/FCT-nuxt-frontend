@@ -20,32 +20,26 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
+  <div class="bg-white">
     <!-- Desktop Table View -->
     <div class="hidden lg:block">
       <div class="overflow-x-auto">
         <table class="min-w-full">
-          <thead class="from-secondary-50 to-secondary-50 bg-gradient-to-r via-white">
-            <tr>
+          <thead>
+            <tr class="border-b border-gray-100">
               <th
                 v-for="column in columns"
                 :key="column.key"
-                class="border-secondary-100/50 text-secondary-700 border-r px-8 py-6 text-left text-xs font-bold tracking-wider uppercase last:border-r-0"
+                class="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
               >
-                <div class="flex items-center space-x-2">
-                  <div class="bg-primary-500 h-2 w-2 rounded-full"></div>
-                  <span>{{ column.label }}</span>
-                </div>
+                {{ column.label }}
               </th>
-              <th class="text-secondary-700 px-8 py-6 text-right text-xs font-bold tracking-wider uppercase">
-                <div class="flex items-center justify-end space-x-2">
-                  <span>Acciones</span>
-                  <div class="h-2 w-2 rounded-full"></div>
-                </div>
+              <th class="px-6 py-4 text-right text-xs font-semibold tracking-wider text-gray-500 uppercase">
+                Acciones
               </th>
             </tr>
           </thead>
-          <tbody class="divide-secondary-100/30 divide-y bg-white">
+          <tbody class="divide-y divide-gray-50">
             <!-- Loading State -->
             <UiLoadingState
               v-if="loading"
@@ -86,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Mobile Cards -->
       <div
         v-else
-        class="space-y-3 p-4"
+        class="space-y-4 p-4"
       >
         <slot name="mobile" />
       </div>

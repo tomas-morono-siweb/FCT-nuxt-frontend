@@ -23,28 +23,29 @@ const handleDelete = () => {
   <!-- Desktop Table Row -->
   <tr
     v-if="variant === 'desktop'"
-    class="group hover:from-success-50/30 hover:shadow-success-500/10 transition-all duration-300 hover:bg-gradient-to-r hover:to-transparent hover:shadow-lg"
+    class="group transition-all duration-200 hover:bg-green-50/30"
   >
-    <td class="px-8 py-6 whitespace-nowrap">
-      <div class="flex items-center space-x-4">
-        <div class="relative">
-          <div
-            class="from-success-100 to-success-200 ring-success-100 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-md ring-2"
-          >
-            <span class="text-success-700 text-sm font-bold">
-              {{ coach.nombre.charAt(0) }}{{ coach.apellidos.charAt(0) }}
-            </span>
-          </div>
-          <div class="bg-success-500 absolute -right-1 -bottom-1 h-4 w-4 rounded-full ring-2 ring-white"></div>
+    <td class="px-6 py-4 whitespace-nowrap">
+      <div class="flex items-center space-x-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+          <span class="text-sm font-semibold text-green-700">
+            {{ coach.nombre.charAt(0) }}{{ coach.apellidos.charAt(0) }}
+          </span>
         </div>
         <div class="min-w-0 flex-1">
           <NuxtLink
             :to="`/coaches/${coach.id}`"
-            class="group-hover:text-success-600 text-secondary-800 hover:text-success-700 text-base font-bold transition-colors duration-300"
+            class="text-sm font-semibold text-gray-900 transition-colors duration-200 hover:text-green-600"
           >
             {{ coach.nombre }} {{ coach.apellidos }}
           </NuxtLink>
-          <p class="text-secondary-500 text-sm">Entrenador</p>
+          <div class="mt-1">
+            <span
+              class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
+            >
+              Entrenador
+            </span>
+          </div>
         </div>
       </div>
     </td>
@@ -57,53 +58,25 @@ const handleDelete = () => {
         </span>
       </div>
     </td>
-    <td class="px-8 py-6 whitespace-nowrap">
-      <div class="flex items-center space-x-2">
-        <span
-          class="from-success-100 to-success-200 text-success-800 ring-success-200 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-bold shadow-sm ring-1"
-        >
-          <svg
-            class="mr-2 h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
-            />
-          </svg>
-          {{ coach.nacionalidad }}
-        </span>
-      </div>
+    <td class="px-6 py-4 whitespace-nowrap">
+      <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+        {{ coach.dni }}
+      </span>
     </td>
     <td class="px-8 py-6 whitespace-nowrap">
       <div class="flex items-center space-x-2">
         <span
-          class="from-primary-100 to-primary-200 text-primary-800 ring-primary-200 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-bold shadow-sm ring-1"
+          class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
         >
-          <svg
-            class="mr-2 h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-            />
-          </svg>
           {{ coach.salario ? `€${coach.salario.toLocaleString()}` : "-" }}
         </span>
       </div>
     </td>
     <td class="px-8 py-6 whitespace-nowrap">
       <div class="flex items-center space-x-2">
-        <span class="bg-accent-100 text-accent-700 inline-flex items-center rounded-lg px-3 py-1 text-sm font-semibold">
+        <span
+          class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
+        >
           {{ coach.id_club ?? "-" }}
         </span>
       </div>
@@ -112,25 +85,12 @@ const handleDelete = () => {
       <div class="flex justify-end space-x-3">
         <NuxtLink
           :to="`/coaches/${coach.id}/edit`"
-          class="group/edit from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          class="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
         >
-          <svg
-            class="mr-2 h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
-          </svg>
           Editar
         </NuxtLink>
         <button
-          class="group/delete from-error-500 to-error-600 hover:from-error-600 hover:to-error-700 inline-flex items-center rounded-xl bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          class="inline-flex items-center rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-red-700"
           @click="handleDelete"
         >
           <svg
@@ -175,7 +135,7 @@ const handleDelete = () => {
           </NuxtLink>
           <div class="mt-1 flex flex-wrap gap-2">
             <span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-800">
-              {{ coach.nacionalidad }}
+              {{ coach.dni }}
             </span>
             <span
               v-if="coach.salario"
