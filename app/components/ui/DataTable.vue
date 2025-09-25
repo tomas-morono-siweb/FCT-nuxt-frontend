@@ -22,10 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div class="border-secondary-200 rounded-xl border bg-white shadow-lg">
     <!-- Desktop Table View -->
-    <div class="hidden lg:block">
-      <div class="overflow-x-auto">
+    <div class="hidden rounded-xl lg:block">
+      <div class="overflow-x-auto rounded-xl">
         <table class="divide-secondary-200 min-w-full divide-y">
-          <thead class="from-secondary-50 to-secondary-100 bg-gradient-to-r">
+          <thead class="from-secondary-50 to-secondary-100 rounded-t-xl bg-gradient-to-r">
             <tr>
               <th
                 v-for="column in columns"
@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
               </th>
             </tr>
           </thead>
-          <tbody class="divide-secondary-100 divide-y bg-white">
+          <tbody class="divide-secondary-100 divide-y rounded-b-xl bg-white">
             <!-- Loading State -->
             <UiLoadingState
               v-if="loading"
