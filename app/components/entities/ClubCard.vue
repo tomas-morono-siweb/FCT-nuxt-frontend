@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  delete: [id: string];
+  delete: [id: number];
 }>();
 
 const handleDelete = () => {
@@ -39,13 +39,6 @@ const handleDelete = () => {
           >
             {{ club.nombre }}
           </NuxtLink>
-          <div class="mt-1">
-            <span
-              class="inline-flex items-center rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-800"
-            >
-              Club
-            </span>
-          </div>
         </div>
       </div>
     </td>

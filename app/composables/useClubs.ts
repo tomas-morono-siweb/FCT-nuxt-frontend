@@ -22,7 +22,7 @@ export const useClubs = () => {
     } as PaginatedResponse<Club>;
   };
 
-  const get = (id: string) => $fetch<Club>(`/api/clubs/${id}`);
+  const get = (id: number) => $fetch<Club>(`/api/clubs/${id}`);
 
   const create = (payload: Partial<Club>) =>
     $fetch<Club>('/api/clubs', {
@@ -30,13 +30,13 @@ export const useClubs = () => {
       body: payload,
     });
 
-  const update = (id: string, payload: Partial<Club>) =>
+  const update = (id: number, payload: Partial<Club>) =>
     $fetch<Club>(`/api/clubs/${id}`, {
       method: "PUT",
       body: payload,
     });
 
-  const remove = (id: string) =>
+  const remove = (id: number) =>
     $fetch(`/api/clubs/${id}`, {
       method: "DELETE",
     });

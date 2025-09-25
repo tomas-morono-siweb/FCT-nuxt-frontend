@@ -39,11 +39,6 @@ const handleDelete = () => {
           >
             {{ player.nombre }} {{ player.apellidos }}
           </NuxtLink>
-          <div class="mt-1">
-            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
-              Jugador
-            </span>
-          </div>
         </div>
       </div>
     </td>

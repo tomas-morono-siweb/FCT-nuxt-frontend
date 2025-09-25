@@ -2,7 +2,7 @@
 import type { Club } from "~/interfaces/club";
 
 const route = useRoute();
-const id = route.params.id as string;
+const id = Number(route.params.id);
 const { get, update } = useClubs();
 
 // Load club data

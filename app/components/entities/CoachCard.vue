@@ -39,13 +39,6 @@ const handleDelete = () => {
           >
             {{ coach.nombre }} {{ coach.apellidos }}
           </NuxtLink>
-          <div class="mt-1">
-            <span
-              class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
-            >
-              Entrenador
-            </span>
-          </div>
         </div>
       </div>
     </td>
