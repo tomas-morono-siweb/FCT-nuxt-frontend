@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
 
-const q = ref("");
 const page = ref(1);
 const pageSize = 10;
 const { list, remove } = useClubs();
 const { withLoading } = useGlobalLoading();
 
-const key = computed(() => `clubs-${q.value}-${page.value}`);
+const key = computed(() => `clubs-${page.value}`);
 const { data, pending, error, refresh } = await useAsyncData(
   key,
-  () => withLoading(() => list(q.value, page.value, pageSize), "Cargando clubes..."),
+  () => withLoading(() => list(page.value, pageSize), "Cargando clubes..."),
   {
-    watch: [q, page],
+    watch: [page],
   }
 );
 
@@ -67,13 +66,6 @@ function onPageChange(newPage: number) {
         action-text="Nuevo Club"
         action-to="/clubs/new"
         action-icon="plus"
-      />
-
-      <!-- Search Section -->
-      <UiSearchSection
-        v-model="q"
-        label="Buscar club"
-        placeholder="Nombre del club..."
       />
 
       <!-- Clubs Section -->

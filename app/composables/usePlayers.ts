@@ -3,9 +3,9 @@ import type { PaginatedResponse } from "~/interfaces/pagination";
 import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const usePlayers = () => {
-  const list = (q?: string, page = 1, pageSize = 10) =>
+  const list = (nombre?: string, page = 1, pageSize = 10) =>
     $fetch<PaginatedResponse<Player>>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
-      query: { q, page, pageSize }
+      query: { nombre, page, pageSize }
     });
 
   const get = (id: number) =>

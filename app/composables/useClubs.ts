@@ -3,9 +3,9 @@ import type { PaginatedResponse } from "~/interfaces/pagination";
 import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useClubs = () => {
-  const list = (q?: string, page = 1, pageSize = 10) =>
+  const list = (page = 1, pageSize = 10) =>
     $fetch<PaginatedResponse<Club>>(buildApiUrl(API_CONFIG.ENDPOINTS.CLUBS), {
-      query: { q, page, pageSize }
+      query: { page, pageSize }
     });
 
   const get = (id: string) =>

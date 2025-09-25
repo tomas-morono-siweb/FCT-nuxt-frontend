@@ -1,75 +1,38 @@
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { q, page = 1, pageSize = 10 } = query;
+  const { nombre, page = 1, pageSize = 10 } = query;
 
-  // Mock data for now - replace with actual database calls
-  const mockPlayers = [
-    {
-      id: 1,
-      nombre: "Lionel",
-      apellidos: "Messi",
-      dorsal: 10,
-      salario: 50000000,
-      id_club: "2",
-    },
-    {
-      id: 2,
-      nombre: "Cristiano",
-      apellidos: "Ronaldo",
-      dorsal: 7,
-      salario: 45000000,
-      id_club: "1",
-    },
-    {
-      id: 3,
-      nombre: "Neymar",
-      apellidos: "Jr",
-      dorsal: 11,
-      salario: 40000000,
-      id_club: "3",
-    },
-    {
-      id: 4,
-      nombre: "Kylian",
-      apellidos: "Mbappé",
-      dorsal: 7,
-      salario: 35000000,
-      id_club: "1",
-    },
-    {
-      id: 5,
-      nombre: "Antoine",
-      apellidos: "Griezmann",
-      dorsal: 9,
-      salario: 30000000,
-      id_club: "2",
-    },
-  ];
+  try {
+    // Llamada real a la API de tu compañero - el backend maneja toda la paginación y filtrado
+    const apiUrl = `http://127.0.0.1:8000/players?${new URLSearchParams({
+      nombre: (nombre && typeof nombre === 'string') ? nombre : '',
+      page: page?.toString() || '1',
+      pageSize: pageSize?.toString() || '10'
+    }).toString()}`;
 
-  // Simple filtering by query
-  let filteredPlayers = mockPlayers;
-  if (q && typeof q === "string") {
-    filteredPlayers = mockPlayers.filter(
-      (player) =>
-        player.nombre.toLowerCase().includes(q.toLowerCase()) || player.apellidos.toLowerCase().includes(q.toLowerCase())
-    );
+    const response = await $fetch(apiUrl, {
+      timeout: 5000, // 5 segundos de timeout
+      retry: false
+    });
+
+    // El backend devuelve la respuesta ya paginada y filtrada, la devolvemos directamente
+    return response;
+  } catch (error: any) {
+    console.error('Error fetching players from API:', error);
+
+    // Devolver respuesta vacía con mensaje de error
+    return {
+      data: [],
+      pagination: {
+        currentPage: Number(page),
+        pageSize: Number(pageSize),
+        totalItems: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+      message: "No hay datos de jugadores",
+      error: error.message || "Error de conexión con la API"
+    };
   }
-
-  // Simple pagination
-  const startIndex = (Number(page) - 1) * Number(pageSize);
-  const endIndex = startIndex + Number(pageSize);
-  const paginatedPlayers = filteredPlayers.slice(startIndex, endIndex);
-
-  // Return paginated data with metadata
-  return {
-    data: paginatedPlayers,
-    pagination: {
-      currentPage: Number(page),
-      pageSize: Number(pageSize),
-      totalItems: filteredPlayers.length,
-      totalPages: Math.ceil(filteredPlayers.length / Number(pageSize)),
-      hasNextPage: endIndex < filteredPlayers.length,
-      hasPreviousPage: startIndex > 0,
-    },
-  };
 });

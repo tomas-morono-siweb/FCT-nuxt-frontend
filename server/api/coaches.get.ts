@@ -1,59 +1,37 @@
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { q, page = 1, pageSize = 10 } = query;
+  const { page = 1, pageSize = 10 } = query;
 
-  // Mock data for now - replace with actual database calls
-  const mockCoaches = [
-    {
-      id: 1,
-      nombre: "Carlo",
-      apellidos: "Ancelotti",
-      nacionalidad: "Italiana",
-      salario: 12000000,
-      id_club: "1",
-    },
-    {
-      id: 2,
-      nombre: "Xavi",
-      apellidos: "Hernández",
-      nacionalidad: "Española",
-      salario: 8000000,
-      id_club: "2",
-    },
-    {
-      id: 3,
-      nombre: "Diego",
-      apellidos: "Simeone",
-      nacionalidad: "Argentina",
-      salario: 10000000,
-      id_club: "3",
-    },
-  ];
+  try {
+    // Llamada real a la API de tu compañero - el backend maneja toda la paginación
+    const apiUrl = `http://127.0.0.1:8000/coaches?${new URLSearchParams({
+      page: page?.toString() || '1',
+      pageSize: pageSize?.toString() || '10'
+    }).toString()}`;
 
-  // Simple filtering by query
-  let filteredCoaches = mockCoaches;
-  if (q && typeof q === "string") {
-    filteredCoaches = mockCoaches.filter(
-      (coach) =>
-        coach.nombre.toLowerCase().includes(q.toLowerCase()) || coach.apellidos.toLowerCase().includes(q.toLowerCase())
-    );
+    const response = await $fetch(apiUrl, {
+      timeout: 5000, // 5 segundos de timeout
+      retry: false
+    });
+
+    // El backend devuelve la respuesta ya paginada, la devolvemos directamente
+    return response;
+  } catch (error: any) {
+    console.error('Error fetching coaches from API:', error);
+
+    // Devolver respuesta vacía con mensaje de error
+    return {
+      data: [],
+      pagination: {
+        currentPage: Number(page),
+        pageSize: Number(pageSize),
+        totalItems: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+      message: "No hay datos de entrenadores",
+      error: error.message || "Error de conexión con la API"
+    };
   }
-
-  // Simple pagination
-  const startIndex = (Number(page) - 1) * Number(pageSize);
-  const endIndex = startIndex + Number(pageSize);
-  const paginatedCoaches = filteredCoaches.slice(startIndex, endIndex);
-
-  // Return paginated data with metadata
-  return {
-    data: paginatedCoaches,
-    pagination: {
-      currentPage: Number(page),
-      pageSize: Number(pageSize),
-      totalItems: filteredCoaches.length,
-      totalPages: Math.ceil(filteredCoaches.length / Number(pageSize)),
-      hasNextPage: endIndex < filteredCoaches.length,
-      hasPreviousPage: startIndex > 0,
-    },
-  };
 });

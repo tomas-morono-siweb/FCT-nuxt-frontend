@@ -2,18 +2,18 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
 
-const q = ref("");
+const nombre = ref("");
 const page = ref(1);
 const pageSize = 10;
 const { list, remove } = usePlayers();
 const { withLoading } = useGlobalLoading();
 
-const key = computed(() => `players-${q.value}-${page.value}`);
+const key = computed(() => `players-${nombre.value}-${page.value}`);
 const { data, pending, error, refresh } = await useAsyncData(
   key,
-  () => withLoading(() => list(q.value, page.value, pageSize), "Cargando jugadores..."),
+  () => withLoading(() => list(nombre.value, page.value, pageSize), "Cargando jugadores..."),
   {
-    watch: [q, page],
+    watch: [nombre, page],
   }
 );
 
@@ -72,9 +72,9 @@ function onPageChange(newPage: number) {
 
       <!-- Search Section -->
       <UiSearchSection
-        v-model="q"
+        v-model="nombre"
         label="Buscar jugador"
-        placeholder="Nombre o apellido del jugador..."
+        placeholder="Nombre del jugador..."
       />
 
       <!-- Players Section -->

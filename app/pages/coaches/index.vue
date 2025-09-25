@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
 
-const q = ref("");
 const page = ref(1);
 const pageSize = 10;
 const { list, remove } = useCoaches();
 const { withLoading } = useGlobalLoading();
 
-const key = computed(() => `coaches-${q.value}-${page.value}`);
+const key = computed(() => `coaches-${page.value}`);
 const { data, pending, error, refresh } = await useAsyncData(
   key,
-  () => withLoading(() => list(q.value, page.value, pageSize), "Cargando entrenadores..."),
+  () => withLoading(() => list(page.value, pageSize), "Cargando entrenadores..."),
   {
-    watch: [q, page],
+    watch: [page],
   }
 );
 
@@ -68,13 +67,6 @@ function onPageChange(newPage: number) {
         action-text="Nuevo Entrenador"
         action-to="/coaches/new"
         action-icon="plus"
-      />
-
-      <!-- Search Section -->
-      <UiSearchSection
-        v-model="q"
-        label="Buscar entrenador"
-        placeholder="Nombre o apellido del entrenador..."
       />
 
       <!-- Coaches Section -->
