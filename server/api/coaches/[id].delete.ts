@@ -1,8 +1,25 @@
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
-  // Mock implementation - replace with actual database delete
-  // In a real implementation, you would delete the coach from the database
+  try {
+    // Llamada real a la API de tu compañero
+    const apiUrl = `http://127.0.0.1:8000/coaches/${id}`;
+    await $fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Origin': 'http://localhost:8000'
+      }
+    });
 
-  return { success: true, message: `Coach ${id} deleted successfully` };
+    return { success: true, message: `Entrenador ${id} eliminado exitosamente` };
+  } catch (error) {
+    console.error('Error deleting coach from API:', error);
+
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Error al eliminar el entrenador",
+    });
+  }
 });

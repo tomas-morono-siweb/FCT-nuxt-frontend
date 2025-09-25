@@ -15,7 +15,6 @@ const form = reactive<Partial<Coach>>({
   dni: "",
   nombre: "",
   apellidos: "",
-  nacionalidad: "",
   salario: undefined,
   id_club: undefined,
 });
@@ -28,7 +27,6 @@ watch(
       form.dni = newCoach.dni;
       form.nombre = newCoach.nombre;
       form.apellidos = newCoach.apellidos;
-      form.nacionalidad = newCoach.nacionalidad;
       form.salario = newCoach.salario;
       form.id_club = newCoach.id_club;
     }
@@ -41,7 +39,8 @@ const loading = ref(false);
 const submitError = ref("");
 
 // Load clubs for selection
-const { data: clubs } = await useAsyncData<Club[]>("clubs", () => listClubs());
+const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
+const clubs = computed(() => clubsResponse.value?.data || []);
 
 // Validation
 const validateForm = () => {
@@ -59,11 +58,6 @@ const validateForm = () => {
 
   if (!form.apellidos?.trim()) {
     submitError.value = "Los apellidos son obligatorios";
-    return false;
-  }
-
-  if (!form.nacionalidad?.trim()) {
-    submitError.value = "La nacionalidad es obligatoria";
     return false;
   }
 
@@ -190,15 +184,6 @@ const handleSubmit = async () => {
                 :error="submitError && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
               />
 
-              <!-- Nacionalidad -->
-              <UiFormField
-                v-model="form.nacionalidad"
-                label="Nacionalidad"
-                placeholder="Nacionalidad del entrenador"
-                required
-                :error="submitError && !form.nacionalidad?.trim() ? 'La nacionalidad es obligatoria' : ''"
-              />
-
               <!-- Salario -->
               <UiFormField
                 v-model="form.salario"
@@ -212,7 +197,7 @@ const handleSubmit = async () => {
               <UiFormField
                 v-model="form.id_club"
                 label="Club"
-                :options="clubsResponse?.data?.map((club) => ({ value: club.id, label: club.nombre })) || []"
+                :options="clubs?.map((club) => ({ value: club.id, label: club.nombre })) || []"
                 :error="
                   submitError && form.id_club && !clubs?.find((c) => c.id === form.id_club) ? 'Club no válido' : ''
                 "

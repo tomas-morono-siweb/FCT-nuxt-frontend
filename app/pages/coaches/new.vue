@@ -10,7 +10,6 @@ const form = reactive<Partial<Coach>>({
   dni: "",
   nombre: "",
   apellidos: "",
-  nacionalidad: "",
   salario: undefined,
   id_club: undefined,
 });
@@ -39,11 +38,6 @@ const validateForm = () => {
 
   if (!form.apellidos?.trim()) {
     error.value = "Los apellidos son obligatorios";
-    return false;
-  }
-
-  if (!form.nacionalidad?.trim()) {
-    error.value = "La nacionalidad es obligatoria";
     return false;
   }
 
@@ -156,15 +150,6 @@ const handleSubmit = async () => {
                 placeholder="Apellidos del entrenador"
                 required
                 :error="error && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
-              />
-
-              <!-- Nacionalidad -->
-              <UiFormField
-                v-model="form.nacionalidad"
-                label="Nacionalidad"
-                placeholder="Nacionalidad del entrenador"
-                required
-                :error="error && !form.nacionalidad?.trim() ? 'La nacionalidad es obligatoria' : ''"
               />
 
               <!-- Salario -->
