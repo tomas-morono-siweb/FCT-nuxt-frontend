@@ -20,17 +20,17 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="border-secondary-200 rounded-xl border bg-white shadow-lg">
+  <div class="rounded-xl bg-white shadow-lg">
     <!-- Desktop Table View -->
     <div class="hidden rounded-xl lg:block">
       <div class="overflow-x-auto rounded-xl">
-        <table class="divide-secondary-200 min-w-full divide-y">
-          <thead class="from-secondary-50 to-secondary-100 rounded-t-xl bg-gradient-to-r">
+        <table class="divide-secondary-100 min-w-full divide-y border-none">
+          <thead class="from-secondary-50 to-secondary-100 border-secondary-50 rounded-t-xl border-b">
             <tr>
               <th
                 v-for="column in columns"
                 :key="column.key"
-                class="text-secondary-700 px-6 py-4 text-left text-xs font-semibold tracking-wider uppercase"
+                class="text-secondary-700 border-secondary-50 border-r px-6 py-4 text-left text-xs font-semibold tracking-wider uppercase last:border-r-0"
               >
                 {{ column.label }}
               </th>
@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
               </th>
             </tr>
           </thead>
-          <tbody class="divide-secondary-100 divide-y rounded-b-xl bg-white">
+          <tbody class="divide-secondary-50 divide-y rounded-b-xl bg-white">
             <!-- Loading State -->
             <UiLoadingState
               v-if="loading"
@@ -80,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Mobile Cards -->
       <div
         v-else
-        class="divide-secondary-200 divide-y"
+        class="divide-secondary-50 divide-y"
       >
         <slot name="mobile" />
       </div>

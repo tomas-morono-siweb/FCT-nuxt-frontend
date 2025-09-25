@@ -23,7 +23,7 @@ const handleDelete = () => {
   <!-- Desktop Table Row -->
   <tr
     v-if="variant === 'desktop'"
-    class="transition-colors duration-150 hover:bg-gray-50"
+    class="hover:bg-secondary-50 transition-all duration-200 hover:shadow-sm"
   >
     <td class="px-6 py-4 whitespace-nowrap">
       <div class="flex items-center">
@@ -37,7 +37,7 @@ const handleDelete = () => {
         <div class="ml-4">
           <NuxtLink
             :to="`/clubs/${club.id}`"
-            class="text-sm font-medium text-gray-900 transition-colors duration-150 hover:text-blue-600"
+            class="text-secondary-800 hover:text-primary-600 text-sm font-semibold transition-colors duration-200"
           >
             {{ club.nombre }}
           </NuxtLink>
@@ -45,7 +45,7 @@ const handleDelete = () => {
       </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
-      <span class="inline-flex rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-orange-800">
+      <span class="bg-accent-100 text-accent-800 inline-flex rounded-full px-3 py-1 text-xs font-semibold shadow-sm">
         {{ club.ciudad }}
       </span>
     </td>
@@ -57,12 +57,12 @@ const handleDelete = () => {
       <div class="flex justify-end gap-2">
         <NuxtLink
           :to="`/clubs/${club.id}/edit`"
-          class="text-blue-600 transition-colors duration-150 hover:text-blue-900"
+          class="bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 rounded-md px-3 py-1 text-xs font-medium transition-all duration-200"
         >
           Editar
         </NuxtLink>
         <button
-          class="text-red-600 transition-colors duration-150 hover:text-red-900"
+          class="bg-error-50 text-error-700 hover:bg-error-100 hover:text-error-800 rounded-md px-3 py-1 text-xs font-medium transition-all duration-200"
           @click="handleDelete"
         >
           Borrar
@@ -74,7 +74,7 @@ const handleDelete = () => {
   <!-- Mobile Card -->
   <div
     v-else
-    class="p-6 transition-colors duration-150 hover:bg-gray-50"
+    class="border-secondary-200 mx-4 mb-4 rounded-xl border bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
   >
     <div class="flex items-start justify-between">
       <div class="flex items-center space-x-3">
