@@ -4,32 +4,12 @@ import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useClubs = () => {
   const list = async (page = 1, pageSize = 10) => {
-    const response = await $fetch<{ clubs: Club[] }>(buildApiUrl(API_CONFIG.ENDPOINTS.CLUBS), {
+    const response = await $fetch<PaginatedResponse<Club>>(buildApiUrl(API_CONFIG.ENDPOINTS.CLUBS), {
       query: { page, pageSize },
     });
 
-    // La API de clubs no devuelve paginación, solo un array
-    // Simulamos la paginación en el frontend si es necesario
-    let filteredClubs = response.clubs;
-
-    // Sin filtrado - la API maneja todo
-
-    // Paginación manual
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedClubs = filteredClubs.slice(startIndex, endIndex);
-
-    return {
-      data: paginatedClubs,
-      pagination: {
-        currentPage: page,
-        pageSize: pageSize,
-        totalItems: filteredClubs.length,
-        totalPages: Math.ceil(filteredClubs.length / pageSize),
-        hasNextPage: endIndex < filteredClubs.length,
-        hasPreviousPage: startIndex > 0,
-      },
-    } as PaginatedResponse<Club>;
+    // La API devuelve la respuesta ya paginada, la devolvemos directamente
+    return response;
   };
 
   const get = (id: string) => $fetch<Club>(buildApiUrlWithId(API_CONFIG.ENDPOINTS.CLUBS, id));

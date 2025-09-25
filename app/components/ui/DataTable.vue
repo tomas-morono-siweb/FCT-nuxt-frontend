@@ -20,26 +20,32 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="rounded-xl bg-white shadow-lg">
+  <div class="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
     <!-- Desktop Table View -->
-    <div class="hidden rounded-xl lg:block">
-      <div class="overflow-x-auto rounded-xl">
-        <table class="divide-secondary-100 min-w-full divide-y border-none">
-          <thead class="from-secondary-50 to-secondary-100 border-secondary-50 rounded-t-xl border-b">
+    <div class="hidden lg:block">
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="from-secondary-50 to-secondary-50 bg-gradient-to-r via-white">
             <tr>
               <th
                 v-for="column in columns"
                 :key="column.key"
-                class="text-secondary-700 border-secondary-50 border-r px-6 py-4 text-left text-xs font-semibold tracking-wider uppercase last:border-r-0"
+                class="border-secondary-100/50 text-secondary-700 border-r px-8 py-6 text-left text-xs font-bold tracking-wider uppercase last:border-r-0"
               >
-                {{ column.label }}
+                <div class="flex items-center space-x-2">
+                  <div class="bg-primary-500 h-2 w-2 rounded-full"></div>
+                  <span>{{ column.label }}</span>
+                </div>
               </th>
-              <th class="text-secondary-700 px-6 py-4 text-right text-xs font-semibold tracking-wider uppercase">
-                Acciones
+              <th class="text-secondary-700 px-8 py-6 text-right text-xs font-bold tracking-wider uppercase">
+                <div class="flex items-center justify-end space-x-2">
+                  <span>Acciones</span>
+                  <div class="bg-accent-500 h-2 w-2 rounded-full"></div>
+                </div>
               </th>
             </tr>
           </thead>
-          <tbody class="divide-secondary-50 divide-y rounded-b-xl bg-white">
+          <tbody class="divide-secondary-100/30 divide-y bg-white">
             <!-- Loading State -->
             <UiLoadingState
               v-if="loading"
@@ -80,7 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Mobile Cards -->
       <div
         v-else
-        class="divide-secondary-50 divide-y"
+        class="space-y-3 p-4"
       >
         <slot name="mobile" />
       </div>
