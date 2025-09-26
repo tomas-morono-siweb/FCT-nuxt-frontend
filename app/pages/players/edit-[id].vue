@@ -131,6 +131,12 @@ const handleSubmit = async () => {
       <UiBreadcrumb
         color="blue"
         class="mb-4"
+        :items="[
+          { label: 'Inicio', to: '/', icon: 'home' },
+          { label: 'Jugadores', to: '/players', icon: 'users' },
+          { label: 'Editar', to: '', icon: 'edit' },
+          { label: player ? `${player.nombre} ${player.apellidos}` : 'Jugador', to: '', icon: 'user' },
+        ]"
       />
 
       <!-- Header Section -->

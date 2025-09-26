@@ -81,6 +81,10 @@ function onPageChange(newPage: number) {
       <UiBreadcrumb
         color="blue"
         class="mb-4"
+        :items="[
+          { label: 'Inicio', to: '/', icon: 'home' },
+          { label: 'Jugadores', to: '', icon: 'users' },
+        ]"
       />
 
       <!-- Header Section -->
