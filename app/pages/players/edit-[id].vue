@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
 import type { Club } from "~/interfaces/club";
+import { formatMillions, parseMillions } from "~/utils/format";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -61,6 +62,16 @@ const selectedClubId = computed({
     form.club = clubName;
     const club = clubs.value.find((c) => c.nombre === clubName);
     form.id_club = club ? club.id_club : undefined;
+  },
+});
+
+// Computed para manejar el salario formateado
+const formattedSalary = computed({
+  get: () => {
+    return form.salario ? formatMillions(form.salario) : "";
+  },
+  set: (value: string) => {
+    form.salario = parseMillions(value);
   },
 });
 
@@ -209,10 +220,9 @@ const handleSubmit = async () => {
 
               <!-- Salario -->
               <UiFormField
-                v-model="form.salario"
-                label="Salario (€)"
-                type="number"
-                placeholder="Salario anual en euros"
+                v-model="formattedSalary"
+                label="Salario (Millones €)"
+                placeholder="Ej: 50M €"
                 :error="submitError && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
               />
 

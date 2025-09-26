@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
+import { formatMillions, parseMillions } from "~/utils/format";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -41,6 +42,16 @@ watch(
 // Loading states
 const loading = ref(false);
 const submitError = ref("");
+
+// Computed para manejar el presupuesto formateado
+const formattedBudget = computed({
+  get: () => {
+    return form.presupuesto ? formatMillions(form.presupuesto) : "";
+  },
+  set: (value: string) => {
+    form.presupuesto = parseMillions(value);
+  },
+});
 
 // Validation
 const validateForm = () => {
@@ -180,10 +191,9 @@ const handleSubmit = async () => {
 
               <!-- Presupuesto -->
               <UiFormField
-                v-model="form.presupuesto"
-                label="Presupuesto (€)"
-                type="number"
-                placeholder="Presupuesto anual en euros"
+                v-model="formattedBudget"
+                label="Presupuesto (Millones €)"
+                placeholder="Ej: 500M €"
                 :error="
                   submitError && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''
                 "

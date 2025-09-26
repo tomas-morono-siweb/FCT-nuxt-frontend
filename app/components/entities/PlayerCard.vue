@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
+import { formatMillions } from "~/utils/format";
 
 interface Props {
   player: Player;
@@ -44,7 +45,7 @@ const handleDelete = () => {
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-        {{ player.salario ? `${player.salario.toLocaleString()}€` : "Sin salario" }}
+        {{ player.salario ? formatMillions(player.salario) : "Sin salario" }}
       </span>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
@@ -100,7 +101,7 @@ const handleDelete = () => {
           </NuxtLink>
           <div class="mt-1 flex flex-wrap gap-2">
             <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
-              {{ player.salario ? `${player.salario.toLocaleString()}€` : "Sin salario" }}
+              {{ player.salario ? formatMillions(player.salario) : "Sin salario" }}
             </span>
             <span
               v-if="player.dorsal"

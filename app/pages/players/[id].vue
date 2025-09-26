@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
 import type { Club } from "~/interfaces/club";
+import { formatMillions } from "~/utils/format";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -97,7 +98,7 @@ const { data: club } = await useAsyncData<Club | null>(
             <UiInfoGrid
               :items="[
                 { label: 'Dorsal', value: player.dorsal ? `#${player.dorsal}` : 'Sin dorsal asignado' },
-                { label: 'Salario', value: player.salario ? `${player.salario.toLocaleString()}€` : 'No disponible' },
+                { label: 'Salario', value: player.salario ? formatMillions(player.salario) : 'No disponible' },
                 { label: 'Club', value: player.club ? `Club: ${player.club}` : 'Sin club asignado' },
               ]"
             />

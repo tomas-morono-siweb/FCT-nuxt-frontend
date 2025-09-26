@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
+import { formatMillions } from "~/utils/format";
 
 interface Props {
   coach: Coach;
@@ -53,7 +54,7 @@ const handleDelete = () => {
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-        {{ coach.salario ? `€${coach.salario.toLocaleString()}` : "-" }}
+        {{ coach.salario ? formatMillions(coach.salario) : "-" }}
       </span>
     </td>
     <td class="px-8 py-6 whitespace-nowrap">
@@ -112,7 +113,7 @@ const handleDelete = () => {
               v-if="coach.salario"
               class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800"
             >
-              €{{ coach.salario.toLocaleString() }}
+              {{ formatMillions(coach.salario) }}
             </span>
           </div>
           <p

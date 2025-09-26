@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
+import { formatMillions } from "~/utils/format";
 
 interface Props {
   club: Club;
