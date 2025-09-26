@@ -1,6 +1,6 @@
 # ⚽ Football Club Management System
 
-A modern, responsive football club management application built with Nuxt.js 3, featuring full CRUD operations for players, coaches, and clubs.
+A modern, responsive football club management application built with Nuxt.js 4, featuring full CRUD operations for players, coaches, and clubs.
 
 ## 🚀 Quick Start
 
@@ -64,11 +64,12 @@ pnpm type-check   # Run TypeScript checks
 
 ## 🏗️ Tech Stack
 
-- **Framework**: Nuxt.js 3
+- **Framework**: Nuxt.js 4.1.2
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS 4.1.13
 - **Package Manager**: pnpm
 - **API**: REST API integration with Symfony backend
+- **State Management**: Custom composables (no Pinia)
 - **Icons**: Custom SVG icons
 - **Formatting**: Custom utilities for financial data
 
@@ -159,6 +160,24 @@ FCT-nuxt-frontend/
 - **useCoaches**: Coach data management and API calls
 - **useClubs**: Club data management and API calls
 - **useGlobalLoading**: Global loading state management
+
+## 🔄 State Management
+
+The application uses **custom composables** instead of Pinia for state management:
+
+### Global Loading State
+
+- **Counter-based**: Tracks multiple concurrent operations
+- **Message system**: Custom loading messages for each operation
+- **Automatic cleanup**: Stops loading when all operations complete
+- **withLoading wrapper**: Simplifies async operation handling
+
+### Data State
+
+- **useAsyncData**: Nuxt's built-in data fetching with caching
+- **Reactive refs**: Vue 3 Composition API for local state
+- **Cache invalidation**: Automatic cache clearing after mutations
+- **Error handling**: Comprehensive error states and recovery
 
 ## 💰 Data Formatting
 
