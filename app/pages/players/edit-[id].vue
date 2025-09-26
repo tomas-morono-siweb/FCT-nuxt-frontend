@@ -80,7 +80,14 @@ const handleSubmit = async () => {
 
     // Invalidar el cache de datos para forzar la recarga
     await clearNuxtData(`player:${id}`);
-    await clearNuxtData(`club:${form.club}`);
+
+    // Invalidar cache del club si cambió
+    if (form.club) {
+      const selectedClub = clubs.value.find((c) => c.nombre === form.club);
+      if (selectedClub) {
+        await clearNuxtData(`club:${selectedClub.id}`);
+      }
+    }
 
     await navigateTo(`/players/${id}`);
   } catch (err: any) {
