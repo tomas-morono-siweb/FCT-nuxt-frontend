@@ -10,6 +10,10 @@ const { list: listClubs } = useClubs();
 // Load coach data
 const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`, () => get(id));
 
+console.log("ID del entrenador a editar:", id);
+console.log("Estado de carga:", { pending: pending.value, error: error.value });
+console.log("Datos del entrenador:", coach.value);
+
 // Form data - initialize with coach data
 const form = reactive<Partial<Coach>>({
   dni: "",

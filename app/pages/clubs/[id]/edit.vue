@@ -8,6 +8,10 @@ const { get, update } = useClubs();
 // Load club data
 const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, () => get(id));
 
+console.log("ID del club a editar:", id);
+console.log("Estado de carga:", { pending: pending.value, error: error.value });
+console.log("Datos del club:", club.value);
+
 // Form data - initialize with club data
 const form = reactive<Partial<Club>>({
   nombre: "",

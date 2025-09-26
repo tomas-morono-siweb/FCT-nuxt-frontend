@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
       }
     });
 
+    console.log('Respuesta de la API externa para entrenadores:', response);
     // El backend devuelve la respuesta ya paginada, la devolvemos directamente
     return response;
   } catch (error: any) {

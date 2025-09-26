@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
       }
     });
 
+    console.log('Respuesta de la API externa para jugadores:', response);
     // El backend devuelve la respuesta ya paginada y filtrada, la devolvemos directamente
     return response;
   } catch (error: any) {

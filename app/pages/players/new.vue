@@ -54,6 +54,7 @@ const handleSubmit = async () => {
   error.value = "";
 
   try {
+    console.log("Enviando datos del jugador:", form);
     await create(form);
     await navigateTo("/players");
   } catch (err: any) {

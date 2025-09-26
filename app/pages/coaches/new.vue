@@ -57,6 +57,7 @@ const handleSubmit = async () => {
   error.value = "";
 
   try {
+    console.log("Enviando datos del entrenador:", form);
     await create(form);
     await navigateTo("/coaches");
   } catch (err: any) {
