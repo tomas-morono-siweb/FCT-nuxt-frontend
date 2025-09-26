@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import type { Player } from "~/interfaces/player";
+import type { Coach } from "~/interfaces/coach";
 import type { Club } from "~/interfaces/club";
 
 const route = useRoute();
 const id = Number(route.params.id);
-const { get, update } = usePlayers();
+const { get, update } = useCoaches();
 const { list: listClubs } = useClubs();
 
-// Load player data
-const { data: player, pending, error } = await useAsyncData<Player>(`player:${id}`, () => get(id));
+// Load coach data
+const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`, () => get(id));
 
-console.log("ID del jugador a editar:", id);
+console.log("ID del entrenador a editar:", id);
 console.log("Estado de carga:", { pending: pending.value, error: error.value });
-console.log("Datos del jugador:", player.value);
+console.log("Datos del entrenador:", coach.value);
 
-// Form data - initialize with player data
-const form = reactive<Partial<Player>>({
+// Form data - initialize with coach data
+const form = reactive<Partial<Coach>>({
+  dni: "",
   nombre: "",
   apellidos: "",
-  dorsal: undefined,
   salario: undefined,
   club: undefined,
 });
 
-// Watch for player data changes to populate form
+// Watch for coach data changes to populate form
 watch(
-  player,
-  (newPlayer) => {
-    if (newPlayer) {
-      form.nombre = newPlayer.nombre;
-      form.apellidos = newPlayer.apellidos;
-      form.dorsal = newPlayer.dorsal;
-      form.salario = newPlayer.salario;
-      form.club = newPlayer.club;
+  coach,
+  (newCoach) => {
+    if (newCoach) {
+      form.dni = newCoach.dni;
+      form.nombre = newCoach.nombre;
+      form.apellidos = newCoach.apellidos;
+      form.salario = newCoach.salario;
+      form.club = newCoach.club;
     }
   },
   { immediate: true }
@@ -50,6 +50,11 @@ const clubs = computed(() => clubsResponse.value?.data || []);
 const validateForm = () => {
   submitError.value = "";
 
+  if (!form.dni?.trim()) {
+    submitError.value = "El DNI es obligatorio";
+    return false;
+  }
+
   if (!form.nombre?.trim()) {
     submitError.value = "El nombre es obligatorio";
     return false;
@@ -57,11 +62,6 @@ const validateForm = () => {
 
   if (!form.apellidos?.trim()) {
     submitError.value = "Los apellidos son obligatorios";
-    return false;
-  }
-
-  if (form.dorsal && (form.dorsal < 1 || form.dorsal > 99)) {
-    submitError.value = "El dorsal debe estar entre 1 y 99";
     return false;
   }
 
@@ -77,9 +77,9 @@ const handleSubmit = async () => {
 
   try {
     await update(id, form);
-    await navigateTo(`/players/${id}`);
+    await navigateTo(`/coaches/${id}`);
   } catch (err: any) {
-    submitError.value = err.data?.message || "Error al actualizar el jugador";
+    submitError.value = err.data?.message || "Error al actualizar el entrenador";
   } finally {
     loading.value = false;
   }
@@ -91,24 +91,24 @@ const handleSubmit = async () => {
     <div class="mx-auto max-w-3xl">
       <!-- Breadcrumb -->
       <UiBreadcrumb
-        color="blue"
+        color="green"
         class="mb-4"
       />
 
       <!-- Header Section -->
       <UiPageHeader
-        title="Editar Jugador"
+        title="Editar Entrenador"
         :description="
-          player ? `Editando información de ${player.nombre} ${player.apellidos}` : 'Editando información del jugador'
+          coach ? `Editando información de ${coach.nombre} ${coach.apellidos}` : 'Editando información del entrenador'
         "
-        back-to="/players"
+        back-to="/coaches"
       />
 
       <!-- Loading State -->
       <UiLoadingState
         v-if="pending"
-        message="Cargando información del jugador..."
-        color="blue"
+        message="Cargando información del entrenador..."
+        color="green"
       />
 
       <!-- Error State -->
@@ -119,13 +119,13 @@ const handleSubmit = async () => {
 
       <!-- Form Section -->
       <div
-        v-else-if="player"
+        v-else-if="coach"
         class="mt-8"
       >
         <div class="rounded-lg bg-white shadow-sm">
           <div class="border-b border-gray-200 px-6 py-4">
-            <h3 class="text-lg font-medium text-gray-900">Información del Jugador</h3>
-            <p class="mt-1 text-sm text-gray-500">Modifica los datos del jugador</p>
+            <h3 class="text-lg font-medium text-gray-900">Información del Entrenador</h3>
+            <p class="mt-1 text-sm text-gray-500">Modifica los datos del entrenador</p>
           </div>
 
           <form
@@ -162,11 +162,20 @@ const handleSubmit = async () => {
 
             <!-- Form Fields -->
             <div class="grid gap-6 sm:grid-cols-2">
+              <!-- DNI -->
+              <UiFormField
+                v-model="form.dni"
+                label="DNI"
+                placeholder="DNI del entrenador"
+                required
+                :error="submitError && !form.dni?.trim() ? 'El DNI es obligatorio' : ''"
+              />
+
               <!-- Nombre -->
               <UiFormField
                 v-model="form.nombre"
                 label="Nombre"
-                placeholder="Nombre del jugador"
+                placeholder="Nombre del entrenador"
                 required
                 :error="submitError && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
               />
@@ -175,7 +184,7 @@ const handleSubmit = async () => {
               <UiFormField
                 v-model="form.apellidos"
                 label="Apellidos"
-                placeholder="Apellidos del jugador"
+                placeholder="Apellidos del entrenador"
                 required
                 :error="submitError && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
               />
@@ -187,19 +196,6 @@ const handleSubmit = async () => {
                 type="number"
                 placeholder="Salario anual en euros"
                 :error="submitError && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
-              />
-
-              <!-- Dorsal -->
-              <UiFormField
-                v-model="form.dorsal"
-                label="Dorsal"
-                type="number"
-                placeholder="Número de dorsal (1-99)"
-                :error="
-                  submitError && form.dorsal && (form.dorsal < 1 || form.dorsal > 99)
-                    ? 'El dorsal debe estar entre 1 y 99'
-                    : ''
-                "
               />
 
               <!-- Club -->
@@ -216,7 +212,7 @@ const handleSubmit = async () => {
               :loading="loading"
               submit-text="Guardar Cambios"
               cancel-text="Cancelar"
-              :cancel-to="`/players/${id}`"
+              :cancel-to="`/coaches/${id}`"
               @submit="handleSubmit"
             />
           </form>

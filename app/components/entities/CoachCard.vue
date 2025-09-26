@@ -68,7 +68,7 @@ const handleDelete = () => {
     <td class="px-8 py-6 text-right whitespace-nowrap">
       <div class="flex justify-end space-x-3">
         <NuxtLink
-          :to="`/coaches/${coach.id}/edit`"
+          :to="`/coaches/edit-${coach.id}`"
           class="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
         >
           Editar
@@ -77,19 +77,6 @@ const handleDelete = () => {
           class="inline-flex items-center rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-red-700"
           @click="handleDelete"
         >
-          <svg
-            class="mr-2 h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
           Borrar
         </button>
       </div>
@@ -138,8 +125,8 @@ const handleDelete = () => {
       </div>
       <div class="flex flex-col gap-2">
         <NuxtLink
-          :to="`/coaches/${coach.id}/edit`"
-          class="text-sm font-medium text-blue-600 transition-colors duration-150 hover:text-blue-900"
+          :to="`/coaches/edit-${coach.id}`"
+          class="text-sm font-medium text-green-600 transition-colors duration-150 hover:text-green-900"
         >
           Editar
         </NuxtLink>
