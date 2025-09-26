@@ -16,12 +16,13 @@ export default defineEventHandler(async (event) => {
     });
 
     return updatedCoach;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating coach from API:', error);
 
     throw createError({
       statusCode: 500,
       statusMessage: "Error al actualizar el entrenador",
+      data: { message: error.message || "Error de conexión con la API" }
     });
   }
 });

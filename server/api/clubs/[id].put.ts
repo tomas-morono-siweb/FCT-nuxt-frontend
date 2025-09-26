@@ -16,12 +16,13 @@ export default defineEventHandler(async (event) => {
     });
 
     return updatedClub;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating club from API:', error);
 
     throw createError({
       statusCode: 500,
       statusMessage: "Error al actualizar el club",
+      data: { message: error.message || "Error de conexión con la API" }
     });
   }
 });
