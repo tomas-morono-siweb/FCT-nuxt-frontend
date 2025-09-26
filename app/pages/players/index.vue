@@ -3,17 +3,34 @@
 import type { Player } from "~/interfaces/player";
 
 const nombre = ref("");
+const debouncedNombre = ref("");
 const page = ref(1);
 const pageSize = 10;
 const { list, remove } = usePlayers();
 const { withLoading } = useGlobalLoading();
 
-const key = computed(() => `players-${nombre.value}-${page.value}`);
+// Debounce manual para la búsqueda
+let timeoutId: number | null = null;
+watch(
+  nombre,
+  (newValue) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      debouncedNombre.value = newValue;
+    }, 500); // Debounce de 500ms
+  },
+  { immediate: true }
+);
+
+const key = computed(() => `players-${debouncedNombre.value}-${page.value}`);
 const { data, pending, error, refresh } = await useAsyncData(
   key,
-  () => withLoading(() => list(nombre.value, page.value, pageSize), "Cargando jugadores..."),
+  () => withLoading(() => list(debouncedNombre.value, page.value, pageSize), "Cargando jugadores..."),
   {
-    watch: [nombre, page],
+    watch: [debouncedNombre, page],
   }
 );
 

@@ -4,7 +4,7 @@ import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useClubs = () => {
   const list = async (page = 1, pageSize = 10) => {
-    const response = await $fetch<{ clubs: Club[]; pagination: any }>(buildApiUrl(API_CONFIG.ENDPOINTS.CLUBS), {
+    const response = await $fetch<{ clubs: Club[]; pagination: any }>('/api/clubs', {
       query: { page, pageSize },
     });
 

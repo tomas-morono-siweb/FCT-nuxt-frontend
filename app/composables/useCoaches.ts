@@ -4,7 +4,7 @@ import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useCoaches = () => {
   const list = async (page = 1, pageSize = 10) => {
-    const response = await $fetch<{ coaches: Coach[]; pagination: any }>(buildApiUrl(API_CONFIG.ENDPOINTS.COACHES), {
+    const response = await $fetch<{ coaches: Coach[]; pagination: any }>('/api/coaches', {
       query: { page, pageSize },
     });
 

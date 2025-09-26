@@ -62,7 +62,7 @@ const handleDelete = () => {
     <td class="px-6 py-4 text-right whitespace-nowrap">
       <div class="flex justify-end space-x-2">
         <NuxtLink
-          :to="`/players/${player.id}/edit`"
+          :to="`/players/edit-${player.id}`"
           class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-blue-700"
         >
           Editar
@@ -119,7 +119,7 @@ const handleDelete = () => {
       </div>
       <div class="flex flex-col gap-2">
         <NuxtLink
-          :to="`/players/${player.id}/edit`"
+          :to="`/players/edit-${player.id}`"
           class="text-sm font-medium text-blue-600 transition-colors duration-150 hover:text-blue-900"
         >
           Editar

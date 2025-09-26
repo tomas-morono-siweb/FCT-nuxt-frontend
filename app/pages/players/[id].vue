@@ -46,7 +46,7 @@ const { data: club } = await useAsyncData<Club | null>(
         description="Información completa del jugador seleccionado"
         :avatar-text="player ? `${player.nombre.charAt(0)}${player.apellidos.charAt(0)}` : 'J'"
         avatar-color="blue"
-        :edit-to="`/players/${player?.id}/edit`"
+        :edit-to="`/players/edit-${player?.id}`"
         back-to="/players"
         :badges="player ? [...(player.dorsal ? [{ text: `${player.dorsal}`, color: 'gray' as const }] : [])] : []"
       >

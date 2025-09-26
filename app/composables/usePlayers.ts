@@ -4,7 +4,7 @@ import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const usePlayers = () => {
   const list = async (nombre?: string, page = 1, pageSize = 10) => {
-    const response = await $fetch<{ players: Player[]; pagination: any }>(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
+    const response = await $fetch<{ players: Player[]; pagination: any }>('/api/players', {
       query: { nombre, page, pageSize },
     });
 
