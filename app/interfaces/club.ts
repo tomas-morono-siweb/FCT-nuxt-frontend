@@ -6,6 +6,4 @@ export interface Club {
   ciudad: string;
   estadio: string;
   presupuesto: number;
-  entrenador: string;
-  jugadores: string[];
 }

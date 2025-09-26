@@ -12,6 +12,7 @@ const form = reactive<Partial<Player>>({
   dorsal: undefined,
   salario: undefined,
   club: undefined,
+  id_club: undefined,
 });
 
 // Loading states
@@ -21,6 +22,22 @@ const error = ref("");
 // Load clubs for selection
 const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
 const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para manejar la selección del club
+const selectedClubId = computed({
+  get: () => {
+    if (form.id_club) {
+      const club = clubs.value.find((c) => c.id_club === form.id_club);
+      return club ? club.nombre : "";
+    }
+    return form.club || "";
+  },
+  set: (clubName: string) => {
+    form.club = clubName;
+    const club = clubs.value.find((c) => c.nombre === clubName);
+    form.id_club = club ? club.id_club : undefined;
+  },
+});
 
 // No position options needed - API doesn't include position
 
@@ -165,7 +182,7 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.club"
+                v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
                 :error="error && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"

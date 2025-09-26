@@ -6,4 +6,5 @@ export interface Player {
   salario: number;
   club: string;
   entrenador: string;
+  id_club: string;
 }

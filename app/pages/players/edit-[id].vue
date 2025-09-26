@@ -21,6 +21,7 @@ const form = reactive<Partial<Player>>({
   dorsal: undefined,
   salario: undefined,
   club: undefined,
+  id_club: undefined,
 });
 
 // Watch for player data changes to populate form
@@ -33,6 +34,7 @@ watch(
       form.dorsal = newPlayer.dorsal;
       form.salario = newPlayer.salario;
       form.club = newPlayer.club;
+      form.id_club = newPlayer.id_club;
     }
   },
   { immediate: true }
@@ -45,6 +47,22 @@ const submitError = ref("");
 // Load clubs for selection
 const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
 const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para manejar la selección del club
+const selectedClubId = computed({
+  get: () => {
+    if (form.id_club) {
+      const club = clubs.value.find((c) => c.id_club === form.id_club);
+      return club ? club.nombre : "";
+    }
+    return form.club || "";
+  },
+  set: (clubName: string) => {
+    form.club = clubName;
+    const club = clubs.value.find((c) => c.nombre === clubName);
+    form.id_club = club ? club.id_club : undefined;
+  },
+});
 
 // Validation
 const validateForm = () => {
@@ -82,11 +100,8 @@ const handleSubmit = async () => {
     await clearNuxtData(`player:${id}`);
 
     // Invalidar cache del club si cambió
-    if (form.club) {
-      const selectedClub = clubs.value.find((c) => c.nombre === form.club);
-      if (selectedClub) {
-        await clearNuxtData(`club:${selectedClub.id}`);
-      }
+    if (form.id_club) {
+      await clearNuxtData(`club:${form.id_club}`);
     }
 
     await navigateTo(`/players/${id}`);
@@ -216,7 +231,7 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.club"
+                v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
                 :error="submitError && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"

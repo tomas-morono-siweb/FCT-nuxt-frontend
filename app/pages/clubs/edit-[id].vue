@@ -16,9 +16,10 @@ console.log("Datos del club:", club.value);
 const form = reactive<Partial<Club>>({
   id_club: "",
   nombre: "",
+  fundacion: undefined,
+  ciudad: "",
+  estadio: "",
   presupuesto: undefined,
-  entrenador: "",
-  jugadores: [],
 });
 
 // Watch for club data changes to populate form
@@ -28,9 +29,10 @@ watch(
     if (newClub) {
       form.id_club = newClub.id_club;
       form.nombre = newClub.nombre;
+      form.fundacion = newClub.fundacion;
+      form.ciudad = newClub.ciudad;
+      form.estadio = newClub.estadio;
       form.presupuesto = newClub.presupuesto;
-      form.entrenador = newClub.entrenador;
-      form.jugadores = newClub.jugadores;
     }
   },
   { immediate: true }
@@ -185,13 +187,6 @@ const handleSubmit = async () => {
                 :error="
                   submitError && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''
                 "
-              />
-
-              <!-- Entrenador -->
-              <UiFormField
-                v-model="form.entrenador"
-                label="Entrenador"
-                placeholder="Nombre del entrenador principal"
               />
             </div>
 
