@@ -59,6 +59,11 @@ async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este jugador?")) return;
   await withLoading(async () => {
     await remove(id);
+
+    // Invalidar cache específico del jugador eliminado
+    await clearNuxtData(`player:${id}`);
+
+    // Refrescar la lista
     await refresh();
   }, "Eliminando jugador...");
 }

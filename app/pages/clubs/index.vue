@@ -40,6 +40,11 @@ async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este club?")) return;
   await withLoading(async () => {
     await remove(id);
+
+    // Invalidar cache específico del club eliminado
+    await clearNuxtData(`club:${id}`);
+
+    // Refrescar la lista
     await refresh();
   }, "Eliminando club...");
 }

@@ -77,6 +77,11 @@ const handleSubmit = async () => {
 
   try {
     await update(id, form);
+
+    // Invalidar el cache de datos para forzar la recarga
+    await clearNuxtData(`player:${id}`);
+    await clearNuxtData(`club:${form.club}`);
+
     await navigateTo(`/players/${id}`);
   } catch (err: any) {
     submitError.value = err.data?.message || "Error al actualizar el jugador";

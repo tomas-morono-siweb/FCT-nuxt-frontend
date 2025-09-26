@@ -40,6 +40,11 @@ async function onDelete(id: number) {
   if (!confirm("¿Seguro que deseas borrar este entrenador?")) return;
   await withLoading(async () => {
     await remove(id);
+
+    // Invalidar cache específico del entrenador eliminado
+    await clearNuxtData(`coach:${id}`);
+
+    // Refrescar la lista
     await refresh();
   }, "Eliminando entrenador...");
 }
