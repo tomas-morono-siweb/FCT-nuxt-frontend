@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
       }
     };
 
-    console.log('✅ Devolviendo datos mock:', mockResponse);
+    console.log('✅ Devolviendo datos mock');
     console.log('=== FIN players.get.ts ===');
     return mockResponse;
   }
