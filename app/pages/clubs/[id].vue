@@ -14,6 +14,11 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
       <UiBreadcrumb
         color="orange"
         class="mb-4"
+        :items="[
+          { label: 'Inicio', to: '/', icon: 'home' },
+          { label: 'Clubes', to: '/clubs', icon: 'building' },
+          { label: club?.nombre || 'Club', icon: 'building' },
+        ]"
       />
 
       <!-- Header Section -->

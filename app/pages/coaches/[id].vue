@@ -14,7 +14,9 @@ const { data: club } = await useAsyncData<Club | null>(
   `club:${coach.value?.club}`,
   async () => {
     if (coach.value?.club) {
-      return await getClub(coach.value.club);
+      // Buscar el club por nombre en lugar de por ID
+      const clubs = await useClubs().list();
+      return clubs.data.find((c) => c.nombre === coach.value?.club) || null;
     }
     return null;
   },
@@ -31,6 +33,11 @@ const { data: club } = await useAsyncData<Club | null>(
       <UiBreadcrumb
         color="green"
         class="mb-4"
+        :items="[
+          { label: 'Inicio', to: '/', icon: 'home' },
+          { label: 'Entrenadores', to: '/coaches', icon: 'clipboard' },
+          { label: coach ? `${coach.nombre} ${coach.apellidos}` : 'Entrenador', icon: 'user' },
+        ]"
       />
 
       <!-- Header Section -->
