@@ -1,6 +1,5 @@
 import type { Player } from "~/interfaces/player";
 import type { PaginatedResponse } from "~/interfaces/pagination";
-import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const usePlayers = () => {
   const list = async (nombre?: string, page = 1, pageSize = 10) => {

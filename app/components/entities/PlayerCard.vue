@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
-import type { Club } from "~/interfaces/club";
 import { formatMillions } from "~/utils/format";
 
 interface Props {
@@ -19,40 +18,6 @@ const emit = defineEmits<{
 const handleDelete = () => {
   emit("delete", props.player.id);
 };
-
-// Obtener información del club con cache compartido
-const {
-  data: clubsResponse,
-  pending: clubsPending,
-  error: clubsError,
-} = await useAsyncData("clubs-shared", () => useClubs().list());
-const clubs = computed(() => clubsResponse.value?.data || []);
-
-// Computed para obtener el nombre del club
-const clubName = computed(() => {
-  if (!props.player.id_club) return null;
-
-  // Debug logs
-  console.log("PlayerCard Debug:", {
-    playerId: props.player.id,
-    playerIdClub: props.player.id_club,
-    clubsLoading: clubsPending.value,
-    clubsError: clubsError.value,
-    clubsCount: clubs.value.length,
-    clubsData: clubs.value,
-  });
-
-  // Si los clubs están cargando o hay error, mostrar el código como fallback
-  if (clubsPending.value || clubsError.value) {
-    console.log("Using fallback for player", props.player.id, "club:", props.player.id_club);
-    return props.player.id_club;
-  }
-
-  const club = clubs.value.find((c) => c.id_club === props.player.id_club);
-  const result = club ? club.nombre : props.player.id_club;
-  console.log("Club found for player", props.player.id, ":", club?.nombre || "not found");
-  return result;
-});
 </script>
 
 <template>
@@ -92,7 +57,7 @@ const clubName = computed(() => {
       <span
         class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800"
       >
-        {{ clubName ?? "-" }}
+        {{ player.club ?? "-" }}
       </span>
     </td>
     <td class="px-6 py-4 text-right whitespace-nowrap">
@@ -146,10 +111,10 @@ const clubName = computed(() => {
             </span>
           </div>
           <p
-            v-if="clubName"
+            v-if="player.club"
             class="mt-1 text-sm text-gray-500"
           >
-            Club: {{ clubName }}
+            Club: {{ player.club }}
           </p>
         </div>
       </div>
