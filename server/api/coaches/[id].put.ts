@@ -3,7 +3,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    // Llamada real a la API de tu compañero
     const apiUrl = `http://127.0.0.1:8000/coaches/${id}`;
     const updatedCoach = await $fetch(apiUrl, {
       method: "PUT",
