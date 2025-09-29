@@ -11,10 +11,6 @@ const { list: listClubs } = useClubs();
 // Load coach data
 const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`, () => get(id));
 
-console.log("ID del entrenador a editar:", id);
-console.log("Estado de carga:", { pending: pending.value, error: error.value });
-console.log("Datos del entrenador:", coach.value);
-
 // Form data - initialize with coach data
 const form = reactive<Partial<Coach>>({
   dni: "",
@@ -102,12 +98,6 @@ const handleSubmit = async () => {
   submitError.value = "";
 
   try {
-    console.log("=== ENVIANDO DATOS DEL ENTRENADOR ===");
-    console.log("Form data:", JSON.stringify(form, null, 2));
-    console.log("Form keys:", Object.keys(form));
-    console.log("id_club value:", form.id_club);
-    console.log("club field exists:", "club" in form);
-
     await update(id, form);
 
     // Invalidar el cache de datos para forzar la recarga

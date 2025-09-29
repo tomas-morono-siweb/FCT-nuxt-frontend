@@ -2,9 +2,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const { nombre, page = 1, pageSize = 10 } = query;
 
-  console.log('=== INICIO players.get.ts ===');
-  console.log('Query params:', { nombre, page, pageSize });
-
   try {
     // Llamada real a la API de tu compañero - el backend maneja toda la paginación y filtrado
     const apiUrl = `http://127.0.0.1:8000/players?${new URLSearchParams({
@@ -75,7 +72,6 @@ export default defineEventHandler(async (event) => {
     };
 
     console.log('✅ Devolviendo datos mock');
-    console.log('=== FIN players.get.ts ===');
     return mockResponse;
   }
 });

@@ -2,17 +2,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const { page = 1, pageSize = 10 } = query;
 
-  console.log('=== INICIO coaches.get.ts ===');
-  console.log('Query params:', { page, pageSize });
-
   try {
     // Llamada real a la API de tu compañero - el backend maneja toda la paginación
     const apiUrl = `http://127.0.0.1:8000/coaches?${new URLSearchParams({
       page: page?.toString() || '1',
       pageSize: pageSize?.toString() || '10'
     }).toString()}`;
-
-    console.log('Intentando conectar con API externa:', apiUrl);
 
     const response = await $fetch(apiUrl, {
       headers: {
@@ -22,12 +17,9 @@ export default defineEventHandler(async (event) => {
       }
     });
 
-    console.log('✅ Respuesta de la API externa para entrenadores:', response);
-    // El backend devuelve la respuesta ya paginada, la devolvemos directamente
     return response;
   } catch (error: any) {
-    console.error('❌ Error fetching coaches from API:', error);
-    console.log('🔄 Usando datos mock para entrenadores');
+    console.log('✅ Devolviendo datos mock');
 
     // Datos mock para testing local
     const mockCoaches = [
@@ -65,7 +57,6 @@ export default defineEventHandler(async (event) => {
     };
 
     console.log('✅ Devolviendo datos mock');
-    console.log('=== FIN coaches.get.ts ===');
     return mockResponse;
   }
 });
