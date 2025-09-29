@@ -22,11 +22,11 @@ export default defineEventHandler(async (event) => {
 
     // Datos mock para jugador individual
     const mockPlayers = [
-      { id: 1, nombre: "Lionel", apellidos: "Messi", dorsal: 10, salario: 50000000, id_club: "FCB001" },
-      { id: 2, nombre: "Cristiano", apellidos: "Ronaldo", dorsal: 7, salario: 45000000, id_club: "RMA002" },
-      { id: 3, nombre: "Kylian", apellidos: "Mbappé", dorsal: 7, salario: 40000000, id_club: "PSG003" },
-      { id: 4, nombre: "Erling", apellidos: "Haaland", dorsal: 9, salario: 35000000, id_club: "MCI004" },
-      { id: 5, nombre: "Kevin", apellidos: "De Bruyne", dorsal: 17, salario: 30000000, id_club: "MCI004" }
+      { id: 1, nombre: "Lionel", apellidos: "Messi", dorsal: 10, salario: 50000000, id_club: "FCB" },
+      { id: 2, nombre: "Cristiano", apellidos: "Ronaldo", dorsal: 7, salario: 45000000, id_club: "RMA" },
+      { id: 3, nombre: "Kylian", apellidos: "Mbappé", dorsal: 7, salario: 40000000, id_club: "PSG" },
+      { id: 4, nombre: "Erling", apellidos: "Haaland", dorsal: 9, salario: 35000000, id_club: "MCI" },
+      { id: 5, nombre: "Kevin", apellidos: "De Bruyne", dorsal: 17, salario: 30000000, id_club: "MCI" }
     ];
 
     const player = mockPlayers.find(p => p.id === Number(id));
