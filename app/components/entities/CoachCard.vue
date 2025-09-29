@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
+import type { Club } from "~/interfaces/club";
 import { formatMillions } from "~/utils/format";
 
 interface Props {
@@ -18,6 +19,17 @@ const emit = defineEmits<{
 const handleDelete = () => {
   emit("delete", props.coach.id);
 };
+
+// Obtener información del club
+const { data: clubsResponse } = await useAsyncData("clubs", () => useClubs().list());
+const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para obtener el nombre del club
+const clubName = computed(() => {
+  if (!props.coach.id_club) return null;
+  const club = clubs.value.find((c) => c.id_club === props.coach.id_club);
+  return club ? club.nombre : props.coach.id_club;
+});
 </script>
 
 <template>
@@ -43,7 +55,7 @@ const handleDelete = () => {
         </div>
       </div>
     </td>
-    <td class="px-8 py-6 whitespace-nowrap">
+    <td class="px-6 py-4 whitespace-nowrap">
       <div class="flex items-center space-x-2">
         <span
           class="bg-secondary-100 text-secondary-700 inline-flex items-center rounded-lg px-3 py-1 text-sm font-semibold"
@@ -57,17 +69,17 @@ const handleDelete = () => {
         {{ coach.salario ? formatMillions(coach.salario) : "-" }}
       </span>
     </td>
-    <td class="px-8 py-6 whitespace-nowrap">
+    <td class="px-6 py-4 whitespace-nowrap">
       <div class="flex items-center space-x-2">
         <span
           class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
         >
-          {{ coach.club ?? "-" }}
+          {{ clubName ?? "-" }}
         </span>
       </div>
     </td>
-    <td class="px-8 py-6 text-right whitespace-nowrap">
-      <div class="flex justify-end space-x-3">
+    <td class="px-6 py-4 text-right whitespace-nowrap">
+      <div class="flex justify-end space-x-2">
         <NuxtLink
           :to="`/coaches/edit-${coach.id}`"
           class="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
@@ -117,10 +129,10 @@ const handleDelete = () => {
             </span>
           </div>
           <p
-            v-if="coach.club"
+            v-if="clubName"
             class="mt-1 text-sm text-gray-500"
           >
-            Club: {{ coach.club }}
+            Club: {{ clubName }}
           </p>
         </div>
       </div>

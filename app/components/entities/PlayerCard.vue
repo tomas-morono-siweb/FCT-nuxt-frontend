@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
+import type { Club } from "~/interfaces/club";
 import { formatMillions } from "~/utils/format";
 
 interface Props {
@@ -18,6 +19,17 @@ const emit = defineEmits<{
 const handleDelete = () => {
   emit("delete", props.player.id);
 };
+
+// Obtener información del club
+const { data: clubsResponse } = await useAsyncData("clubs", () => useClubs().list());
+const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para obtener el nombre del club
+const clubName = computed(() => {
+  if (!props.player.id_club) return null;
+  const club = clubs.value.find((c) => c.id_club === props.player.id_club);
+  return club ? club.nombre : props.player.id_club;
+});
 </script>
 
 <template>
@@ -57,7 +69,7 @@ const handleDelete = () => {
       <span
         class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800"
       >
-        {{ player.club ?? "-" }}
+        {{ clubName ?? "-" }}
       </span>
     </td>
     <td class="px-6 py-4 text-right whitespace-nowrap">
@@ -111,10 +123,10 @@ const handleDelete = () => {
             </span>
           </div>
           <p
-            v-if="player.club"
+            v-if="clubName"
             class="mt-1 text-sm text-gray-500"
           >
-            Club: {{ player.club }}
+            Club: {{ clubName }}
           </p>
         </div>
       </div>

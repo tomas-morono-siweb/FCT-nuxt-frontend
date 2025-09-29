@@ -50,7 +50,7 @@ const pagination = computed(
 
 const columns = [
   { key: "nombre", label: "Jugador" },
-  { key: "apellidos", label: "Apellidos" },
+  { key: "salario", label: "Salario" },
   { key: "dorsal", label: "Dorsal" },
   { key: "club", label: "Club" },
 ];
