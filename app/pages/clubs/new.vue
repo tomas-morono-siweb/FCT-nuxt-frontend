@@ -12,7 +12,6 @@ const form = reactive<Partial<Club>>({
   estadio: "",
   fundacion: new Date().getFullYear(), // Current year as default
   presupuesto: undefined,
-  presupuesto_disponible: undefined,
 });
 
 // Loading states
@@ -26,16 +25,6 @@ const formattedBudget = computed({
   },
   set: (value: string) => {
     form.presupuesto = parseMillions(value);
-  },
-});
-
-// Computed para manejar el presupuesto disponible formateado
-const formattedAvailableBudget = computed({
-  get: () => {
-    return form.presupuesto_disponible ? formatMillions(form.presupuesto_disponible) : "";
-  },
-  set: (value: string) => {
-    form.presupuesto_disponible = parseMillions(value);
   },
 });
 
@@ -70,11 +59,6 @@ const validateForm = () => {
 
   if (form.presupuesto && form.presupuesto < 0) {
     error.value = "El presupuesto no puede ser negativo";
-    return false;
-  }
-
-  if (form.presupuesto_disponible && form.presupuesto_disponible < 0) {
-    error.value = "El presupuesto disponible no puede ser negativo";
     return false;
   }
 
@@ -218,18 +202,6 @@ const handleSubmit = async () => {
                 label="Presupuesto Total (Millones €)"
                 placeholder="Ej: 500M €"
                 :error="error && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''"
-              />
-
-              <!-- Presupuesto Disponible -->
-              <UiFormField
-                v-model="formattedAvailableBudget"
-                label="Presupuesto Disponible (Millones €)"
-                placeholder="Ej: 300M €"
-                :error="
-                  error && form.presupuesto_disponible && form.presupuesto_disponible < 0
-                    ? 'El presupuesto disponible no puede ser negativo'
-                    : ''
-                "
               />
             </div>
 

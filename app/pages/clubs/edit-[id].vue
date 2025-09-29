@@ -21,7 +21,6 @@ const form = reactive<Partial<Club>>({
   ciudad: "",
   estadio: "",
   presupuesto: undefined,
-  presupuesto_disponible: undefined,
 });
 
 // Watch for club data changes to populate form
@@ -35,7 +34,6 @@ watch(
       form.ciudad = newClub.ciudad;
       form.estadio = newClub.estadio;
       form.presupuesto = newClub.presupuesto;
-      form.presupuesto_disponible = newClub.presupuesto_disponible;
     }
   },
   { immediate: true }
@@ -55,16 +53,6 @@ const formattedBudget = computed({
   },
 });
 
-// Computed para manejar el presupuesto disponible formateado
-const formattedAvailableBudget = computed({
-  get: () => {
-    return form.presupuesto_disponible ? formatMillions(form.presupuesto_disponible) : "";
-  },
-  set: (value: string) => {
-    form.presupuesto_disponible = parseMillions(value);
-  },
-});
-
 // Validation
 const validateForm = () => {
   submitError.value = "";
@@ -81,11 +69,6 @@ const validateForm = () => {
 
   if (form.presupuesto && form.presupuesto < 0) {
     submitError.value = "El presupuesto no puede ser negativo";
-    return false;
-  }
-
-  if (form.presupuesto_disponible && form.presupuesto_disponible < 0) {
-    submitError.value = "El presupuesto disponible no puede ser negativo";
     return false;
   }
 
@@ -219,18 +202,6 @@ const handleSubmit = async () => {
                 placeholder="Ej: 500M €"
                 :error="
                   submitError && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''
-                "
-              />
-
-              <!-- Presupuesto Disponible -->
-              <UiFormField
-                v-model="formattedAvailableBudget"
-                label="Presupuesto Disponible (Millones €)"
-                placeholder="Ej: 300M €"
-                :error="
-                  submitError && form.presupuesto_disponible && form.presupuesto_disponible < 0
-                    ? 'El presupuesto disponible no puede ser negativo'
-                    : ''
                 "
               />
             </div>
