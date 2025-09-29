@@ -57,7 +57,7 @@ const handleDelete = () => {
       <span
         class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800"
       >
-        {{ player.club ?? "-" }}
+        {{ player.club }}
       </span>
     </td>
     <td class="px-6 py-4 text-right whitespace-nowrap">
