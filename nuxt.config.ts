@@ -23,9 +23,9 @@ export default defineNuxtConfig({
   ],
   modules: ["@nuxt/eslint"],
   runtimeConfig: {
-    apiSecret: "abc123.",
+    apiSecret: "process.env.API_KEY",
     public: {
-      apiBase: "http://localhost:8000",
+      apiBase: "process.env.API_BASE_URL",
     },
   },
 });

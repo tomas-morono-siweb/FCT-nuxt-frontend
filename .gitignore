@@ -1,17 +1,13 @@
 # Nuxt dev/build outputs
-.output
-.data
-.nuxt
 .nitro
 .cache
+
+# Generated dirs
 dist
-
-# Node dependencies
-node_modules
-
-# Logs
-logs
-*.log
+.nuxt
+.nuxt-*
+.output
+.gen
 
 # Misc
 .DS_Store
@@ -21,4 +17,45 @@ logs
 # Local env files
 .env
 .env.*
-!.env.example
+
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+# Node dependencies
+node_modules
+
+# System files
+*.log
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history
+.ionide
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### Vuejs ###
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
