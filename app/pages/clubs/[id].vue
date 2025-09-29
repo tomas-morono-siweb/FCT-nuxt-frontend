@@ -63,6 +63,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
           >
             <UiInfoGrid
               :items="[
+                { label: 'Código del Club', value: club.id_club },
                 { label: 'Nombre del Club', value: club.nombre },
                 { label: 'Ciudad', value: club.ciudad },
                 { label: 'Estadio', value: club.estadio },
@@ -79,10 +80,14 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
             <UiInfoGrid
               :items="[
                 {
-                  label: 'Presupuesto',
+                  label: 'Presupuesto Total',
                   value: club.presupuesto ? formatMillions(club.presupuesto) : 'No disponible',
                 },
-                { label: 'ID del Club', value: club.id },
+                {
+                  label: 'Presupuesto Disponible',
+                  value: club.presupuesto_disponible ? formatMillions(club.presupuesto_disponible) : 'No disponible',
+                },
+                { label: 'Código del Club', value: club.id_club },
               ]"
             />
           </UiDataCard>
@@ -96,17 +101,17 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div class="rounded-lg bg-orange-50 p-4 text-center">
               <div class="text-2xl font-bold text-orange-600">
-                {{ new Date().getFullYear() - new Date(club.fundacion).getFullYear() }}
+                {{ new Date().getFullYear() - club.fundacion }}
               </div>
               <div class="text-sm text-orange-800">Años de Historia</div>
             </div>
-            <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ club.ciudad.length }}</div>
-              <div class="text-sm text-gray-800">Letras en Ciudad</div>
-            </div>
             <div class="rounded-lg bg-orange-50 p-4 text-center">
               <div class="text-2xl font-bold text-orange-600">{{ formatMillions(club.presupuesto) }}</div>
-              <div class="text-sm text-orange-800">Presupuesto anual</div>
+              <div class="text-sm text-orange-800">Presupuesto Total</div>
+            </div>
+            <div class="rounded-lg bg-green-50 p-4 text-center">
+              <div class="text-2xl font-bold text-green-600">{{ formatMillions(club.presupuesto_disponible) }}</div>
+              <div class="text-sm text-green-800">Presupuesto Disponible</div>
             </div>
           </div>
         </UiDataCard>

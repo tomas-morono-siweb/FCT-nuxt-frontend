@@ -22,11 +22,11 @@ export default defineEventHandler(async (event) => {
 
     // Datos mock para club individual
     const mockClubs = [
-      { id: 1, id_club: "FCB001", nombre: "Barcelona", presupuesto: 500000000, entrenador: "Xavi", jugadores: ["Lionel Messi", "Robert Lewandowski", "Pedri"] },
-      { id: 2, id_club: "RMA002", nombre: "Real Madrid", presupuesto: 600000000, entrenador: "Carlo Ancelotti", jugadores: ["Cristiano Ronaldo", "Luka Modrić", "Vinicius Jr"] },
-      { id: 3, id_club: "PSG003", nombre: "PSG", presupuesto: 700000000, entrenador: "Luis Enrique", jugadores: ["Kylian Mbappé", "Neymar Jr", "Marquinhos"] },
-      { id: 4, id_club: "MCI004", nombre: "Manchester City", presupuesto: 550000000, entrenador: "Pep Guardiola", jugadores: ["Erling Haaland", "Kevin De Bruyne", "Phil Foden"] },
-      { id: 5, id_club: "LIV005", nombre: "Liverpool", presupuesto: 400000000, entrenador: "Jürgen Klopp", jugadores: ["Mohamed Salah", "Virgil van Dijk", "Sadio Mané"] }
+      { id: 1, id_club: "FCB001", nombre: "Barcelona", fundacion: 1899, ciudad: "Barcelona", estadio: "Camp Nou", presupuesto: 500000000, presupuesto_disponible: 300000000 },
+      { id: 2, id_club: "RMA002", nombre: "Real Madrid", fundacion: 1902, ciudad: "Madrid", estadio: "Santiago Bernabéu", presupuesto: 600000000, presupuesto_disponible: 400000000 },
+      { id: 3, id_club: "PSG003", nombre: "PSG", fundacion: 1970, ciudad: "París", estadio: "Parc des Princes", presupuesto: 700000000, presupuesto_disponible: 500000000 },
+      { id: 4, id_club: "MCI004", nombre: "Manchester City", fundacion: 1880, ciudad: "Manchester", estadio: "Etihad Stadium", presupuesto: 550000000, presupuesto_disponible: 350000000 },
+      { id: 5, id_club: "LIV005", nombre: "Liverpool", fundacion: 1892, ciudad: "Liverpool", estadio: "Anfield", presupuesto: 400000000, presupuesto_disponible: 250000000 }
     ];
 
     const club = mockClubs.find(c => c.id === Number(id));

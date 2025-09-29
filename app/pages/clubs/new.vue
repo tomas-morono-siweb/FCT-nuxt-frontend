@@ -6,11 +6,13 @@ const { create } = useClubs();
 
 // Form data
 const form = reactive<Partial<Club>>({
+  id_club: "",
   nombre: "",
   ciudad: "",
   estadio: "",
   fundacion: new Date().getFullYear(), // Current year as default
   presupuesto: undefined,
+  presupuesto_disponible: undefined,
 });
 
 // Loading states
@@ -27,9 +29,24 @@ const formattedBudget = computed({
   },
 });
 
+// Computed para manejar el presupuesto disponible formateado
+const formattedAvailableBudget = computed({
+  get: () => {
+    return form.presupuesto_disponible ? formatMillions(form.presupuesto_disponible) : "";
+  },
+  set: (value: string) => {
+    form.presupuesto_disponible = parseMillions(value);
+  },
+});
+
 // Validation
 const validateForm = () => {
   error.value = "";
+
+  if (!form.id_club?.trim()) {
+    error.value = "El código del club es obligatorio";
+    return false;
+  }
 
   if (!form.nombre?.trim()) {
     error.value = "El nombre del club es obligatorio";
@@ -53,6 +70,11 @@ const validateForm = () => {
 
   if (form.presupuesto && form.presupuesto < 0) {
     error.value = "El presupuesto no puede ser negativo";
+    return false;
+  }
+
+  if (form.presupuesto_disponible && form.presupuesto_disponible < 0) {
+    error.value = "El presupuesto disponible no puede ser negativo";
     return false;
   }
 
@@ -140,6 +162,15 @@ const handleSubmit = async () => {
 
             <!-- Form Fields -->
             <div class="grid gap-6 sm:grid-cols-2">
+              <!-- Código del Club -->
+              <UiFormField
+                v-model="form.id_club"
+                label="Código del Club"
+                placeholder="Ej: FCB, RMA, PSG"
+                required
+                :error="error && !form.id_club?.trim() ? 'El código del club es obligatorio' : ''"
+              />
+
               <!-- Nombre -->
               <UiFormField
                 v-model="form.nombre"
@@ -181,12 +212,24 @@ const handleSubmit = async () => {
                 "
               />
 
-              <!-- Presupuesto -->
+              <!-- Presupuesto Total -->
               <UiFormField
                 v-model="formattedBudget"
-                label="Presupuesto (Millones €)"
+                label="Presupuesto Total (Millones €)"
                 placeholder="Ej: 500M €"
                 :error="error && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''"
+              />
+
+              <!-- Presupuesto Disponible -->
+              <UiFormField
+                v-model="formattedAvailableBudget"
+                label="Presupuesto Disponible (Millones €)"
+                placeholder="Ej: 300M €"
+                :error="
+                  error && form.presupuesto_disponible && form.presupuesto_disponible < 0
+                    ? 'El presupuesto disponible no puede ser negativo'
+                    : ''
+                "
               />
             </div>
 

@@ -31,16 +31,16 @@ export default defineEventHandler(async (event) => {
 
     // Datos mock para testing local
     const mockClubs = [
-      { id: 1, id_club: "FCB001", nombre: "Barcelona", presupuesto: 500000000, entrenador: "Xavi", jugadores: ["Lionel Messi", "Robert Lewandowski", "Pedri"] },
-      { id: 2, id_club: "RMA002", nombre: "Real Madrid", presupuesto: 600000000, entrenador: "Carlo Ancelotti", jugadores: ["Cristiano Ronaldo", "Luka Modrić", "Vinicius Jr"] },
-      { id: 3, id_club: "PSG003", nombre: "PSG", presupuesto: 700000000, entrenador: "Luis Enrique", jugadores: ["Kylian Mbappé", "Neymar Jr", "Marquinhos"] },
-      { id: 4, id_club: "MCI004", nombre: "Manchester City", presupuesto: 550000000, entrenador: "Pep Guardiola", jugadores: ["Erling Haaland", "Kevin De Bruyne", "Phil Foden"] },
-      { id: 5, id_club: "LIV005", nombre: "Liverpool", presupuesto: 400000000, entrenador: "Jürgen Klopp", jugadores: ["Mohamed Salah", "Virgil van Dijk", "Sadio Mané"] },
-      { id: 6, id_club: "ATM006", nombre: "Atlético Madrid", presupuesto: 300000000, entrenador: "Diego Simeone", jugadores: ["Antoine Griezmann", "Jan Oblak", "Koke"] },
-      { id: 7, id_club: "CHE007", nombre: "Chelsea", presupuesto: 450000000, entrenador: "Mauricio Pochettino", jugadores: ["Romelu Lukaku", "N'Golo Kanté", "Mason Mount"] },
-      { id: 8, id_club: "MUN008", nombre: "Manchester United", presupuesto: 500000000, entrenador: "Erik ten Hag", jugadores: ["Marcus Rashford", "Bruno Fernandes", "Harry Maguire"] },
-      { id: 9, id_club: "TOT009", nombre: "Tottenham", presupuesto: 350000000, entrenador: "Antonio Conte", jugadores: ["Harry Kane", "Son Heung-min", "Hugo Lloris"] },
-      { id: 10, id_club: "ARS010", nombre: "Arsenal", presupuesto: 380000000, entrenador: "Mikel Arteta", jugadores: ["Bukayo Saka", "Martin Ødegaard", "Gabriel Jesus"] }
+      { id: 1, id_club: "FCB001", nombre: "Barcelona", fundacion: 1899, ciudad: "Barcelona", estadio: "Camp Nou", presupuesto: 500000000, presupuesto_disponible: 300000000 },
+      { id: 2, id_club: "RMA002", nombre: "Real Madrid", fundacion: 1902, ciudad: "Madrid", estadio: "Santiago Bernabéu", presupuesto: 600000000, presupuesto_disponible: 400000000 },
+      { id: 3, id_club: "PSG003", nombre: "PSG", fundacion: 1970, ciudad: "París", estadio: "Parc des Princes", presupuesto: 700000000, presupuesto_disponible: 500000000 },
+      { id: 4, id_club: "MCI004", nombre: "Manchester City", fundacion: 1880, ciudad: "Manchester", estadio: "Etihad Stadium", presupuesto: 550000000, presupuesto_disponible: 350000000 },
+      { id: 5, id_club: "LIV005", nombre: "Liverpool", fundacion: 1892, ciudad: "Liverpool", estadio: "Anfield", presupuesto: 400000000, presupuesto_disponible: 250000000 },
+      { id: 6, id_club: "ATM006", nombre: "Atlético Madrid", fundacion: 1903, ciudad: "Madrid", estadio: "Wanda Metropolitano", presupuesto: 300000000, presupuesto_disponible: 200000000 },
+      { id: 7, id_club: "CHE007", nombre: "Chelsea", fundacion: 1905, ciudad: "Londres", estadio: "Stamford Bridge", presupuesto: 450000000, presupuesto_disponible: 300000000 },
+      { id: 8, id_club: "MUN008", nombre: "Manchester United", fundacion: 1878, ciudad: "Manchester", estadio: "Old Trafford", presupuesto: 500000000, presupuesto_disponible: 350000000 },
+      { id: 9, id_club: "TOT009", nombre: "Tottenham", fundacion: 1882, ciudad: "Londres", estadio: "Tottenham Hotspur Stadium", presupuesto: 350000000, presupuesto_disponible: 250000000 },
+      { id: 10, id_club: "ARS010", nombre: "Arsenal", fundacion: 1886, ciudad: "Londres", estadio: "Emirates Stadium", presupuesto: 380000000, presupuesto_disponible: 280000000 }
     ];
 
     // Paginación mock

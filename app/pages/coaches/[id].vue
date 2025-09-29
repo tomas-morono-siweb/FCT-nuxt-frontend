@@ -114,16 +114,16 @@ const { data: club } = await useAsyncData<Club | null>(
         >
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div class="rounded-lg bg-green-50 p-4 text-center">
-              <div class="text-2xl font-bold text-green-600">{{ coach.nombre.length + coach.apellidos.length }}</div>
-              <div class="text-sm text-green-800">Total de Letras</div>
+              <div class="text-2xl font-bold text-green-600">{{ coach.dni }}</div>
+              <div class="text-sm text-green-800">DNI</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ coach.dni.length }}</div>
-              <div class="text-sm text-gray-800">Caracteres en DNI</div>
+              <div class="text-2xl font-bold text-gray-600">{{ coach.club || "Sin asignar" }}</div>
+              <div class="text-sm text-gray-800">Club Asignado</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
               <div class="text-2xl font-bold text-green-600">{{ formatMillions(coach.salario) }}</div>
-              <div class="text-sm text-green-800">Salario Configurado</div>
+              <div class="text-sm text-green-800">Salario Anual</div>
             </div>
           </div>
         </UiDataCard>
