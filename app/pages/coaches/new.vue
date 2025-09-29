@@ -12,7 +12,7 @@ const form = reactive<Partial<Coach>>({
   nombre: "",
   apellidos: "",
   salario: undefined,
-  club: undefined,
+  id_club: undefined,
 });
 
 // Loading states
@@ -22,6 +22,21 @@ const error = ref("");
 // Load clubs for selection
 const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
 const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para manejar la selección del club
+const selectedClubId = computed({
+  get: () => {
+    if (form.id_club) {
+      const club = clubs.value.find((c) => c.id_club === form.id_club);
+      return club ? club.nombre : "";
+    }
+    return "";
+  },
+  set: (clubName: string) => {
+    const club = clubs.value.find((c) => c.nombre === clubName);
+    form.id_club = club ? club.id_club : undefined;
+  },
+});
 
 // Computed para manejar el salario formateado
 const formattedSalary = computed({
@@ -179,10 +194,12 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.club"
+                v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="error && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"
+                :error="
+                  error && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
+                "
               />
             </div>
 

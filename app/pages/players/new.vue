@@ -12,7 +12,6 @@ const form = reactive<Partial<Player>>({
   apellidos: "",
   dorsal: undefined,
   salario: undefined,
-  club: undefined,
   id_club: undefined,
 });
 
@@ -31,10 +30,9 @@ const selectedClubId = computed({
       const club = clubs.value.find((c) => c.id_club === form.id_club);
       return club ? club.nombre : "";
     }
-    return form.club || "";
+    return "";
   },
   set: (clubName: string) => {
-    form.club = clubName;
     const club = clubs.value.find((c) => c.nombre === clubName);
     form.id_club = club ? club.id_club : undefined;
   },
@@ -200,7 +198,9 @@ const handleSubmit = async () => {
                 v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="error && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"
+                :error="
+                  error && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
+                "
               />
             </div>
 

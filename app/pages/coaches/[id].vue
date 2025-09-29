@@ -12,12 +12,12 @@ const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`,
 
 // Obtener información del club si el coach tiene uno asignado
 const { data: club } = await useAsyncData<Club | null>(
-  `club:${coach.value?.club}`,
+  `club:${coach.value?.id_club}`,
   async () => {
-    if (coach.value?.club) {
-      // Buscar el club por nombre en lugar de por ID
+    if (coach.value?.id_club) {
+      // Buscar el club por id_club
       const clubs = await useClubs().list();
-      return clubs.data.find((c) => c.nombre === coach.value?.club) || null;
+      return clubs.data.find((c) => c.id_club === coach.value?.id_club) || null;
     }
     return null;
   },
@@ -101,7 +101,7 @@ const { data: club } = await useAsyncData<Club | null>(
             <UiInfoGrid
               :items="[
                 { label: 'Salario', value: coach.salario ? formatMillions(coach.salario) : 'No disponible' },
-                { label: 'Club Asignado', value: coach.club ? `Club: ${coach.club}` : 'Sin club asignado' },
+                { label: 'Club Asignado', value: coach.id_club ? `Club: ${coach.id_club}` : 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -118,7 +118,7 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-green-800">DNI</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ coach.club || "Sin asignar" }}</div>
+              <div class="text-2xl font-bold text-gray-600">{{ coach.id_club || "Sin asignar" }}</div>
               <div class="text-sm text-gray-800">Club Asignado</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
@@ -131,7 +131,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="coach.club?.toString()"
+          :club-id="coach.id_club"
         />
       </div>
     </div>

@@ -21,7 +21,6 @@ const form = reactive<Partial<Player>>({
   apellidos: "",
   dorsal: undefined,
   salario: undefined,
-  club: undefined,
   id_club: undefined,
 });
 
@@ -34,7 +33,6 @@ watch(
       form.apellidos = newPlayer.apellidos;
       form.dorsal = newPlayer.dorsal;
       form.salario = newPlayer.salario;
-      form.club = newPlayer.club;
       form.id_club = newPlayer.id_club;
     }
   },
@@ -56,10 +54,9 @@ const selectedClubId = computed({
       const club = clubs.value.find((c) => c.id_club === form.id_club);
       return club ? club.nombre : "";
     }
-    return form.club || "";
+    return "";
   },
   set: (clubName: string) => {
-    form.club = clubName;
     const club = clubs.value.find((c) => c.nombre === clubName);
     form.id_club = club ? club.id_club : undefined;
   },
@@ -112,7 +109,10 @@ const handleSubmit = async () => {
 
     // Invalidar cache del club si cambió
     if (form.id_club) {
-      await clearNuxtData(`club:${form.id_club}`);
+      const selectedClub = clubs.value.find((c) => c.id_club === form.id_club);
+      if (selectedClub) {
+        await clearNuxtData(`club:${selectedClub.id}`);
+      }
     }
 
     await navigateTo(`/players/${id}`);
@@ -250,7 +250,9 @@ const handleSubmit = async () => {
                 v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="submitError && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"
+                :error="
+                  submitError && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
+                "
               />
             </div>
 

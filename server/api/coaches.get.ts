@@ -31,16 +31,16 @@ export default defineEventHandler(async (event) => {
 
     // Datos mock para testing local
     const mockCoaches = [
-      { id: 1, dni: "12345678A", nombre: "Xavi", apellidos: "Hernández", salario: 8000000, club: "Barcelona" },
-      { id: 2, dni: "87654321B", nombre: "Carlo", apellidos: "Ancelotti", salario: 12000000, club: "Real Madrid" },
-      { id: 3, dni: "11223344C", nombre: "Luis", apellidos: "Enrique", salario: 9000000, club: "PSG" },
-      { id: 4, dni: "44332211D", nombre: "Pep", apellidos: "Guardiola", salario: 15000000, club: "Manchester City" },
-      { id: 5, dni: "55667788E", nombre: "Jürgen", apellidos: "Klopp", salario: 10000000, club: "Liverpool" },
-      { id: 6, dni: "99887766F", nombre: "Antonio", apellidos: "Conte", salario: 7000000, club: "Tottenham" },
-      { id: 7, dni: "13579246G", nombre: "Diego", apellidos: "Simeone", salario: 8500000, club: "Atlético Madrid" },
-      { id: 8, dni: "24681357H", nombre: "Erik", apellidos: "ten Hag", salario: 6000000, club: "Manchester United" },
-      { id: 9, dni: "36925814I", nombre: "Mauricio", apellidos: "Pochettino", salario: 7500000, club: "Chelsea" },
-      { id: 10, dni: "74185296J", nombre: "Zinedine", apellidos: "Zidane", salario: 11000000, club: "Real Madrid" }
+      { id: 1, dni: "12345678A", nombre: "Xavi", apellidos: "Hernández", salario: 8000000, id_club: "FCB001" },
+      { id: 2, dni: "87654321B", nombre: "Carlo", apellidos: "Ancelotti", salario: 12000000, id_club: "RMA002" },
+      { id: 3, dni: "11223344C", nombre: "Luis", apellidos: "Enrique", salario: 9000000, id_club: "PSG003" },
+      { id: 4, dni: "44332211D", nombre: "Pep", apellidos: "Guardiola", salario: 15000000, id_club: "MCI004" },
+      { id: 5, dni: "55667788E", nombre: "Jürgen", apellidos: "Klopp", salario: 10000000, id_club: "LIV005" },
+      { id: 6, dni: "99887766F", nombre: "Antonio", apellidos: "Conte", salario: 7000000, id_club: "TOT009" },
+      { id: 7, dni: "13579246G", nombre: "Diego", apellidos: "Simeone", salario: 8500000, id_club: "ATM006" },
+      { id: 8, dni: "24681357H", nombre: "Erik", apellidos: "ten Hag", salario: 6000000, id_club: "MUN008" },
+      { id: 9, dni: "36925814I", nombre: "Mauricio", apellidos: "Pochettino", salario: 7500000, id_club: "CHE007" },
+      { id: 10, dni: "74185296J", nombre: "Zinedine", apellidos: "Zidane", salario: 11000000, id_club: "RMA002" }
     ];
 
     // Paginación mock

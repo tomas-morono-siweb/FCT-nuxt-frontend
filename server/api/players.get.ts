@@ -32,16 +32,16 @@ export default defineEventHandler(async (event) => {
 
     // Datos mock para testing local
     const mockPlayers = [
-      { id: 1, nombre: "Lionel", apellidos: "Messi", dorsal: 10, salario: 50000000, club: "Barcelona", entrenador: "Xavi" },
-      { id: 2, nombre: "Cristiano", apellidos: "Ronaldo", dorsal: 7, salario: 45000000, club: "Real Madrid", entrenador: "Carlo Ancelotti" },
-      { id: 3, nombre: "Kylian", apellidos: "Mbappé", dorsal: 7, salario: 40000000, club: "PSG", entrenador: "Luis Enrique" },
-      { id: 4, nombre: "Erling", apellidos: "Haaland", dorsal: 9, salario: 35000000, club: "Manchester City", entrenador: "Pep Guardiola" },
-      { id: 5, nombre: "Kevin", apellidos: "De Bruyne", dorsal: 17, salario: 30000000, club: "Manchester City", entrenador: "Pep Guardiola" },
-      { id: 6, nombre: "Mohamed", apellidos: "Salah", dorsal: 11, salario: 25000000, club: "Liverpool", entrenador: "Jürgen Klopp" },
-      { id: 7, nombre: "Virgil", apellidos: "van Dijk", dorsal: 4, salario: 20000000, club: "Liverpool", entrenador: "Jürgen Klopp" },
-      { id: 8, nombre: "Luka", apellidos: "Modrić", dorsal: 10, salario: 18000000, club: "Real Madrid", entrenador: "Carlo Ancelotti" },
-      { id: 9, nombre: "Robert", apellidos: "Lewandowski", dorsal: 9, salario: 22000000, club: "Barcelona", entrenador: "Xavi" },
-      { id: 10, nombre: "Neymar", apellidos: "Jr", dorsal: 10, salario: 28000000, club: "PSG", entrenador: "Luis Enrique" }
+      { id: 1, nombre: "Lionel", apellidos: "Messi", dorsal: 10, salario: 50000000, id_club: "FCB001" },
+      { id: 2, nombre: "Cristiano", apellidos: "Ronaldo", dorsal: 7, salario: 45000000, id_club: "RMA002" },
+      { id: 3, nombre: "Kylian", apellidos: "Mbappé", dorsal: 7, salario: 40000000, id_club: "PSG003" },
+      { id: 4, nombre: "Erling", apellidos: "Haaland", dorsal: 9, salario: 35000000, id_club: "MCI004" },
+      { id: 5, nombre: "Kevin", apellidos: "De Bruyne", dorsal: 17, salario: 30000000, id_club: "MCI004" },
+      { id: 6, nombre: "Mohamed", apellidos: "Salah", dorsal: 11, salario: 25000000, id_club: "LIV005" },
+      { id: 7, nombre: "Virgil", apellidos: "van Dijk", dorsal: 4, salario: 20000000, id_club: "LIV005" },
+      { id: 8, nombre: "Luka", apellidos: "Modrić", dorsal: 10, salario: 18000000, id_club: "RMA002" },
+      { id: 9, nombre: "Robert", apellidos: "Lewandowski", dorsal: 9, salario: 22000000, id_club: "FCB001" },
+      { id: 10, nombre: "Neymar", apellidos: "Jr", dorsal: 10, salario: 28000000, id_club: "PSG003" }
     ];
 
     // Filtrar por nombre si se proporciona

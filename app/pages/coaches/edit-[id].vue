@@ -21,7 +21,7 @@ const form = reactive<Partial<Coach>>({
   nombre: "",
   apellidos: "",
   salario: undefined,
-  club: undefined,
+  id_club: undefined,
 });
 
 // Watch for coach data changes to populate form
@@ -33,7 +33,7 @@ watch(
       form.nombre = newCoach.nombre;
       form.apellidos = newCoach.apellidos;
       form.salario = newCoach.salario;
-      form.club = newCoach.club;
+      form.id_club = newCoach.id_club;
     }
   },
   { immediate: true }
@@ -46,6 +46,21 @@ const submitError = ref("");
 // Load clubs for selection
 const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
 const clubs = computed(() => clubsResponse.value?.data || []);
+
+// Computed para manejar la selección del club
+const selectedClubId = computed({
+  get: () => {
+    if (form.id_club) {
+      const club = clubs.value.find((c) => c.id_club === form.id_club);
+      return club ? club.nombre : "";
+    }
+    return "";
+  },
+  set: (clubName: string) => {
+    const club = clubs.value.find((c) => c.nombre === clubName);
+    form.id_club = club ? club.id_club : undefined;
+  },
+});
 
 // Computed para manejar el salario formateado
 const formattedSalary = computed({
@@ -93,8 +108,8 @@ const handleSubmit = async () => {
     await clearNuxtData(`coach:${id}`);
 
     // Invalidar cache del club si cambió
-    if (form.club) {
-      const selectedClub = clubs.value.find((c) => c.nombre === form.club);
+    if (form.id_club) {
+      const selectedClub = clubs.value.find((c) => c.id_club === form.id_club);
       if (selectedClub) {
         await clearNuxtData(`club:${selectedClub.id}`);
       }
@@ -228,10 +243,12 @@ const handleSubmit = async () => {
 
               <!-- Club -->
               <UiFormField
-                v-model="form.club"
+                v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="submitError && form.club && !clubs?.find((c) => c.nombre === form.club) ? 'Club no válido' : ''"
+                :error="
+                  submitError && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
+                "
               />
             </div>
 

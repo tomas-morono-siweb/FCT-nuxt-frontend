@@ -12,12 +12,12 @@ const { data: player, pending, error } = await useAsyncData<Player>(`player:${id
 
 // Obtener información del club si el player tiene uno asignado
 const { data: club } = await useAsyncData<Club | null>(
-  `club:${player.value?.club}`,
+  `club:${player.value?.id_club}`,
   async () => {
-    if (player.value?.club) {
-      // Buscar el club por nombre en lugar de por ID
+    if (player.value?.id_club) {
+      // Buscar el club por id_club
       const clubs = await useClubs().list();
-      return clubs.data.find((c) => c.nombre === player.value?.club) || null;
+      return clubs.data.find((c) => c.id_club === player.value?.id_club) || null;
     }
     return null;
   },
@@ -99,7 +99,7 @@ const { data: club } = await useAsyncData<Club | null>(
               :items="[
                 { label: 'Dorsal', value: player.dorsal ? `#${player.dorsal}` : 'Sin dorsal asignado' },
                 { label: 'Salario', value: player.salario ? formatMillions(player.salario) : 'No disponible' },
-                { label: 'Club', value: player.club ? `Club: ${player.club}` : 'Sin club asignado' },
+                { label: 'Club', value: player.id_club ? `Club: ${player.id_club}` : 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -116,8 +116,8 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-blue-800">Dorsal Asignado</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ player.entrenador || "Sin asignar" }}</div>
-              <div class="text-sm text-gray-800">Entrenador</div>
+              <div class="text-2xl font-bold text-gray-600">{{ player.id_club || "Sin asignar" }}</div>
+              <div class="text-sm text-gray-800">Club</div>
             </div>
             <div class="rounded-lg bg-blue-50 p-4 text-center">
               <div class="text-2xl font-bold text-blue-600">{{ formatMillions(player.salario) }}</div>
@@ -129,7 +129,7 @@ const { data: club } = await useAsyncData<Club | null>(
         <!-- Club Information (if assigned) -->
         <UiClubInfo
           :club="club"
-          :club-id="player.club"
+          :club-id="player.id_club"
         />
       </div>
     </div>
