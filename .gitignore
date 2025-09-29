@@ -16,7 +16,7 @@ dist
 
 # Local env files
 .env
-.env.*
+#.env.*
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
