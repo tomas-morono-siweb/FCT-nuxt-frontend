@@ -6,5 +6,5 @@ export interface Club {
   ciudad: string;
   estadio: string;
   presupuesto: number;
-  presupuesto_disponible: number;
+  presupuesto_restante: number;
 }

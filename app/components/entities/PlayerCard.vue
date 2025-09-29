@@ -20,15 +20,38 @@ const handleDelete = () => {
   emit("delete", props.player.id);
 };
 
-// Obtener información del club
-const { data: clubsResponse } = await useAsyncData("clubs", () => useClubs().list());
+// Obtener información del club con cache compartido
+const {
+  data: clubsResponse,
+  pending: clubsPending,
+  error: clubsError,
+} = await useAsyncData("clubs-shared", () => useClubs().list());
 const clubs = computed(() => clubsResponse.value?.data || []);
 
 // Computed para obtener el nombre del club
 const clubName = computed(() => {
   if (!props.player.id_club) return null;
+
+  // Debug logs
+  console.log("PlayerCard Debug:", {
+    playerId: props.player.id,
+    playerIdClub: props.player.id_club,
+    clubsLoading: clubsPending.value,
+    clubsError: clubsError.value,
+    clubsCount: clubs.value.length,
+    clubsData: clubs.value,
+  });
+
+  // Si los clubs están cargando o hay error, mostrar el código como fallback
+  if (clubsPending.value || clubsError.value) {
+    console.log("Using fallback for player", props.player.id, "club:", props.player.id_club);
+    return props.player.id_club;
+  }
+
   const club = clubs.value.find((c) => c.id_club === props.player.id_club);
-  return club ? club.nombre : props.player.id_club;
+  const result = club ? club.nombre : props.player.id_club;
+  console.log("Club found for player", props.player.id, ":", club?.nombre || "not found");
+  return result;
 });
 </script>
 

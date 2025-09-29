@@ -20,13 +20,23 @@ const handleDelete = () => {
   emit("delete", props.coach.id);
 };
 
-// Obtener información del club
-const { data: clubsResponse } = await useAsyncData("clubs", () => useClubs().list());
+// Obtener información del club con cache compartido
+const {
+  data: clubsResponse,
+  pending: clubsPending,
+  error: clubsError,
+} = await useAsyncData("clubs-shared", () => useClubs().list());
 const clubs = computed(() => clubsResponse.value?.data || []);
 
 // Computed para obtener el nombre del club
 const clubName = computed(() => {
   if (!props.coach.id_club) return null;
+
+  // Si los clubs están cargando o hay error, mostrar el código como fallback
+  if (clubsPending.value || clubsError.value) {
+    return props.coach.id_club;
+  }
+
   const club = clubs.value.find((c) => c.id_club === props.coach.id_club);
   return club ? club.nombre : props.coach.id_club;
 });

@@ -85,7 +85,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
                 },
                 {
                   label: 'Presupuesto Disponible',
-                  value: club.presupuesto_disponible ? formatMillions(club.presupuesto_disponible) : 'No disponible',
+                  value: club.presupuesto_restante ? formatMillions(club.presupuesto_restante) : 'No disponible',
                 },
                 { label: 'Código del Club', value: club.id_club },
               ]"
@@ -110,7 +110,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               <div class="text-sm text-orange-800">Presupuesto Total</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
-              <div class="text-2xl font-bold text-green-600">{{ formatMillions(club.presupuesto_disponible) }}</div>
+              <div class="text-2xl font-bold text-green-600">{{ formatMillions(club.presupuesto_restante) }}</div>
               <div class="text-sm text-green-800">Presupuesto Disponible</div>
             </div>
           </div>
