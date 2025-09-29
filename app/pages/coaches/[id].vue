@@ -47,7 +47,7 @@ const { data: club } = await useAsyncData<Club | null>(
         description="Información completa del entrenador seleccionado"
         :avatar-text="coach ? `${coach.nombre.charAt(0)}${coach.apellidos.charAt(0)}` : 'E'"
         avatar-color="green"
-        :edit-to="`/coaches/${coach?.id}/edit`"
+        :edit-to="`/coaches/edit-${coach?.id}`"
         back-to="/coaches"
         :badges="
           coach ? [...(coach.salario ? [{ text: formatMillions(coach.salario), color: 'gray' as const }] : [])] : []

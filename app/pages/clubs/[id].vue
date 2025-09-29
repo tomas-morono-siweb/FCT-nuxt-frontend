@@ -28,7 +28,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
         description="Información completa del club seleccionado"
         :avatar-text="club?.nombre?.charAt(0) || 'C'"
         avatar-color="orange"
-        :edit-to="`/clubs/${club?.id}/edit`"
+        :edit-to="`/clubs/edit-${club?.id}`"
         back-to="/clubs"
       >
         <template #title>
