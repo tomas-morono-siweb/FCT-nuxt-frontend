@@ -56,15 +56,6 @@ const clubName = computed(() => {
       </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
-      <div class="flex items-center space-x-2">
-        <span
-          class="bg-secondary-100 text-secondary-700 inline-flex items-center rounded-lg px-3 py-1 text-sm font-semibold"
-        >
-          {{ coach.dni }}
-        </span>
-      </div>
-    </td>
-    <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
         {{ coach.salario ? formatMillions(coach.salario) : "-" }}
       </span>
@@ -118,9 +109,6 @@ const clubName = computed(() => {
             {{ coach.nombre }} {{ coach.apellidos }}
           </NuxtLink>
           <div class="mt-1 flex flex-wrap gap-2">
-            <span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-800">
-              {{ coach.dni }}
-            </span>
             <span
               v-if="coach.salario"
               class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800"
