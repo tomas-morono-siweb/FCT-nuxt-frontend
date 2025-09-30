@@ -1,6 +1,5 @@
 import type { Coach } from "~/interfaces/coach";
 import type { PaginatedResponse } from "~/interfaces/pagination";
-import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useCoaches = () => {
   const list = async (page = 1, pageSize = 10) => {

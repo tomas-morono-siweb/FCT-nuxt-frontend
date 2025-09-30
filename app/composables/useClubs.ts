@@ -1,6 +1,5 @@
 import type { Club } from "~/interfaces/club";
 import type { PaginatedResponse } from "~/interfaces/pagination";
-import { buildApiUrl, buildApiUrlWithId, API_CONFIG } from "~/config/api";
 
 export const useClubs = () => {
   const list = async (page = 1, pageSize = 10) => {

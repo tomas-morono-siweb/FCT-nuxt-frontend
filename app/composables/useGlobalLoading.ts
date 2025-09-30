@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, readonly } from 'vue';
 
 // Estado global de carga
 const isLoading = ref(false);
