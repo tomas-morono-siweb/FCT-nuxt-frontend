@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
 import type { Club } from "~/interfaces/club";
+import type { BackendError } from "~/interfaces/validation";
 
 const { create } = useCoaches();
 const { list: listClubs } = useClubs();
@@ -37,37 +38,8 @@ const selectedClubId = computed({
   },
 });
 
-// Validation
-const validateForm = () => {
-  error.value = "";
-
-  if (!form.dni?.trim()) {
-    error.value = "El DNI es obligatorio";
-    return false;
-  }
-
-  if (!form.nombre?.trim()) {
-    error.value = "El nombre es obligatorio";
-    return false;
-  }
-
-  if (!form.apellidos?.trim()) {
-    error.value = "Los apellidos son obligatorios";
-    return false;
-  }
-
-  if (form.salario && form.salario < 0) {
-    error.value = "El salario no puede ser negativo";
-    return false;
-  }
-
-  return true;
-};
-
 // Submit handler
 const handleSubmit = async () => {
-  if (!validateForm()) return;
-
   loading.value = true;
   error.value = "";
 
@@ -75,7 +47,7 @@ const handleSubmit = async () => {
     await create(form);
     await navigateTo("/coaches");
   } catch (err: any) {
-    error.value = err.data?.message || "Error al crear el entrenador";
+    error.value = err.error || "Error al crear el entrenador";
   } finally {
     loading.value = false;
   }
@@ -151,7 +123,7 @@ const handleSubmit = async () => {
                 label="DNI"
                 placeholder="DNI del entrenador"
                 required
-                :error="error && !form.dni?.trim() ? 'El DNI es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Nombre -->
@@ -160,7 +132,7 @@ const handleSubmit = async () => {
                 label="Nombre"
                 placeholder="Nombre del entrenador"
                 required
-                :error="error && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Apellidos -->
@@ -169,7 +141,7 @@ const handleSubmit = async () => {
                 label="Apellidos"
                 placeholder="Apellidos del entrenador"
                 required
-                :error="error && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
+                :error="''"
               />
 
               <!-- Salario -->
@@ -177,7 +149,7 @@ const handleSubmit = async () => {
                 v-model="form.salario"
                 label="Salario Anual (€)"
                 placeholder="Ej: 15000000"
-                :error="error && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
+                :error="''"
               />
 
               <!-- Club -->
@@ -185,9 +157,7 @@ const handleSubmit = async () => {
                 v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="
-                  error && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
-                "
+                :error="''"
               />
             </div>
 

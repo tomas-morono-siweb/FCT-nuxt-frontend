@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
+import type { BackendError } from "~/interfaces/validation";
 
 const { create } = useClubs();
 
@@ -17,47 +18,8 @@ const form = reactive<Partial<Club>>({
 const loading = ref(false);
 const error = ref("");
 
-// Validation
-const validateForm = () => {
-  error.value = "";
-
-  if (!form.id_club?.trim()) {
-    error.value = "El código del club es obligatorio";
-    return false;
-  }
-
-  if (!form.nombre?.trim()) {
-    error.value = "El nombre del club es obligatorio";
-    return false;
-  }
-
-  if (!form.ciudad?.trim()) {
-    error.value = "La ciudad es obligatoria";
-    return false;
-  }
-
-  if (!form.estadio?.trim()) {
-    error.value = "El estadio es obligatorio";
-    return false;
-  }
-
-  if (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear()) {
-    error.value = "El año de fundación debe estar entre 1800 y el año actual";
-    return false;
-  }
-
-  if (form.presupuesto && form.presupuesto < 0) {
-    error.value = "El presupuesto no puede ser negativo";
-    return false;
-  }
-
-  return true;
-};
-
 // Submit handler
 const handleSubmit = async () => {
-  if (!validateForm()) return;
-
   loading.value = true;
   error.value = "";
 
@@ -65,7 +27,7 @@ const handleSubmit = async () => {
     await create(form);
     await navigateTo("/clubs");
   } catch (err: any) {
-    error.value = err.data?.message || "Error al crear el club";
+    error.value = err.error || "Error al crear el club";
   } finally {
     loading.value = false;
   }
@@ -141,7 +103,7 @@ const handleSubmit = async () => {
                 label="Código del Club"
                 placeholder="Ej: FCB, RMA, PSG"
                 required
-                :error="error && !form.id_club?.trim() ? 'El código del club es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Nombre -->
@@ -150,7 +112,7 @@ const handleSubmit = async () => {
                 label="Nombre del Club"
                 placeholder="Nombre del club"
                 required
-                :error="error && !form.nombre?.trim() ? 'El nombre del club es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Ciudad -->
@@ -159,7 +121,7 @@ const handleSubmit = async () => {
                 label="Ciudad"
                 placeholder="Ciudad del club"
                 required
-                :error="error && !form.ciudad?.trim() ? 'La ciudad es obligatoria' : ''"
+                :error="''"
               />
 
               <!-- Estadio -->
@@ -168,7 +130,7 @@ const handleSubmit = async () => {
                 label="Estadio"
                 placeholder="Nombre del estadio"
                 required
-                :error="error && !form.estadio?.trim() ? 'El estadio es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Fundación -->
@@ -178,11 +140,7 @@ const handleSubmit = async () => {
                 type="number"
                 placeholder="Ej: 1900"
                 required
-                :error="
-                  error && (!form.fundacion || form.fundacion < 1800 || form.fundacion > new Date().getFullYear())
-                    ? 'El año de fundación debe estar entre 1800 y el año actual'
-                    : ''
-                "
+                :error="''"
               />
 
               <!-- Presupuesto Total -->
@@ -190,7 +148,7 @@ const handleSubmit = async () => {
                 v-model="form.presupuesto"
                 label="Presupuesto Total (€)"
                 placeholder="Ej: 100000000"
-                :error="error && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''"
+                :error="''"
               />
             </div>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
+import type { BackendError } from "~/interfaces/validation";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -38,32 +39,8 @@ watch(
 const loading = ref(false);
 const submitError = ref("");
 
-// Validation
-const validateForm = () => {
-  submitError.value = "";
-
-  if (!form.id_club?.trim()) {
-    submitError.value = "El ID del club es obligatorio";
-    return false;
-  }
-
-  if (!form.nombre?.trim()) {
-    submitError.value = "El nombre es obligatorio";
-    return false;
-  }
-
-  if (form.presupuesto && form.presupuesto < 0) {
-    submitError.value = "El presupuesto no puede ser negativo";
-    return false;
-  }
-
-  return true;
-};
-
 // Submit handler
 const handleSubmit = async () => {
-  if (!validateForm()) return;
-
   loading.value = true;
   submitError.value = "";
 
@@ -75,7 +52,7 @@ const handleSubmit = async () => {
 
     await navigateTo(`/clubs/${id}`);
   } catch (err: any) {
-    submitError.value = err.data?.message || "Error al actualizar el club";
+    submitError.value = err.error || "Error al actualizar el club";
   } finally {
     loading.value = false;
   }
@@ -168,7 +145,7 @@ const handleSubmit = async () => {
                 label="ID del Club"
                 placeholder="Identificador único del club"
                 required
-                :error="submitError && !form.id_club?.trim() ? 'El ID del club es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Nombre -->
@@ -177,7 +154,7 @@ const handleSubmit = async () => {
                 label="Nombre"
                 placeholder="Nombre del club"
                 required
-                :error="submitError && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Presupuesto Total -->
@@ -185,9 +162,7 @@ const handleSubmit = async () => {
                 v-model="form.presupuesto"
                 label="Presupuesto Total (€)"
                 placeholder="Ej: 100000000"
-                :error="
-                  submitError && form.presupuesto && form.presupuesto < 0 ? 'El presupuesto no puede ser negativo' : ''
-                "
+                :error="''"
               />
             </div>
 

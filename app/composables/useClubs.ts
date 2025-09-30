@@ -1,5 +1,6 @@
 import type { Club } from "~/interfaces/club";
 import type { PaginatedResponse } from "~/interfaces/pagination";
+import type { BackendError } from "~/interfaces/validation";
 
 export const useClubs = () => {
   const list = async (page = 1, pageSize = 10) => {
@@ -23,17 +24,41 @@ export const useClubs = () => {
 
   const get = (id: number) => $fetch<Club>(`/api/clubs/${id}`);
 
-  const create = (payload: Partial<Club>) =>
-    $fetch<Club>('/api/clubs', {
-      method: "POST",
-      body: payload,
-    });
+  const create = async (payload: Partial<Club>) => {
+    try {
+      return await $fetch<Club>('/api/clubs', {
+        method: "POST",
+        body: payload,
+      });
+    } catch (error: any) {
+      // Manejar errores del backend
+      if (error.data?.error) {
+        throw {
+          error: error.data.error,
+          statusCode: error.statusCode || 400
+        } as BackendError;
+      }
+      throw error;
+    }
+  };
 
-  const update = (id: number, payload: Partial<Club>) =>
-    $fetch<Club>(`/api/clubs/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
+  const update = async (id: number, payload: Partial<Club>) => {
+    try {
+      return await $fetch<Club>(`/api/clubs/${id}`, {
+        method: "PUT",
+        body: payload,
+      });
+    } catch (error: any) {
+      // Manejar errores del backend
+      if (error.data?.error) {
+        throw {
+          error: error.data.error,
+          statusCode: error.statusCode || 400
+        } as BackendError;
+      }
+      throw error;
+    }
+  };
 
   const remove = (id: number) =>
     $fetch(`/api/clubs/${id}`, {

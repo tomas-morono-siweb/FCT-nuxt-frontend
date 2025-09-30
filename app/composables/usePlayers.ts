@@ -1,5 +1,6 @@
 import type { Player } from "~/interfaces/player";
 import type { PaginatedResponse } from "~/interfaces/pagination";
+import type { BackendError } from "~/interfaces/validation";
 
 export const usePlayers = () => {
   const list = async (nombre?: string, page = 1, pageSize = 10) => {
@@ -23,17 +24,41 @@ export const usePlayers = () => {
 
   const get = (id: number) => $fetch<Player>(`/api/players/${id}`);
 
-  const create = (payload: Partial<Player>) =>
-    $fetch<Player>('/api/players', {
-      method: "POST",
-      body: payload,
-    });
+  const create = async (payload: Partial<Player>) => {
+    try {
+      return await $fetch<Player>('/api/players', {
+        method: "POST",
+        body: payload,
+      });
+    } catch (error: any) {
+      // Manejar errores del backend
+      if (error.data?.error) {
+        throw {
+          error: error.data.error,
+          statusCode: error.statusCode || 400
+        } as BackendError;
+      }
+      throw error;
+    }
+  };
 
-  const update = (id: number, payload: Partial<Player>) =>
-    $fetch<Player>(`/api/players/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
+  const update = async (id: number, payload: Partial<Player>) => {
+    try {
+      return await $fetch<Player>(`/api/players/${id}`, {
+        method: "PUT",
+        body: payload,
+      });
+    } catch (error: any) {
+      // Manejar errores del backend
+      if (error.data?.error) {
+        throw {
+          error: error.data.error,
+          statusCode: error.statusCode || 400
+        } as BackendError;
+      }
+      throw error;
+    }
+  };
 
   const remove = (id: number) =>
     $fetch(`/api/players/${id}`, {

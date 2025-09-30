@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
 import type { Club } from "~/interfaces/club";
+import type { BackendError } from "~/interfaces/validation";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -57,32 +58,8 @@ const selectedClubId = computed({
   },
 });
 
-// Validation
-const validateForm = () => {
-  submitError.value = "";
-
-  if (!form.nombre?.trim()) {
-    submitError.value = "El nombre es obligatorio";
-    return false;
-  }
-
-  if (!form.apellidos?.trim()) {
-    submitError.value = "Los apellidos son obligatorios";
-    return false;
-  }
-
-  if (form.dorsal && (form.dorsal < 1 || form.dorsal > 99)) {
-    submitError.value = "El dorsal debe estar entre 1 y 99";
-    return false;
-  }
-
-  return true;
-};
-
 // Submit handler
 const handleSubmit = async () => {
-  if (!validateForm()) return;
-
   loading.value = true;
   submitError.value = "";
 
@@ -102,7 +79,7 @@ const handleSubmit = async () => {
 
     await navigateTo(`/players/${id}`);
   } catch (err: any) {
-    submitError.value = err.data?.message || "Error al actualizar el jugador";
+    submitError.value = err.error || "Error al actualizar el jugador";
   } finally {
     loading.value = false;
   }
@@ -197,7 +174,7 @@ const handleSubmit = async () => {
                 label="Nombre"
                 placeholder="Nombre del jugador"
                 required
-                :error="submitError && !form.nombre?.trim() ? 'El nombre es obligatorio' : ''"
+                :error="''"
               />
 
               <!-- Apellidos -->
@@ -206,7 +183,7 @@ const handleSubmit = async () => {
                 label="Apellidos"
                 placeholder="Apellidos del jugador"
                 required
-                :error="submitError && !form.apellidos?.trim() ? 'Los apellidos son obligatorios' : ''"
+                :error="''"
               />
 
               <!-- Salario -->
@@ -214,7 +191,7 @@ const handleSubmit = async () => {
                 v-model="form.salario"
                 label="Salario Anual (€)"
                 placeholder="Ej: 50000000"
-                :error="submitError && form.salario && form.salario < 0 ? 'El salario no puede ser negativo' : ''"
+                :error="''"
               />
 
               <!-- Dorsal -->
@@ -223,11 +200,7 @@ const handleSubmit = async () => {
                 label="Dorsal"
                 type="number"
                 placeholder="Número de dorsal (1-99)"
-                :error="
-                  submitError && form.dorsal && (form.dorsal < 1 || form.dorsal > 99)
-                    ? 'El dorsal debe estar entre 1 y 99'
-                    : ''
-                "
+                :error="''"
               />
 
               <!-- Club -->
@@ -235,9 +208,7 @@ const handleSubmit = async () => {
                 v-model="selectedClubId"
                 label="Club"
                 :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="
-                  submitError && form.id_club && !clubs?.find((c) => c.id_club === form.id_club) ? 'Club no válido' : ''
-                "
+                :error="''"
               />
             </div>
 
