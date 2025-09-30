@@ -5,7 +5,17 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   vite: {
-    plugins: [],
+    plugins: [tailwindcss()],
+    css: {
+      devSourcemap: true,
+    },
+    build: {
+      sourcemap: true,
+    },
+    logLevel: 'warn',
+    define: {
+      __VUE_PROD_DEVTOOLS__: false,
+    },
   },
   components: [
     {
@@ -23,7 +33,6 @@ export default defineNuxtConfig({
   ],
   modules: [
     "@nuxt/eslint",
-    "@nuxtjs/tailwindcss",
     "@nuxt/test-utils/module"
   ],
   runtimeConfig: {

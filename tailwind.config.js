@@ -94,4 +94,8 @@ export default {
     },
   },
   plugins: [],
+  // Configuración específica para Tailwind CSS v4
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
 };
