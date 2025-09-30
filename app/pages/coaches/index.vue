@@ -2,7 +2,7 @@
 import type { Coach } from "~/interfaces/coach";
 
 const page = ref(1);
-const pageSize = 10;
+const pageSize = 20;
 const { list, remove } = useCoaches();
 const { withLoading } = useGlobalLoading();
 

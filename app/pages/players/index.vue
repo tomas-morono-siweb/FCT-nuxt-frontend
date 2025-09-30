@@ -5,7 +5,7 @@ import type { Player } from "~/interfaces/player";
 const nombre = ref("");
 const debouncedNombre = ref("");
 const page = ref(1);
-const pageSize = 10;
+const pageSize = 20;
 const { list, remove } = usePlayers();
 const { withLoading } = useGlobalLoading();
 

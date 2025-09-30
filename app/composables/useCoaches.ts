@@ -3,14 +3,18 @@ import type { PaginatedResponse } from "~/interfaces/pagination";
 import type { BackendError } from "~/interfaces/validation";
 
 export const useCoaches = () => {
-  const list = async (page = 1, pageSize = 10) => {
+  const list = async (page = 1, pageSize = 20) => {
     const response = await $fetch<{ coaches: Coach[]; pagination: any }>('/api/coaches', {
       query: { page, pageSize },
     });
 
     // Transformar la respuesta para que coincida con la interfaz esperada
     return {
-      data: response.coaches,
+      data: response.coaches.map(coach => ({
+        ...coach,
+        // Convertir salario de string a number para el frontend
+        salario: typeof coach.salario === 'string' ? parseFloat(coach.salario) : coach.salario,
+      })),
       pagination: {
         currentPage: response.pagination.current_page,
         pageSize: response.pagination.per_page,
@@ -18,11 +22,20 @@ export const useCoaches = () => {
         totalPages: response.pagination.total_pages,
         hasNextPage: response.pagination.has_next_page,
         hasPreviousPage: response.pagination.has_prev_page,
+        nextPage: response.pagination.next_page,
+        prevPage: response.pagination.prev_page,
       },
     } as PaginatedResponse<Coach>;
   };
 
-  const get = (id: number) => $fetch<Coach>(`/api/coaches/${id}`);
+  const get = async (id: number) => {
+    const coach = await $fetch<Coach>(`/api/coaches/${id}`);
+    return {
+      ...coach,
+      // Convertir salario de string a number para el frontend
+      salario: typeof coach.salario === 'string' ? parseFloat(coach.salario) : coach.salario,
+    };
+  };
 
   const create = async (payload: Partial<Coach>) => {
     try {

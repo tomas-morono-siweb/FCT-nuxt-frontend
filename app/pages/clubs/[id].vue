@@ -67,6 +67,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
                 { label: 'Ciudad', value: club.ciudad },
                 { label: 'Estadio', value: club.estadio },
                 { label: 'Año de Fundación', value: club.fundacion.toString() },
+                { label: 'Entrenador', value: club.entrenador || 'No asignado' },
               ]"
             />
           </UiDataCard>
@@ -117,6 +118,30 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
                 {{ club.presupuesto_restante ? `${club.presupuesto_restante.toLocaleString()} €` : "No disponible" }}
               </div>
               <div class="text-sm text-green-800">Presupuesto Disponible</div>
+            </div>
+          </div>
+        </UiDataCard>
+
+        <!-- Players Section -->
+        <UiDataCard
+          v-if="club.jugadores && club.jugadores.length > 0"
+          title="Jugadores del Club"
+          color="orange"
+        >
+          <div class="space-y-3">
+            <div
+              v-for="(jugador, index) in club.jugadores"
+              :key="index"
+              class="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+            >
+              <div class="flex items-center space-x-3">
+                <div
+                  class="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 text-sm font-medium text-orange-600"
+                >
+                  {{ index + 1 }}
+                </div>
+                <span class="text-gray-900">{{ jugador }}</span>
+              </div>
             </div>
           </div>
         </UiDataCard>

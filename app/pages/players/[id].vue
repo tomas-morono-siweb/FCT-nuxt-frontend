@@ -5,7 +5,7 @@ import type { Club } from "~/interfaces/club";
 const route = useRoute();
 const id = Number(route.params.id);
 const { get: getPlayer } = usePlayers();
-const { get: getClub } = useClubs();
+const { getByIdClub } = useClubs();
 
 const { data: player, pending, error } = await useAsyncData<Player>(`player:${id}`, () => getPlayer(id));
 
@@ -14,9 +14,13 @@ const { data: club } = await useAsyncData<Club | null>(
   `club:${player.value?.id_club}`,
   async () => {
     if (player.value?.id_club) {
-      // Buscar el club por id_club
-      const clubs = await useClubs().list();
-      return clubs.data.find((c) => c.id_club === player.value?.id_club) || null;
+      // OPTIMIZACIÓN: Usar endpoint específico en lugar de cargar todos los clubes
+      try {
+        return await getByIdClub(player.value.id_club);
+      } catch (error) {
+        console.warn("Club no encontrado:", player.value.id_club);
+        return null;
+      }
     }
     return null;
   },
@@ -85,6 +89,7 @@ const { data: club } = await useAsyncData<Club | null>(
                 { label: 'Nombre', value: player.nombre },
                 { label: 'Apellidos', value: player.apellidos },
                 { label: 'ID del Jugador', value: player.id },
+                { label: 'Entrenador', value: player.entrenador || 'No asignado' },
               ]"
             />
           </UiDataCard>
@@ -98,7 +103,7 @@ const { data: club } = await useAsyncData<Club | null>(
               :items="[
                 { label: 'Dorsal', value: player.dorsal ? `#${player.dorsal}` : 'Sin dorsal asignado' },
                 { label: 'Salario', value: player.salario ? `${player.salario.toLocaleString()} €` : 'No disponible' },
-                { label: 'Club', value: player.id_club ? `Club: ${player.id_club}` : 'Sin club asignado' },
+                { label: 'Club', value: player.club || 'Sin club asignado' },
               ]"
             />
           </UiDataCard>
@@ -115,7 +120,7 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-blue-800">Dorsal Asignado</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 text-center">
-              <div class="text-2xl font-bold text-gray-600">{{ player.id_club || "Sin asignar" }}</div>
+              <div class="text-2xl font-bold text-gray-600">{{ player.club || "Sin asignar" }}</div>
               <div class="text-sm text-gray-800">Club</div>
             </div>
             <div class="rounded-lg bg-blue-50 p-4 text-center">

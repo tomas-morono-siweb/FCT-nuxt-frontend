@@ -5,7 +5,7 @@ import type { Club } from "~/interfaces/club";
 const route = useRoute();
 const id = Number(route.params.id);
 const { get: getCoach } = useCoaches();
-const { get: getClub } = useClubs();
+const { getByIdClub } = useClubs();
 
 const { data: coach, pending, error } = await useAsyncData<Coach>(`coach:${id}`, () => getCoach(id));
 
@@ -14,9 +14,13 @@ const { data: club } = await useAsyncData<Club | null>(
   `club:${coach.value?.id_club}`,
   async () => {
     if (coach.value?.id_club) {
-      // Buscar el club por id_club
-      const clubs = await useClubs().list();
-      return clubs.data.find((c) => c.id_club === coach.value?.id_club) || null;
+      // OPTIMIZACIÓN: Usar endpoint específico en lugar de cargar todos los clubes
+      try {
+        return await getByIdClub(coach.value.id_club);
+      } catch (error) {
+        console.warn("Club no encontrado:", coach.value.id_club);
+        return null;
+      }
     }
     return null;
   },
@@ -102,7 +106,7 @@ const { data: club } = await useAsyncData<Club | null>(
             <UiInfoGrid
               :items="[
                 { label: 'Salario', value: coach.salario ? `${coach.salario.toLocaleString()} €` : 'No disponible' },
-                { label: 'Club Asignado', value: coach.id_club ? `Club: ${coach.id_club}` : 'Sin club asignado' },
+                { label: 'Club Asignado', value: coach.id_club || 'Sin club asignado' },
               ]"
             />
           </UiDataCard>

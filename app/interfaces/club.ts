@@ -7,4 +7,6 @@ export interface Club {
   estadio: string;
   presupuesto: number;
   presupuesto_restante: number;
+  entrenador?: string;
+  jugadores?: string[] | string;
 }

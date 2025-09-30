@@ -2,7 +2,7 @@
 import type { Club } from "~/interfaces/club";
 
 const page = ref(1);
-const pageSize = 10;
+const pageSize = 20;
 const { list, remove } = useClubs();
 const { withLoading } = useGlobalLoading();
 

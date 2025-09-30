@@ -3,14 +3,21 @@ import type { PaginatedResponse } from "~/interfaces/pagination";
 import type { BackendError } from "~/interfaces/validation";
 
 export const useClubs = () => {
-  const list = async (page = 1, pageSize = 10) => {
+  const list = async (page = 1, pageSize = 20) => {
     const response = await $fetch<{ clubs: Club[]; pagination: any }>('/api/clubs', {
       query: { page, pageSize },
     });
 
     // Transformar la respuesta para que coincida con la interfaz esperada
     return {
-      data: response.clubs,
+      data: response.clubs.map(club => ({
+        ...club,
+        // Convertir presupuesto de string a number para el frontend
+        presupuesto: typeof club.presupuesto === 'string' ? parseFloat(club.presupuesto) : club.presupuesto,
+        // Asegurar que jugadores sea siempre un array
+        jugadores: Array.isArray(club.jugadores) ? club.jugadores :
+          typeof club.jugadores === 'string' ? [club.jugadores] : [],
+      })),
       pagination: {
         currentPage: response.pagination.current_page,
         pageSize: response.pagination.per_page,
@@ -18,11 +25,35 @@ export const useClubs = () => {
         totalPages: response.pagination.total_pages,
         hasNextPage: response.pagination.has_next_page,
         hasPreviousPage: response.pagination.has_prev_page,
+        nextPage: response.pagination.next_page,
+        prevPage: response.pagination.prev_page,
       },
     } as PaginatedResponse<Club>;
   };
 
-  const get = (id: number) => $fetch<Club>(`/api/clubs/${id}`);
+  const get = async (id: number) => {
+    const club = await $fetch<Club>(`/api/clubs/${id}`);
+    return {
+      ...club,
+      // Convertir presupuesto de string a number para el frontend
+      presupuesto: typeof club.presupuesto === 'string' ? parseFloat(club.presupuesto) : club.presupuesto,
+      // Asegurar que jugadores sea siempre un array
+      jugadores: Array.isArray(club.jugadores) ? club.jugadores :
+        typeof club.jugadores === 'string' ? [club.jugadores] : [],
+    };
+  };
+
+  const getByIdClub = async (id_club: string) => {
+    const club = await $fetch<Club>(`/api/clubs/${id_club}`);
+    return {
+      ...club,
+      // Convertir presupuesto de string a number para el frontend
+      presupuesto: typeof club.presupuesto === 'string' ? parseFloat(club.presupuesto) : club.presupuesto,
+      // Asegurar que jugadores sea siempre un array
+      jugadores: Array.isArray(club.jugadores) ? club.jugadores :
+        typeof club.jugadores === 'string' ? [club.jugadores] : [],
+    };
+  };
 
   const create = async (payload: Partial<Club>) => {
     try {
@@ -61,9 +92,9 @@ export const useClubs = () => {
   };
 
   const remove = (id: number) =>
-    $fetch(`/api/clubs/${id}`, {
+    $fetch<void>(`/api/clubs/${id}`, {
       method: "DELETE",
     });
 
-  return { list, get, create, update, remove };
+  return { list, get, getByIdClub, create, update, remove };
 };

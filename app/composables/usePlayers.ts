@@ -3,14 +3,18 @@ import type { PaginatedResponse } from "~/interfaces/pagination";
 import type { BackendError } from "~/interfaces/validation";
 
 export const usePlayers = () => {
-  const list = async (nombre?: string, page = 1, pageSize = 10) => {
+  const list = async (nombre?: string, page = 1, pageSize = 20) => {
     const response = await $fetch<{ players: Player[]; pagination: any }>('/api/players', {
       query: { nombre, page, pageSize },
     });
 
     // Transformar la respuesta para que coincida con la interfaz esperada
     return {
-      data: response.players,
+      data: response.players.map(player => ({
+        ...player,
+        // Convertir salario de string a number para el frontend
+        salario: typeof player.salario === 'string' ? parseFloat(player.salario) : player.salario,
+      })),
       pagination: {
         currentPage: response.pagination.current_page,
         pageSize: response.pagination.per_page,
@@ -18,11 +22,20 @@ export const usePlayers = () => {
         totalPages: response.pagination.total_pages,
         hasNextPage: response.pagination.has_next_page,
         hasPreviousPage: response.pagination.has_prev_page,
+        nextPage: response.pagination.next_page,
+        prevPage: response.pagination.prev_page,
       },
     } as PaginatedResponse<Player>;
   };
 
-  const get = (id: number) => $fetch<Player>(`/api/players/${id}`);
+  const get = async (id: number) => {
+    const player = await $fetch<Player>(`/api/players/${id}`);
+    return {
+      ...player,
+      // Convertir salario de string a number para el frontend
+      salario: typeof player.salario === 'string' ? parseFloat(player.salario) : player.salario,
+    };
+  };
 
   const create = async (payload: Partial<Player>) => {
     try {

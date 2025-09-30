@@ -19,8 +19,11 @@ const form = reactive<Partial<Coach>>({
 const loading = ref(false);
 const error = ref("");
 
-// Load clubs for selection
-const { data: clubsResponse } = await useAsyncData("clubs", () => listClubs());
+// Load clubs for selection - OPTIMIZADO: usar caché compartido
+const { data: clubsResponse } = await useAsyncData("clubs-list", () => listClubs(), {
+  default: () => ({ data: [], pagination: null }),
+  server: false, // Solo cargar en cliente para evitar SSR duplicado
+});
 const clubs = computed(() => clubsResponse.value?.data || []);
 
 // Computed para manejar la selección del club
