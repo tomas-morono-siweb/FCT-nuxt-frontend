@@ -15,16 +15,18 @@ describe('usePlayers', () => {
         it('should fetch players list with default parameters', async () => {
             const mockResponse = {
                 players: [
-                    { id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: 50000000, dorsal: 10, club: 'PSG', id_club: 'psg-001' },
-                    { id: 2, nombre: 'Cristiano', apellidos: 'Ronaldo', salario: 45000000, dorsal: 7, club: 'Al Nassr', id_club: 'aln-001' }
+                    { id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: '50000000.00', dorsal: 10, club: 'PSG', entrenador: 'Mauricio Pochettino', id_club: 'psg-001' },
+                    { id: 2, nombre: 'Cristiano', apellidos: 'Ronaldo', salario: '45000000.00', dorsal: 7, club: 'Al Nassr', entrenador: 'Rudi Garcia', id_club: 'aln-001' }
                 ],
                 pagination: {
                     current_page: 1,
-                    per_page: 10,
+                    per_page: 20,
                     total_items: 2,
                     total_pages: 1,
                     has_next_page: false,
-                    has_prev_page: false
+                    has_prev_page: false,
+                    next_page: null,
+                    prev_page: null
                 }
             }
 
@@ -34,24 +36,30 @@ describe('usePlayers', () => {
             const result = await list()
 
             expect(mockFetch).toHaveBeenCalledWith('/api/players', {
-                query: { nombre: undefined, page: 1, pageSize: 10 }
+                query: { nombre: undefined, page: 1, pageSize: 20 }
             })
 
-            expect(result.data).toEqual(mockResponse.players)
+            expect(result.data).toHaveLength(2)
+            expect(result.data[0].salario).toBe(50000000) // Convertido a number
+            expect(result.data[0].entrenador).toBe('Mauricio Pochettino')
             expect(result.pagination.currentPage).toBe(1)
             expect(result.pagination.totalItems).toBe(2)
+            expect(result.pagination.nextPage).toBe(null)
+            expect(result.pagination.prevPage).toBe(null)
         })
 
         it('should fetch players list with search parameters', async () => {
             const mockResponse = {
-                players: [{ id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: 50000000, dorsal: 10, club: 'PSG', id_club: 'psg-001' }],
+                players: [{ id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: '50000000.00', dorsal: 10, club: 'PSG', entrenador: 'Mauricio Pochettino', id_club: 'psg-001' }],
                 pagination: {
-                    current_page: 1,
-                    per_page: 10,
+                    current_page: 2,
+                    per_page: 5,
                     total_items: 1,
                     total_pages: 1,
                     has_next_page: false,
-                    has_prev_page: false
+                    has_prev_page: true,
+                    next_page: null,
+                    prev_page: 1
                 }
             }
 
@@ -66,18 +74,22 @@ describe('usePlayers', () => {
 
             expect(result.data).toHaveLength(1)
             expect(result.data[0].nombre).toBe('Lionel')
+            expect(result.data[0].salario).toBe(50000000) // Convertido a number
+            expect(result.pagination.nextPage).toBe(null)
+            expect(result.pagination.prevPage).toBe(1)
         })
     })
 
     describe('get', () => {
         it('should fetch a single player by id', async () => {
-            const mockPlayer: Player = {
+            const mockPlayer = {
                 id: 1,
                 nombre: 'Lionel',
                 apellidos: 'Messi',
-                salario: 50000000,
+                salario: '50000000.00',
                 dorsal: 10,
                 club: 'PSG',
+                entrenador: 'Mauricio Pochettino',
                 id_club: 'psg-001'
             }
 
@@ -87,7 +99,78 @@ describe('usePlayers', () => {
             const result = await get(1)
 
             expect(mockFetch).toHaveBeenCalledWith('/api/players/1')
-            expect(result).toEqual(mockPlayer)
+            expect(result.salario).toBe(50000000) // Convertido a number
+            expect(result.entrenador).toBe('Mauricio Pochettino')
+        })
+    })
+
+    describe('data transformation', () => {
+        it('should convert salario from string to number in list', async () => {
+            const mockResponse = {
+                players: [
+                    { id: 1, nombre: 'Test', apellidos: 'Player', salario: '25000000.50', dorsal: 1, club: 'Test Club', entrenador: 'Test Coach', id_club: 'test-001' }
+                ],
+                pagination: {
+                    current_page: 1,
+                    per_page: 20,
+                    total_items: 1,
+                    total_pages: 1,
+                    has_next_page: false,
+                    has_prev_page: false,
+                    next_page: null,
+                    prev_page: null
+                }
+            }
+
+            mockFetch.mockResolvedValue(mockResponse)
+
+            const { list } = usePlayers()
+            const result = await list()
+
+            expect(result.data[0].salario).toBe(25000000.5)
+            expect(typeof result.data[0].salario).toBe('number')
+        })
+
+        it('should convert salario from string to number in get', async () => {
+            const mockPlayer = {
+                id: 1,
+                nombre: 'Test',
+                apellidos: 'Player',
+                salario: '30000000.00',
+                dorsal: 1,
+                club: 'Test Club',
+                entrenador: 'Test Coach',
+                id_club: 'test-001'
+            }
+
+            mockFetch.mockResolvedValue(mockPlayer)
+
+            const { get } = usePlayers()
+            const result = await get(1)
+
+            expect(result.salario).toBe(30000000)
+            expect(typeof result.salario).toBe('number')
+        })
+
+        it('should handle already numeric salario', async () => {
+            const mockPlayer = {
+                id: 1,
+                nombre: 'Test',
+                apellidos: 'Player',
+                salario: 40000000, // Already a number
+                dorsal: 1,
+                club: 'Test Club',
+                entrenador: 'Test Coach',
+                id_club: 'test-001'
+            }
+
+            mockFetch.mockResolvedValue(mockPlayer)
+
+            const { get } = usePlayers()
+            const result = await get(1)
+
+            expect(result.salario).toBe(40000000)
+            expect(typeof result.salario).toBe('number')
         })
     })
 
