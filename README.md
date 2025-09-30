@@ -8,7 +8,7 @@ A modern, responsive football club management application built with Nuxt.js 4, 
 
 - **Node.js** 18+
 - **pnpm** (recommended) or npm
-- **Backend API** running on http://127.0.0.1:8000
+- **Backend API** running in the same URI/URL you've put on the .env
 
 ### Installation
 
@@ -21,10 +21,11 @@ pnpm install
 
 ### Environment Setup
 
-Create a `.env` file (optional):
+Create a `.env` file from the example provided:
 
 ```bash
-API_BASE_URL=http://127.0.0.1:8000
+API_KEY=api-key-given-by-your-provider
+API_BASE_URL=base-uri-given-by-provider
 ```
 
 ## 🛠️ Development
@@ -62,30 +63,6 @@ pnpm lint         # Run ESLint
 pnpm type-check   # Run TypeScript checks
 ```
 
-## 🏗️ Tech Stack
-
-- **Framework**: Nuxt.js 4.1.2
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 4.1.13
-- **Package Manager**: pnpm
-- **API**: REST API integration with Symfony backend
-- **State Management**: Custom composables (no Pinia)
-- **Icons**: Custom SVG icons
-- **Formatting**: Custom utilities for financial data
-
-## 🌟 Features
-
-- 🎨 **Modern UI**: Responsive design with Tailwind CSS
-- 🔄 **CRUD Operations**: Full Create, Read, Update, Delete functionality
-- 📱 **Mobile First**: Optimized for all device sizes
-- 🎯 **Type Safety**: Full TypeScript implementation
-- 🔍 **Search & Filter**: Advanced filtering capabilities with debounce
-- 💰 **Smart Formatting**: Salary/budget displayed in millions format (e.g., "50M €")
-- 🧭 **Smart Navigation**: Hierarchical breadcrumbs with contextual information
-- 🎨 **Themed Sections**: Color-coded entities (🔵 Players, 🟢 Coaches, 🟠 Clubs)
-- ⚡ **Performance**: Optimized data fetching with caching
-- 🔄 **Real-time Updates**: Automatic cache invalidation after operations
-
 ## 🔌 API Integration
 
 This frontend connects to a Symfony backend API:
@@ -118,10 +95,6 @@ FCT-nuxt-frontend/
 │   ├── layouts/          # Page layouts
 │   ├── pages/            # Application pages
 │   │   ├── clubs/        # Club management pages
-│   │   │   ├── index.vue     # Club list
-│   │   │   ├── new.vue       # Create club
-│   │   │   ├── [id].vue      # Club details
-│   │   │   └── edit-[id].vue # Edit club
 │   │   ├── coaches/      # Coach management pages
 │   │   ├── players/      # Player management pages
 │   │   └── index.vue     # Home page
@@ -179,17 +152,6 @@ The application uses **custom composables** instead of Pinia for state managemen
 - **Cache invalidation**: Automatic cache clearing after mutations
 - **Error handling**: Comprehensive error states and recovery
 
-## 💰 Data Formatting
-
-The application uses a custom formatting system for financial data:
-
-- **Salaries**: Displayed as "50M €" (50 million euros)
-- **Budgets**: Displayed as "500M €" (500 million euros)
-- **Input**: Users can type "50M €" and it converts to 50,000,000
-- **Output**: All financial values are automatically formatted
-
-## 🧭 Navigation System
-
 ### Breadcrumb Hierarchy
 
 - **Listings**: `Inicio > Entidad`
@@ -222,18 +184,3 @@ The application uses a custom formatting system for financial data:
 - Ensure backend is running on http://127.0.0.1:8000
 - Check CORS configuration
 - Verify API endpoints are accessible
-
-**Build Issues:**
-
-- Clear node_modules and reinstall: `rm -rf node_modules && pnpm install`
-- Check Node.js version compatibility
-
-## 🎯 What You'll Find
-
-This is a **football club management application** that allows you to:
-
-- **Manage Players** (🔵 Blue theme) - Create, edit, view player information with salary formatting
-- **Manage Coaches** (🟢 Green theme) - Handle coaching staff data with professional details
-- **Manage Clubs** (🟠 Orange theme) - Organize club information with budget management
-
-Each section includes full CRUD operations with a modern, responsive interface, smart data formatting, and intuitive navigation.
