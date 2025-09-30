@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
-import { formatMillions } from "~/utils/format";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -81,11 +80,13 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               :items="[
                 {
                   label: 'Presupuesto Total',
-                  value: club.presupuesto ? formatMillions(club.presupuesto) : 'No disponible',
+                  value: club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : 'No disponible',
                 },
                 {
                   label: 'Presupuesto Disponible',
-                  value: club.presupuesto_restante ? formatMillions(club.presupuesto_restante) : 'No disponible',
+                  value: club.presupuesto_restante
+                    ? `${club.presupuesto_restante.toLocaleString()} €`
+                    : 'No disponible',
                 },
                 { label: 'Código del Club', value: club.id_club },
               ]"
@@ -106,11 +107,15 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               <div class="text-sm text-orange-800">Años de Historia</div>
             </div>
             <div class="rounded-lg bg-orange-50 p-4 text-center">
-              <div class="text-2xl font-bold text-orange-600">{{ formatMillions(club.presupuesto) }}</div>
+              <div class="text-2xl font-bold text-orange-600">
+                {{ club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : "No disponible" }}
+              </div>
               <div class="text-sm text-orange-800">Presupuesto Total</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
-              <div class="text-2xl font-bold text-green-600">{{ formatMillions(club.presupuesto_restante) }}</div>
+              <div class="text-2xl font-bold text-green-600">
+                {{ club.presupuesto_restante ? `${club.presupuesto_restante.toLocaleString()} €` : "No disponible" }}
+              </div>
               <div class="text-sm text-green-800">Presupuesto Disponible</div>
             </div>
           </div>

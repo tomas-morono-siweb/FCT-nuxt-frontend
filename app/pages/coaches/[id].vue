@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
 import type { Club } from "~/interfaces/club";
-import { formatMillions } from "~/utils/format";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -50,7 +49,9 @@ const { data: club } = await useAsyncData<Club | null>(
         :edit-to="`/coaches/edit-${coach?.id}`"
         back-to="/coaches"
         :badges="
-          coach ? [...(coach.salario ? [{ text: formatMillions(coach.salario), color: 'gray' as const }] : [])] : []
+          coach
+            ? [...(coach.salario ? [{ text: `${coach.salario.toLocaleString()} €`, color: 'gray' as const }] : [])]
+            : []
         "
       >
         <template #title>
@@ -100,7 +101,7 @@ const { data: club } = await useAsyncData<Club | null>(
           >
             <UiInfoGrid
               :items="[
-                { label: 'Salario', value: coach.salario ? formatMillions(coach.salario) : 'No disponible' },
+                { label: 'Salario', value: coach.salario ? `${coach.salario.toLocaleString()} €` : 'No disponible' },
                 { label: 'Club Asignado', value: coach.id_club ? `Club: ${coach.id_club}` : 'Sin club asignado' },
               ]"
             />
@@ -122,7 +123,9 @@ const { data: club } = await useAsyncData<Club | null>(
               <div class="text-sm text-gray-800">Club Asignado</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
-              <div class="text-2xl font-bold text-green-600">{{ formatMillions(coach.salario) }}</div>
+              <div class="text-2xl font-bold text-green-600">
+                {{ coach.salario ? `${coach.salario.toLocaleString()} €` : "No disponible" }}
+              </div>
               <div class="text-sm text-green-800">Salario Anual</div>
             </div>
           </div>
