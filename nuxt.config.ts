@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [],
   },
   components: [
     {
@@ -21,7 +21,11 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  modules: ["@nuxt/eslint"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/test-utils/module"
+  ],
   runtimeConfig: {
     apiSecret: "process.env.API_KEY",
     public: {
