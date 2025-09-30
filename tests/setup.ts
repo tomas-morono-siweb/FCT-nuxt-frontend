@@ -56,3 +56,11 @@ beforeEach(() => {
     // Limpiar mocks antes de cada test
     vi.clearAllMocks()
 })
+
+// Configuración global para Vue
+config.global.stubs = {
+    // Stub para componentes de Nuxt que no necesitamos testear
+    'NuxtLink': true,
+    'NuxtPage': true,
+    'ClientOnly': true
+}
