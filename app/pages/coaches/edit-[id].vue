@@ -17,7 +17,7 @@ const form = reactive<Partial<Coach>>({
   nombre: "",
   apellidos: "",
   salario: undefined,
-  id_club: undefined,
+  id_club: "", // Cambiar undefined por cadena vacía
 });
 
 // Watch for coach data changes to populate form
@@ -29,7 +29,7 @@ watch(
       form.nombre = newCoach.nombre;
       form.apellidos = newCoach.apellidos;
       form.salario = newCoach.salario;
-      form.id_club = newCoach.id_club;
+      form.id_club = newCoach.id_club || ""; // Usar cadena vacía si no hay club
     }
   },
   { immediate: true }
@@ -57,7 +57,7 @@ const selectedClubId = computed({
   },
   set: (clubName: string) => {
     const club = clubs.value.find((c) => c.nombre === clubName);
-    form.id_club = club ? club.id_club : undefined;
+    form.id_club = club ? club.id_club : ""; // Cambiar undefined por cadena vacía
   },
 });
 
@@ -66,8 +66,12 @@ const handleSubmit = async () => {
   loading.value = true;
   submitError.value = "";
 
+  console.log("📝 Datos del formulario antes de enviar:", JSON.stringify(form, null, 2));
+
   try {
     await update(id, form);
+
+    console.log("✅ Entrenador actualizado exitosamente");
 
     // Invalidar el cache de datos para forzar la recarga
     await clearNuxtData(`coach:${id}`);
@@ -210,7 +214,10 @@ const handleSubmit = async () => {
               <UiFormField
                 v-model="selectedClubId"
                 label="Club"
-                :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
+                :options="[
+                  { value: '', label: 'Sin club' },
+                  ...(clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []),
+                ]"
                 :error="''"
               />
             </div>
