@@ -1,12 +1,12 @@
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { page = 1, pageSize = 10 } = query;
+  const { page = 1, pageSize = 20 } = query;
 
   try {
     // Llamada real a la API de tu compañero - el backend maneja toda la paginación
     const apiUrl = `http://127.0.0.1:8000/clubs?${new URLSearchParams({
       page: page?.toString() || '1',
-      pageSize: pageSize?.toString() || '10'
+      pageSize: pageSize?.toString() || '20'
     }).toString()}`;
 
     const response = await $fetch(apiUrl, {
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
       }
     });
 
+    console.log('✅ Recibiendo clubes de la API externa');
     return response;
   } catch (error: any) {
     console.log('✅ Devolviendo datos mock');
