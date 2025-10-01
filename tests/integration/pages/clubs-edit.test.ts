@@ -122,7 +122,7 @@ describe('Clubs Edit Form - Integration Tests', () => {
 
         it('should validate id_club format', () => {
             const validIds = ['RM', 'FCB', 'MCI']
-            
+
             validIds.forEach(id => {
                 expect(id).toMatch(/^[A-Z]+$/)
             })
@@ -357,27 +357,27 @@ describe('Clubs Edit Form - Integration Tests', () => {
         it('should allow increasing presupuesto', () => {
             const originalPresupuesto = 500000000
             const newPresupuesto = 600000000
-            
+
             expect(newPresupuesto).toBeGreaterThan(originalPresupuesto)
         })
 
         it('should allow decreasing presupuesto', () => {
             const originalPresupuesto = 500000000
             const newPresupuesto = 400000000
-            
+
             expect(newPresupuesto).toBeLessThan(originalPresupuesto)
         })
 
         it('should validate presupuesto is positive', () => {
             const newPresupuesto = 600000000
-            
+
             expect(newPresupuesto).toBeGreaterThan(0)
         })
 
         it('should format presupuesto for display', () => {
             const presupuesto = 600000000
             const formatted = presupuesto.toLocaleString() + ' €'
-            
+
             expect(formatted).toContain('600')
             expect(formatted).toContain('€')
         })
@@ -387,14 +387,14 @@ describe('Clubs Edit Form - Integration Tests', () => {
         it('should allow changing club code', () => {
             const originalCode = 'RM'
             const newCode = 'RMA'
-            
+
             expect(newCode).not.toBe(originalCode)
             expect(newCode).toMatch(/^[A-Z]+$/)
         })
 
         it('should validate club code format', () => {
             const newCode = 'RMA'
-            
+
             expect(newCode).toMatch(/^[A-Z]+$/)
         })
     })
@@ -403,14 +403,14 @@ describe('Clubs Edit Form - Integration Tests', () => {
         it('should allow changing club name', () => {
             const originalName = 'Real Madrid'
             const newName = 'Real Madrid CF'
-            
+
             expect(newName).not.toBe(originalName)
             expect(newName.length).toBeGreaterThan(0)
         })
 
         it('should validate name is not empty', () => {
             const newName = 'Real Madrid CF'
-            
+
             expect(newName.length).toBeGreaterThan(0)
         })
     })

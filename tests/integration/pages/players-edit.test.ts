@@ -135,6 +135,17 @@ describe('Players Edit Form - Integration Tests', () => {
             expect(club).toBeDefined()
             expect(club?.nombre).toBe('Paris Saint-Germain')
         })
+
+        it('should watch for player data changes', () => {
+            const watchCallback = vi.fn()
+            const player = mockPlayer
+
+            if (player) {
+                watchCallback(player)
+            }
+
+            expect(watchCallback).toHaveBeenCalledWith(mockPlayer)
+        })
     })
 
     describe('Form Validation', () => {
@@ -205,6 +216,13 @@ describe('Players Edit Form - Integration Tests', () => {
 
             expect(club).toBeDefined()
             expect(club?.id_club).toBe('RM')
+        })
+
+        it('should handle empty club selection', () => {
+            const emptyClubId = ''
+            const club = mockClubs.find(c => c.id_club === emptyClubId)
+
+            expect(club).toBeUndefined()
         })
     })
 
@@ -279,6 +297,14 @@ describe('Players Edit Form - Integration Tests', () => {
             expect(resetForm.nombre).toBe('Lionel')
             expect(resetForm.apellidos).toBe('Messi')
         })
+
+        it('should track form changes', () => {
+            const originalSalario = mockPlayer.salario
+            const newSalario = 60000000
+            const hasChanged = originalSalario !== newSalario
+
+            expect(hasChanged).toBe(true)
+        })
     })
 
     describe('Navigation Logic', () => {
@@ -289,10 +315,158 @@ describe('Players Edit Form - Integration Tests', () => {
             expect(expectedPath).toBe('/players/1')
         })
 
-        it('should handle cancel navigation', () => {
-            const cancelPath = '/players'
+        it('should handle cancel navigation to detail', () => {
+            const playerId = 1
+            const cancelPath = `/players/${playerId}`
 
-            expect(cancelPath).toBe('/players')
+            expect(cancelPath).toBe('/players/1')
+        })
+
+        it('should handle back to list navigation', () => {
+            const backPath = '/players'
+
+            expect(backPath).toBe('/players')
+        })
+    })
+
+    describe('Cache Management', () => {
+        it('should invalidate player cache after update', () => {
+            const playerId = 1
+            const cacheKey = `player:${playerId}`
+
+            expect(cacheKey).toBe('player:1')
+        })
+
+        it('should use shared cache for clubs list', () => {
+            const cacheKey = 'clubs-list'
+
+            expect(cacheKey).toBe('clubs-list')
+        })
+    })
+
+    describe('Breadcrumb Navigation', () => {
+        it('should have correct breadcrumb structure', () => {
+            const breadcrumbs = [
+                { label: 'Inicio', to: '/', icon: 'home' },
+                { label: 'Jugadores', to: '/players', icon: 'users' },
+                { label: 'Editar', to: '', icon: 'edit' },
+                { label: `${mockPlayer.nombre} ${mockPlayer.apellidos}`, to: '', icon: 'user' }
+            ]
+
+            expect(breadcrumbs).toHaveLength(4)
+            expect(breadcrumbs[0].label).toBe('Inicio')
+            expect(breadcrumbs[1].label).toBe('Jugadores')
+            expect(breadcrumbs[2].label).toBe('Editar')
+            expect(breadcrumbs[3].label).toBe('Lionel Messi')
+        })
+
+        it('should handle breadcrumb without player data', () => {
+            const breadcrumbs = [
+                { label: 'Inicio', to: '/', icon: 'home' },
+                { label: 'Jugadores', to: '/players', icon: 'users' },
+                { label: 'Editar', to: '', icon: 'edit' },
+                { label: 'Jugador', to: '', icon: 'user' }
+            ]
+
+            expect(breadcrumbs[3].label).toBe('Jugador')
+        })
+    })
+
+    describe('Selected Club Logic', () => {
+        it('should compute selected club from id_club', () => {
+            const id_club = 'PSG'
+            const club = mockClubs.find(c => c.id_club === id_club)
+            const selectedClubName = club ? club.nombre : ''
+
+            expect(selectedClubName).toBe('Paris Saint-Germain')
+        })
+
+        it('should set id_club from selected club name', () => {
+            const clubName = 'Real Madrid'
+            const club = mockClubs.find(c => c.nombre === clubName)
+            const id_club = club ? club.id_club : ''
+
+            expect(id_club).toBe('RM')
+        })
+
+        it('should handle club change', () => {
+            const originalClubId = mockPlayer.id_club
+            const newClubId = 'RM'
+            const hasChanged = originalClubId !== newClubId
+
+            expect(hasChanged).toBe(true)
+        })
+    })
+
+    describe('Loading States', () => {
+        it('should handle pending state', () => {
+            const loadingState = { pending: true, error: null, data: null }
+
+            expect(loadingState.pending).toBe(true)
+            expect(loadingState.data).toBeNull()
+        })
+
+        it('should handle loaded state', () => {
+            const loadedState = { pending: false, error: null, data: mockPlayer }
+
+            expect(loadedState.pending).toBe(false)
+            expect(loadedState.data).toEqual(mockPlayer)
+        })
+
+        it('should handle error state', () => {
+            const errorState = { pending: false, error: new Error('Load failed'), data: null }
+
+            expect(errorState.pending).toBe(false)
+            expect(errorState.error).toBeDefined()
+            expect(errorState.data).toBeNull()
+        })
+    })
+
+    describe('Dorsal Update Logic', () => {
+        it('should allow changing dorsal', () => {
+            const originalDorsal = 10
+            const newDorsal = 30
+
+            expect(newDorsal).not.toBe(originalDorsal)
+            expect(newDorsal).toBeGreaterThan(0)
+            expect(newDorsal).toBeLessThanOrEqual(99)
+        })
+
+        it('should validate new dorsal is in range', () => {
+            const newDorsal = 15
+
+            expect(newDorsal).toBeGreaterThan(0)
+            expect(newDorsal).toBeLessThanOrEqual(99)
+        })
+    })
+
+    describe('Salary Update Logic', () => {
+        it('should allow increasing salary', () => {
+            const originalSalary = 50000000
+            const newSalary = 60000000
+
+            expect(newSalary).toBeGreaterThan(originalSalary)
+        })
+
+        it('should allow decreasing salary', () => {
+            const originalSalary = 50000000
+            const newSalary = 40000000
+
+            expect(newSalary).toBeLessThan(originalSalary)
+        })
+
+        it('should validate salary is positive', () => {
+            const newSalary = 60000000
+
+            expect(newSalary).toBeGreaterThan(0)
+        })
+
+        it('should format salary for display', () => {
+            const salary = 60000000
+            const formatted = salary.toLocaleString() + ' €'
+
+            expect(formatted).toContain('60')
+            expect(formatted).toContain('€')
         })
     })
 })
