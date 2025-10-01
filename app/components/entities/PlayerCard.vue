@@ -15,6 +15,11 @@ const emit = defineEmits<{
 }>();
 
 const handleDelete = () => {
+  // Validación defensiva: verificar que el ID existe
+  if (props.player.id === undefined || props.player.id === null) {
+    console.error("⚠️ PlayerCard: Intentando eliminar jugador sin ID válido", props.player);
+    return;
+  }
   emit("delete", props.player.id);
 };
 </script>

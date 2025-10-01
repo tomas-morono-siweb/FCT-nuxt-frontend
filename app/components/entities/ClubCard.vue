@@ -15,6 +15,11 @@ const emit = defineEmits<{
 }>();
 
 const handleDelete = () => {
+  // Validación defensiva: verificar que el ID existe
+  if (props.club.id === undefined || props.club.id === null) {
+    console.error("⚠️ ClubCard: Intentando eliminar club sin ID válido", props.club);
+    return;
+  }
   emit("delete", props.club.id);
 };
 </script>

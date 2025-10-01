@@ -56,7 +56,15 @@ const columns = [
 ];
 
 async function onDelete(id: number) {
+  // Validación defensiva: verificar que el ID es válido
+  if (id === undefined || id === null) {
+    console.error('⚠️ onDelete: ID inválido recibido:', id);
+    alert('Error: No se puede eliminar. ID inválido.');
+    return;
+  }
+
   if (!confirm("¿Seguro que deseas borrar este jugador?")) return;
+  
   await withLoading(async () => {
     await remove(id);
 

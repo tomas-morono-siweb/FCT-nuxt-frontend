@@ -16,6 +16,11 @@ const emit = defineEmits<{
 }>();
 
 const handleDelete = () => {
+  // Validación defensiva: verificar que el ID existe
+  if (props.coach.id === undefined || props.coach.id === null) {
+    console.error("⚠️ CoachCard: Intentando eliminar entrenador sin ID válido", props.coach);
+    return;
+  }
   emit("delete", props.coach.id);
 };
 
