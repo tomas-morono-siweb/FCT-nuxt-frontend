@@ -67,7 +67,7 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
                 { label: 'Ciudad', value: club.ciudad },
                 { label: 'Estadio', value: club.estadio },
                 { label: 'Año de Fundación', value: club.fundacion.toString() },
-                { label: 'Entrenador', value: club.entrenador || 'No asignado' },
+                { label: 'Entrenador', value: club.entrenador || 'Sin entrenador' },
               ]"
             />
           </UiDataCard>
@@ -81,13 +81,13 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
               :items="[
                 {
                   label: 'Presupuesto Total',
-                  value: club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : 'No disponible',
+                  value: club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : 'Sin presupuesto',
                 },
                 {
                   label: 'Presupuesto Disponible',
                   value: club.presupuesto_restante
                     ? `${club.presupuesto_restante.toLocaleString()} €`
-                    : 'No disponible',
+                    : 'Sin presupuesto',
                 },
                 { label: 'Código del Club', value: club.id_club },
               ]"
@@ -109,13 +109,13 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
             </div>
             <div class="rounded-lg bg-orange-50 p-4 text-center">
               <div class="text-2xl font-bold text-orange-600">
-                {{ club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : "No disponible" }}
+                {{ club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : "Sin presupuesto" }}
               </div>
               <div class="text-sm text-orange-800">Presupuesto Total</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
               <div class="text-2xl font-bold text-green-600">
-                {{ club.presupuesto_restante ? `${club.presupuesto_restante.toLocaleString()} €` : "No disponible" }}
+                {{ club.presupuesto_restante ? `${club.presupuesto_restante.toLocaleString()} €` : "Sin presupuesto" }}
               </div>
               <div class="text-sm text-green-800">Presupuesto Disponible</div>
             </div>
