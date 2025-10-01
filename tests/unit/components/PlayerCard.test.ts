@@ -1,16 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PlayerCard from '../../../app/components/entities/PlayerCard.vue'
 import type { Player } from '../../../app/interfaces/player'
-
-// Mock de NuxtLink
-vi.mock('#app', () => ({
-    NuxtLink: {
-        name: 'NuxtLink',
-        props: ['to'],
-        template: '<a :href="to"><slot /></a>'
-    }
-}))
 
 describe('PlayerCard', () => {
     const mockPlayer: Player = {
@@ -24,23 +15,36 @@ describe('PlayerCard', () => {
         id_club: 'psg-001'
     }
 
+    const NuxtLinkStub = {
+        name: 'NuxtLink',
+        props: ['to'],
+        template: '<a :href="to"><slot /></a>'
+    }
+
+    const mountComponent = (props: any) => {
+        return mount(PlayerCard, {
+            props,
+            global: {
+                stubs: {
+                    NuxtLink: NuxtLinkStub
+                }
+            }
+        })
+    }
+
     describe('Props and Defaults', () => {
         it('should render with default props', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer
             })
 
             expect(wrapper.props('variant')).toBe('desktop')
         })
 
         it('should accept custom props', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             expect(wrapper.props('variant')).toBe('mobile')
@@ -49,11 +53,9 @@ describe('PlayerCard', () => {
 
     describe('Desktop Variant', () => {
         it('should render desktop table row when variant is desktop', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const tableRow = wrapper.find('tr')
@@ -65,11 +67,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render player avatar with initials', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const avatar = wrapper.find('.flex.h-10.w-10')
@@ -83,11 +83,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render player name as link', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/players/1"]')
@@ -99,16 +97,14 @@ describe('PlayerCard', () => {
         })
 
         it('should render salary badge', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const salaryBadge = wrapper.find('.bg-green-100')
             expect(salaryBadge.exists()).toBe(true)
-            expect(salaryBadge.text()).toBe('50,000,000 €')
+            expect(salaryBadge.text()).toBe('50.000.000 €')
             expect(salaryBadge.classes()).toContain('inline-flex')
             expect(salaryBadge.classes()).toContain('items-center')
             expect(salaryBadge.classes()).toContain('rounded-full')
@@ -120,11 +116,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render dorsal badge', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const dorsalBadge = wrapper.find('.bg-gray-100')
@@ -134,11 +128,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render club badge', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const clubBadge = wrapper.find('.bg-orange-100')
@@ -148,11 +140,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render action buttons', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const editButton = wrapper.find('a[href="/players/edit-1"]')
@@ -169,11 +159,9 @@ describe('PlayerCard', () => {
 
     describe('Mobile Variant', () => {
         it('should render mobile card when variant is mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const mobileCard = wrapper.find('.mx-4.mb-4')
@@ -187,11 +175,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render larger avatar for mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const avatar = wrapper.find('.h-12.w-12')
@@ -203,11 +189,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render player name as link in mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/players/1"]')
@@ -218,25 +202,21 @@ describe('PlayerCard', () => {
         })
 
         it('should render salary badge in mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
-            const salaryBadge = wrapper.find('.bg-blue-100')
+            const salaryBadge = wrapper.find('span.bg-blue-100.text-blue-800')
             expect(salaryBadge.exists()).toBe(true)
-            expect(salaryBadge.text()).toBe('50,000,000 €')
+            expect(salaryBadge.text()).toBe('50.000.000 €')
             expect(salaryBadge.classes()).toContain('text-blue-800')
         })
 
         it('should render dorsal badge in mobile when available', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const dorsalBadge = wrapper.find('.bg-gray-100')
@@ -245,11 +225,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render club information in mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const clubInfo = wrapper.find('p.text-gray-500')
@@ -258,11 +236,9 @@ describe('PlayerCard', () => {
         })
 
         it('should render mobile action buttons', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const editLink = wrapper.find('a[href="/players/edit-1"]')
@@ -279,11 +255,9 @@ describe('PlayerCard', () => {
 
     describe('Events', () => {
         it('should emit delete event when delete button is clicked in desktop', async () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -294,11 +268,9 @@ describe('PlayerCard', () => {
         })
 
         it('should emit delete event when delete button is clicked in mobile', async () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const deleteButton = wrapper.find('button')
@@ -428,17 +400,15 @@ describe('PlayerCard', () => {
             })
 
             const salaryBadge = wrapper.find('.bg-green-100')
-            expect(salaryBadge.text()).toBe('1,000,000,000 €')
+            expect(salaryBadge.text()).toBe('1.000.000.000 €')
         })
     })
 
     describe('Accessibility', () => {
         it('should have proper link attributes', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/players/1"]')
@@ -449,11 +419,9 @@ describe('PlayerCard', () => {
         })
 
         it('should have proper button attributes', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -464,11 +432,9 @@ describe('PlayerCard', () => {
 
     describe('Styling and Classes', () => {
         it('should have correct hover effects in desktop', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'desktop'
             })
 
             const tableRow = wrapper.find('tr')
@@ -479,11 +445,9 @@ describe('PlayerCard', () => {
         })
 
         it('should have correct hover effects in mobile', () => {
-            const wrapper = mount(PlayerCard, {
-                props: {
-                    player: mockPlayer,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                player: mockPlayer,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/players/1"]')

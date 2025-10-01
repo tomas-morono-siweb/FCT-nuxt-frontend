@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 interface Props {
   currentPage: number;
   totalPages: number;
@@ -156,7 +158,7 @@ const colorClasses = computed(() => {
 
     <!-- Paginación para desktop -->
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-      <div>
+      <div v-if="showInfo">
         <p class="text-secondary-600 text-sm">
           Mostrando
           <span class="text-secondary-800 font-semibold">{{ startItem }}</span>

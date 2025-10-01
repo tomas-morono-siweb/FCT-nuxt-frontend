@@ -14,7 +14,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
-  error: null,
+  error: undefined,
   loadingMessage: "Cargando datos...",
 });
 </script>

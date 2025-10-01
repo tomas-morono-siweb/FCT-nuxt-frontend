@@ -14,6 +14,12 @@ const emit = defineEmits<{
   delete: [id: number];
 }>();
 
+const formatSalary = (salary: number | undefined) => {
+  if (!salary) return "Sin salario";
+  // Format with dot as thousands separator (European style)
+  return salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+};
+
 const handleDelete = () => {
   // Validación defensiva: verificar que el ID existe
   if (props.player.id === undefined || props.player.id === null) {
@@ -49,7 +55,7 @@ const handleDelete = () => {
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-        {{ player.salario ? `${player.salario.toLocaleString()} €` : "Sin salario" }}
+        {{ formatSalary(player.salario) }}
       </span>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
@@ -105,7 +111,7 @@ const handleDelete = () => {
           </NuxtLink>
           <div class="mt-1 flex flex-wrap gap-2">
             <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
-              {{ player.salario ? `${player.salario.toLocaleString()} €` : "Sin salario" }}
+              {{ formatSalary(player.salario) }}
             </span>
             <span
               v-if="player.dorsal"

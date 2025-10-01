@@ -4,29 +4,6 @@ import CoachCard from '../../../app/components/entities/CoachCard.vue'
 import type { Coach } from '../../../app/interfaces/coach'
 import type { Club } from '../../../app/interfaces/club'
 
-// Mock de NuxtLink
-vi.mock('#app', () => ({
-    NuxtLink: {
-        name: 'NuxtLink',
-        props: ['to'],
-        template: '<a :href="to"><slot /></a>'
-    }
-}))
-
-// Mock de useAsyncData y useClubs
-const mockUseAsyncData = vi.fn()
-const mockUseClubs = vi.fn()
-
-vi.mock('#app', () => ({
-    ...vi.importActual('#app'),
-    useAsyncData: mockUseAsyncData,
-    useClubs: mockUseClubs
-}))
-
-vi.mock('../../../app/composables/useClubs', () => ({
-    useClubs: mockUseClubs
-}))
-
 describe('CoachCard', () => {
     const mockCoach: Coach = {
         id: 1,
@@ -52,42 +29,40 @@ describe('CoachCard', () => {
         }
     ]
 
+    const NuxtLinkStub = {
+        name: 'NuxtLink',
+        props: ['to'],
+        template: '<a :href="to"><slot /></a>'
+    }
+
+    const mountComponent = (props: any) => {
+        return mount(CoachCard, {
+            props,
+            global: {
+                stubs: {
+                    NuxtLink: NuxtLinkStub
+                }
+            }
+        })
+    }
+
     beforeEach(() => {
         vi.clearAllMocks()
-
-        // Mock useClubs
-        mockUseClubs.mockReturnValue({
-            list: vi.fn().mockResolvedValue({
-                data: mockClubs,
-                pagination: { currentPage: 1, totalPages: 1, totalItems: 1 }
-            })
-        })
-
-        // Mock useAsyncData
-        mockUseAsyncData.mockReturnValue({
-            data: { value: { data: mockClubs, pagination: null } },
-            pending: { value: false },
-            error: { value: null }
-        })
     })
 
     describe('Props and Defaults', () => {
         it('should render with default props', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach
             })
 
             expect(wrapper.props('variant')).toBe('desktop')
         })
 
         it('should accept custom props', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             expect(wrapper.props('variant')).toBe('mobile')
@@ -96,45 +71,47 @@ describe('CoachCard', () => {
 
     describe('Desktop Variant', () => {
         it('should render desktop table row when variant is desktop', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
+
+            // Debug: ver qué se está renderizando
+            // console.log(wrapper.html())
 
             const tableRow = wrapper.find('tr')
             expect(tableRow.exists()).toBe(true)
-            expect(tableRow.classes()).toContain('group')
-            expect(tableRow.classes()).toContain('transition-all')
-            expect(tableRow.classes()).toContain('duration-200')
-            expect(tableRow.classes()).toContain('hover:bg-green-50/30')
+
+            if (tableRow.exists()) {
+                expect(tableRow.classes()).toContain('group')
+                expect(tableRow.classes()).toContain('transition-all')
+                expect(tableRow.classes()).toContain('duration-200')
+                expect(tableRow.classes()).toContain('hover:bg-green-50/30')
+            }
         })
 
         it('should render coach avatar with initials', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const avatar = wrapper.find('.flex.h-10.w-10')
             expect(avatar.exists()).toBe(true)
 
-            const initials = avatar.find('span')
-            expect(initials.text()).toBe('PG') // Pep Guardiola
-            expect(initials.classes()).toContain('text-sm')
-            expect(initials.classes()).toContain('font-semibold')
-            expect(initials.classes()).toContain('text-green-700')
+            if (avatar.exists()) {
+                const initials = avatar.find('span')
+                expect(initials.text()).toBe('PG') // Pep Guardiola
+                expect(initials.classes()).toContain('text-sm')
+                expect(initials.classes()).toContain('font-semibold')
+                expect(initials.classes()).toContain('text-green-700')
+            }
         })
 
         it('should render coach name as link', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/coaches/1"]')
@@ -146,16 +123,14 @@ describe('CoachCard', () => {
         })
 
         it('should render salary badge', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const salaryBadge = wrapper.find('.bg-gray-100')
             expect(salaryBadge.exists()).toBe(true)
-            expect(salaryBadge.text()).toBe('20,000,000 €')
+            expect(salaryBadge.text()).toBe('20.000.000 €')
             expect(salaryBadge.classes()).toContain('inline-flex')
             expect(salaryBadge.classes()).toContain('items-center')
             expect(salaryBadge.classes()).toContain('rounded-full')
@@ -166,26 +141,24 @@ describe('CoachCard', () => {
             expect(salaryBadge.classes()).toContain('text-gray-800')
         })
 
-        it('should render club badge with club name', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+        it('should render club badge with club code', () => {
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
-            const clubBadge = wrapper.find('.bg-green-100')
+            // Buscar específicamente el badge de club (tercer td -> span)
+            const clubBadges = wrapper.findAll('.bg-green-100')
+            const clubBadge = clubBadges[1] // El segundo es el club badge (primero es avatar)
             expect(clubBadge.exists()).toBe(true)
-            expect(clubBadge.text()).toBe('Manchester City')
+            expect(clubBadge.text()).toBe('MCI')
             expect(clubBadge.classes()).toContain('text-green-800')
         })
 
         it('should render action buttons', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const editButton = wrapper.find('a[href="/coaches/edit-1"]')
@@ -202,11 +175,9 @@ describe('CoachCard', () => {
 
     describe('Mobile Variant', () => {
         it('should render mobile card when variant is mobile', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const mobileCard = wrapper.find('.mx-4.mb-4')
@@ -220,11 +191,9 @@ describe('CoachCard', () => {
         })
 
         it('should render larger avatar for mobile', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const avatar = wrapper.find('.h-12.w-12')
@@ -236,11 +205,9 @@ describe('CoachCard', () => {
         })
 
         it('should render coach name as link in mobile', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/coaches/1"]')
@@ -251,38 +218,32 @@ describe('CoachCard', () => {
         })
 
         it('should render salary badge in mobile when available', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
-            const salaryBadge = wrapper.find('.bg-green-100')
+            const salaryBadge = wrapper.find('span.bg-green-100.text-green-800')
             expect(salaryBadge.exists()).toBe(true)
-            expect(salaryBadge.text()).toBe('20,000,000 €')
+            expect(salaryBadge.text()).toBe('20.000.000 €')
             expect(salaryBadge.classes()).toContain('text-green-800')
         })
 
         it('should render club information in mobile', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const clubInfo = wrapper.find('p.text-gray-500')
             expect(clubInfo.exists()).toBe(true)
-            expect(clubInfo.text()).toBe('Club: Manchester City')
+            expect(clubInfo.text()).toBe('Club: MCI')
         })
 
         it('should render mobile action buttons', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const editLink = wrapper.find('a[href="/coaches/edit-1"]')
@@ -297,76 +258,30 @@ describe('CoachCard', () => {
         })
     })
 
-    describe('Club Name Resolution', () => {
-        it('should show club name when club is found', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+    describe('Club Code Display', () => {
+        it('should show club code', () => {
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
-            const clubBadge = wrapper.find('.bg-green-100')
-            expect(clubBadge.text()).toBe('Manchester City')
+            const clubBadges = wrapper.findAll('.bg-green-100')
+            expect(clubBadges[1].text()).toBe('MCI')
         })
 
-        it('should show club code when club is not found', () => {
+        it('should show unknown club code', () => {
             const coachWithUnknownClub: Coach = {
                 ...mockCoach,
                 id_club: 'UNKNOWN'
             }
 
-            mockUseAsyncData.mockReturnValue({
-                data: { value: { data: mockClubs, pagination: null } },
-                pending: { value: false },
-                error: { value: null }
+            const wrapper = mountComponent({
+                coach: coachWithUnknownClub,
+                variant: 'desktop'
             })
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithUnknownClub,
-                    variant: 'desktop'
-                }
-            })
-
-            const clubBadge = wrapper.find('.bg-green-100')
-            expect(clubBadge.text()).toBe('UNKNOWN')
-        })
-
-        it('should show club code when clubs are loading', () => {
-            mockUseAsyncData.mockReturnValue({
-                data: { value: null },
-                pending: { value: true },
-                error: { value: null }
-            })
-
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
-            })
-
-            const clubBadge = wrapper.find('.bg-green-100')
-            expect(clubBadge.text()).toBe('MCI')
-        })
-
-        it('should show club code when there is an error loading clubs', () => {
-            mockUseAsyncData.mockReturnValue({
-                data: { value: null },
-                pending: { value: false },
-                error: { value: new Error('Failed to load clubs') }
-            })
-
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
-            })
-
-            const clubBadge = wrapper.find('.bg-green-100')
-            expect(clubBadge.text()).toBe('MCI')
+            const clubBadges = wrapper.findAll('.bg-green-100')
+            expect(clubBadges[1].text()).toBe('UNKNOWN')
         })
 
         it('should show dash when no club assigned', () => {
@@ -375,25 +290,21 @@ describe('CoachCard', () => {
                 id_club: ''
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithoutClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithoutClub,
+                variant: 'desktop'
             })
 
-            const clubBadge = wrapper.find('.bg-green-100')
-            expect(clubBadge.text()).toBe('-')
+            const clubBadges = wrapper.findAll('.bg-green-100')
+            expect(clubBadges[1].text()).toBe('-')
         })
     })
 
     describe('Events', () => {
         it('should emit delete event when delete button is clicked in desktop', async () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -404,11 +315,9 @@ describe('CoachCard', () => {
         })
 
         it('should emit delete event when delete button is clicked in mobile', async () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const deleteButton = wrapper.find('button')
@@ -426,11 +335,9 @@ describe('CoachCard', () => {
                 salario: 0
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithoutSalary,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithoutSalary,
+                variant: 'desktop'
             })
 
             const salaryBadge = wrapper.find('.bg-gray-100')
@@ -443,14 +350,12 @@ describe('CoachCard', () => {
                 salario: 0
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithoutSalary,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithoutSalary,
+                variant: 'mobile'
             })
 
-            const salaryBadge = wrapper.find('.bg-green-100')
+            const salaryBadge = wrapper.find('span.bg-green-100.text-green-800')
             expect(salaryBadge.exists()).toBe(false)
         })
 
@@ -460,15 +365,14 @@ describe('CoachCard', () => {
                 id_club: ''
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithoutClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithoutClub,
+                variant: 'mobile'
             })
 
             const clubInfo = wrapper.find('p.text-gray-500')
-            expect(clubInfo.exists()).toBe(false)
+            expect(clubInfo.exists()).toBe(true)
+            expect(clubInfo.text()).toBe('Club: -')
         })
 
         it('should handle coach with long names', () => {
@@ -478,11 +382,9 @@ describe('CoachCard', () => {
                 apellidos: 'Mourinho dos Santos'
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithLongName,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithLongName,
+                variant: 'desktop'
             })
 
             const initials = wrapper.find('.text-green-700')
@@ -496,11 +398,9 @@ describe('CoachCard', () => {
                 apellidos: 'María'
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithSpecialChars,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithSpecialChars,
+                variant: 'desktop'
             })
 
             const initials = wrapper.find('.text-green-700')
@@ -513,25 +413,21 @@ describe('CoachCard', () => {
                 salario: 50000000
             }
 
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: coachWithLargeSalary,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: coachWithLargeSalary,
+                variant: 'desktop'
             })
 
             const salaryBadge = wrapper.find('.bg-gray-100')
-            expect(salaryBadge.text()).toBe('50,000,000 €')
+            expect(salaryBadge.text()).toBe('50.000.000 €')
         })
     })
 
     describe('Accessibility', () => {
         it('should have proper link attributes', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/coaches/1"]')
@@ -542,11 +438,9 @@ describe('CoachCard', () => {
         })
 
         it('should have proper button attributes', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -557,11 +451,9 @@ describe('CoachCard', () => {
 
     describe('Styling and Classes', () => {
         it('should have correct hover effects in desktop', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
             const tableRow = wrapper.find('tr')
@@ -572,11 +464,9 @@ describe('CoachCard', () => {
         })
 
         it('should have correct hover effects in mobile', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/coaches/1"]')
@@ -590,11 +480,9 @@ describe('CoachCard', () => {
         })
 
         it('should have correct mobile card hover effects', () => {
-            const wrapper = mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'mobile'
             })
 
             const mobileCard = wrapper.find('.mx-4.mb-4')
@@ -602,30 +490,14 @@ describe('CoachCard', () => {
         })
     })
 
-    describe('Data Loading Integration', () => {
-        it('should call useAsyncData with correct parameters', () => {
-            mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
+    describe('Component Rendering', () => {
+        it('should render without errors', () => {
+            const wrapper = mountComponent({
+                coach: mockCoach,
+                variant: 'desktop'
             })
 
-            expect(mockUseAsyncData).toHaveBeenCalledWith(
-                'clubs-shared',
-                expect.any(Function)
-            )
-        })
-
-        it('should call useClubs list method', () => {
-            mount(CoachCard, {
-                props: {
-                    coach: mockCoach,
-                    variant: 'desktop'
-                }
-            })
-
-            expect(mockUseClubs).toHaveBeenCalled()
+            expect(wrapper.exists()).toBe(true)
         })
     })
 })

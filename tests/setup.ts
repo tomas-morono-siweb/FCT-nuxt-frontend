@@ -1,6 +1,37 @@
 import { config } from '@vue/test-utils'
 import { vi } from 'vitest'
 
+// Mock de Nuxt composables comunes - DEBE estar ANTES de las importaciones
+vi.mock('#app', async () => {
+    return {
+        useRoute: () => ({
+            params: {},
+            query: {},
+            path: '/',
+            name: 'index'
+        }),
+        useRouter: () => ({
+            push: vi.fn(),
+            replace: vi.fn(),
+            go: vi.fn(),
+            back: vi.fn(),
+            forward: vi.fn()
+        }),
+        navigateTo: vi.fn(),
+        useNuxtApp: () => ({
+            $router: {
+                push: vi.fn(),
+                replace: vi.fn()
+            }
+        }),
+        useAsyncData: vi.fn(() => Promise.resolve({
+            data: { value: null },
+            pending: { value: false },
+            error: { value: null }
+        }))
+    }
+})
+
 // Configuración global para Vue Test Utils
 config.global.mocks = {
     // Mock de $fetch para tests
@@ -23,30 +54,6 @@ config.global.mocks = {
         forward: vi.fn()
     }
 }
-
-// Mock de Nuxt composables comunes
-vi.mock('#app', () => ({
-    useRoute: () => ({
-        params: {},
-        query: {},
-        path: '/',
-        name: 'index'
-    }),
-    useRouter: () => ({
-        push: vi.fn(),
-        replace: vi.fn(),
-        go: vi.fn(),
-        back: vi.fn(),
-        forward: vi.fn()
-    }),
-    navigateTo: vi.fn(),
-    useNuxtApp: () => ({
-        $router: {
-            push: vi.fn(),
-            replace: vi.fn()
-        }
-    })
-}))
 
     // Mock de $fetch global
     ; (globalThis as any).$fetch = vi.fn()

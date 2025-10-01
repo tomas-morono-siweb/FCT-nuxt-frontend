@@ -1,23 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import UiDataTable from '../../../app/components/ui/DataTable.vue'
-
-// Mock de los componentes hijos
-vi.mock('../../../app/components/ui/LoadingState.vue', () => ({
-    default: {
-        name: 'UiLoadingState',
-        props: ['variant', 'message'],
-        template: '<div data-testid="loading-state">{{ message }}</div>'
-    }
-}))
-
-vi.mock('../../../app/components/ui/ErrorState.vue', () => ({
-    default: {
-        name: 'UiErrorState',
-        props: ['variant', 'message'],
-        template: '<div data-testid="error-state">{{ message }}</div>'
-    }
-}))
 
 describe('UiDataTable', () => {
     const mockColumns = [
@@ -26,16 +9,35 @@ describe('UiDataTable', () => {
         { key: 'email', label: 'Email', sortable: true }
     ]
 
+    const mountWithComponents = (props: any, options: any = {}) => {
+        return mount(UiDataTable, {
+            props,
+            global: {
+                stubs: {
+                    UiLoadingState: {
+                        name: 'UiLoadingState',
+                        props: ['variant', 'message'],
+                        template: '<div class="loading-state">Loading: {{ message }}</div>'
+                    },
+                    UiErrorState: {
+                        name: 'UiErrorState',
+                        props: ['variant', 'message'],
+                        template: '<div class="error-state">Error: {{ message }}</div>'
+                    }
+                }
+            },
+            ...options
+        })
+    }
+
     describe('Props and Defaults', () => {
         it('should render with default props', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns
             })
 
             expect(wrapper.props('loading')).toBe(false)
-            expect(wrapper.props('error')).toBe(null)
+            expect(wrapper.props('error')).toBeUndefined()
             expect(wrapper.props('loadingMessage')).toBe('Cargando datos...')
         })
 
@@ -107,12 +109,10 @@ describe('UiDataTable', () => {
 
     describe('Loading State', () => {
         it('should show loading state in desktop view', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns,
-                    loading: true,
-                    loadingMessage: 'Cargando datos...'
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns,
+                loading: true,
+                loadingMessage: 'Cargando datos...'
             })
 
             const loadingState = wrapper.findComponent({ name: 'UiLoadingState' })
@@ -122,12 +122,10 @@ describe('UiDataTable', () => {
         })
 
         it('should show loading state in mobile view', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns,
-                    loading: true,
-                    loadingMessage: 'Cargando datos...'
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns,
+                loading: true,
+                loadingMessage: 'Cargando datos...'
             })
 
             const mobileLoadingState = wrapper.findAllComponents({ name: 'UiLoadingState' })
@@ -155,11 +153,9 @@ describe('UiDataTable', () => {
 
     describe('Error State', () => {
         it('should show error state in desktop view', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns,
-                    error: 'Error de conexión'
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns,
+                error: 'Error de conexión'
             })
 
             const errorState = wrapper.findComponent({ name: 'UiErrorState' })
@@ -169,11 +165,9 @@ describe('UiDataTable', () => {
         })
 
         it('should show error state in mobile view', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns,
-                    error: 'Error de conexión'
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns,
+                error: 'Error de conexión'
             })
 
             const mobileErrorState = wrapper.findAllComponents({ name: 'UiErrorState' })
@@ -350,12 +344,10 @@ describe('UiDataTable', () => {
         })
 
         it('should prioritize loading over error state', () => {
-            const wrapper = mount(UiDataTable, {
-                props: {
-                    columns: mockColumns,
-                    loading: true,
-                    error: 'Error de conexión'
-                }
+            const wrapper = mountWithComponents({
+                columns: mockColumns,
+                loading: true,
+                error: 'Error de conexión'
             })
 
             // Cuando está cargando, no debería mostrar error

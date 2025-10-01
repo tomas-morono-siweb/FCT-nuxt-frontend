@@ -1,16 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ClubCard from '../../../app/components/entities/ClubCard.vue'
 import type { Club } from '../../../app/interfaces/club'
-
-// Mock de NuxtLink
-vi.mock('#app', () => ({
-    NuxtLink: {
-        name: 'NuxtLink',
-        props: ['to'],
-        template: '<a :href="to"><slot /></a>'
-    }
-}))
 
 describe('ClubCard', () => {
     const mockClub: Club = {
@@ -26,23 +17,36 @@ describe('ClubCard', () => {
         jugadores: ['Vinicius Junior', 'Jude Bellingham']
     }
 
+    const NuxtLinkStub = {
+        name: 'NuxtLink',
+        props: ['to'],
+        template: '<a :href="to"><slot /></a>'
+    }
+
+    const mountComponent = (props: any) => {
+        return mount(ClubCard, {
+            props,
+            global: {
+                stubs: {
+                    NuxtLink: NuxtLinkStub
+                }
+            }
+        })
+    }
+
     describe('Props and Defaults', () => {
         it('should render with default props', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub
-                }
+            const wrapper = mountComponent({
+                club: mockClub
             })
 
             expect(wrapper.props('variant')).toBe('desktop')
         })
 
         it('should accept custom props', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             expect(wrapper.props('variant')).toBe('mobile')
@@ -51,11 +55,9 @@ describe('ClubCard', () => {
 
     describe('Desktop Variant', () => {
         it('should render desktop table row when variant is desktop', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const tableRow = wrapper.find('tr')
@@ -67,11 +69,9 @@ describe('ClubCard', () => {
         })
 
         it('should render club avatar with first letter', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const avatar = wrapper.find('.flex.h-10.w-10')
@@ -85,11 +85,9 @@ describe('ClubCard', () => {
         })
 
         it('should render club name as link', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/clubs/1"]')
@@ -101,14 +99,12 @@ describe('ClubCard', () => {
         })
 
         it('should render city badge', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
-            const cityBadge = wrapper.find('.bg-orange-100')
+            const cityBadge = wrapper.find('span.bg-orange-100.text-orange-800')
             expect(cityBadge.exists()).toBe(true)
             expect(cityBadge.text()).toBe('Madrid')
             expect(cityBadge.classes()).toContain('inline-flex')
@@ -122,11 +118,9 @@ describe('ClubCard', () => {
         })
 
         it('should render stadium badge', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const stadiumBadge = wrapper.find('.bg-gray-100')
@@ -136,11 +130,9 @@ describe('ClubCard', () => {
         })
 
         it('should render foundation year badge', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const foundationBadge = wrapper.find('.bg-green-100')
@@ -150,11 +142,9 @@ describe('ClubCard', () => {
         })
 
         it('should render action buttons', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const editButton = wrapper.find('a[href="/clubs/edit-1"]')
@@ -171,11 +161,9 @@ describe('ClubCard', () => {
 
     describe('Mobile Variant', () => {
         it('should render mobile card when variant is mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const mobileCard = wrapper.find('.mx-4.mb-4')
@@ -189,11 +177,9 @@ describe('ClubCard', () => {
         })
 
         it('should render larger avatar for mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const avatar = wrapper.find('.h-12.w-12')
@@ -205,11 +191,9 @@ describe('ClubCard', () => {
         })
 
         it('should render club name as link in mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/clubs/1"]')
@@ -220,11 +204,9 @@ describe('ClubCard', () => {
         })
 
         it('should render city badge in mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const cityBadge = wrapper.find('.bg-gray-100')
@@ -234,25 +216,21 @@ describe('ClubCard', () => {
         })
 
         it('should render foundation year badge in mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
-            const foundationBadge = wrapper.find('.bg-orange-100')
+            const foundationBadge = wrapper.find('span.bg-orange-100.text-orange-800')
             expect(foundationBadge.exists()).toBe(true)
             expect(foundationBadge.text()).toBe('1902')
             expect(foundationBadge.classes()).toContain('text-orange-800')
         })
 
         it('should render stadium information in mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const stadiumInfo = wrapper.find('p.text-gray-500')
@@ -261,11 +239,9 @@ describe('ClubCard', () => {
         })
 
         it('should render mobile action buttons', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const editLink = wrapper.find('a[href="/clubs/edit-1"]')
@@ -282,11 +258,9 @@ describe('ClubCard', () => {
 
     describe('Events', () => {
         it('should emit delete event when delete button is clicked in desktop', async () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -297,11 +271,9 @@ describe('ClubCard', () => {
         })
 
         it('should emit delete event when delete button is clicked in mobile', async () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const deleteButton = wrapper.find('button')
@@ -353,14 +325,12 @@ describe('ClubCard', () => {
                 ciudad: ''
             }
 
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: clubWithoutCity,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: clubWithoutCity,
+                variant: 'desktop'
             })
 
-            const cityBadge = wrapper.find('.bg-orange-100')
+            const cityBadge = wrapper.find('span.bg-orange-100.text-orange-800')
             expect(cityBadge.text()).toBe('')
         })
 
@@ -435,11 +405,9 @@ describe('ClubCard', () => {
 
     describe('Accessibility', () => {
         it('should have proper link attributes', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const nameLink = wrapper.find('a[href="/clubs/1"]')
@@ -450,11 +418,9 @@ describe('ClubCard', () => {
         })
 
         it('should have proper button attributes', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const deleteButton = wrapper.find('button')
@@ -465,11 +431,9 @@ describe('ClubCard', () => {
 
     describe('Styling and Classes', () => {
         it('should have correct hover effects in desktop', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             const tableRow = wrapper.find('tr')
@@ -480,11 +444,9 @@ describe('ClubCard', () => {
         })
 
         it('should have correct hover effects in mobile', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             const nameLink = wrapper.find('a[href="/clubs/1"]')
@@ -498,11 +460,9 @@ describe('ClubCard', () => {
         })
 
         it('should have correct color scheme', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             // Avatar should be orange
@@ -525,11 +485,9 @@ describe('ClubCard', () => {
 
     describe('Data Display', () => {
         it('should display all club information correctly', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'desktop'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'desktop'
             })
 
             expect(wrapper.text()).toContain('Real Madrid')
@@ -539,11 +497,9 @@ describe('ClubCard', () => {
         })
 
         it('should display club information in mobile layout', () => {
-            const wrapper = mount(ClubCard, {
-                props: {
-                    club: mockClub,
-                    variant: 'mobile'
-                }
+            const wrapper = mountComponent({
+                club: mockClub,
+                variant: 'mobile'
             })
 
             expect(wrapper.text()).toContain('Real Madrid')

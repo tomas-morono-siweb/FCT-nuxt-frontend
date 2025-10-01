@@ -71,8 +71,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const infoElements = wrapper.findAll('.text-secondary-600')
-            expect(infoElements).toHaveLength(0)
+            // When showInfo is false, the desktop info text should not exist
+            const desktopInfo = wrapper.find('.hidden.sm\\:flex .text-secondary-600')
+            expect(desktopInfo.exists()).toBe(false)
         })
     })
 
@@ -95,7 +96,9 @@ describe('UiPagination', () => {
                 props: defaultProps
             })
 
-            const nextButton = wrapper.find('button[aria-label="Pagination"] button:last-child')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const buttons = nav.findAll('button')
+            const nextButton = buttons[buttons.length - 1] // Last button is "Next"
             await nextButton.trigger('click')
 
             expect(wrapper.emitted('page-change')).toBeTruthy()
@@ -110,7 +113,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const prevButton = wrapper.find('button[aria-label="Pagination"] button:first-child')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const buttons = nav.findAll('button')
+            const prevButton = buttons[0] // First button is "Previous"
             await prevButton.trigger('click')
 
             expect(wrapper.emitted('page-change')).toBeTruthy()
@@ -137,7 +142,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const prevButton = wrapper.find('button[aria-label="Pagination"] button:first-child')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const buttons = nav.findAll('button')
+            const prevButton = buttons[0] // First button is "Previous"
             await prevButton.trigger('click')
 
             expect(wrapper.emitted('page-change')).toBeFalsy()
@@ -153,8 +160,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const pageButtons = wrapper.findAll('button[aria-label="Pagination"] button')
-            // Should show: Previous, 1, 2, 3, Next
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const pageButtons = nav.findAll('button')
+            // Should show: Previous, 1, 2, 3, Next = 5 buttons total
             expect(pageButtons.length).toBeGreaterThanOrEqual(3)
         })
 
@@ -181,7 +189,8 @@ describe('UiPagination', () => {
                 }
             })
 
-            const pageButtons = wrapper.findAll('button[aria-label="Pagination"] button')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const pageButtons = nav.findAll('button')
             const pageNumbers = pageButtons
                 .map(btn => btn.text())
                 .filter(text => !isNaN(Number(text)))
@@ -202,7 +211,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const prevButton = wrapper.find('button[aria-label="Pagination"] button:first-child')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const buttons = nav.findAll('button')
+            const prevButton = buttons[0] // First button is "Previous"
             expect(prevButton.attributes('disabled')).toBeDefined()
         })
 
@@ -215,7 +226,9 @@ describe('UiPagination', () => {
                 }
             })
 
-            const nextButton = wrapper.find('button[aria-label="Pagination"] button:last-child')
+            const nav = wrapper.find('nav[aria-label="Pagination"]')
+            const buttons = nav.findAll('button')
+            const nextButton = buttons[buttons.length - 1] // Last button is "Next"
             expect(nextButton.attributes('disabled')).toBeDefined()
         })
 

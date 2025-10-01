@@ -25,7 +25,6 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <!-- Desktop Table Row -->
   <tr
     v-if="variant === 'desktop'"
     class="group transition-all duration-200 hover:bg-orange-50/30"

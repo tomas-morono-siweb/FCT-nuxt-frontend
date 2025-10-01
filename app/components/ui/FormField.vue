@@ -20,7 +20,15 @@ const emit = defineEmits<{
 
 const updateValue = (event: Event) => {
   const target = event.target as HTMLInputElement | HTMLSelectElement;
-  const value = props.type === "number" ? Number(target.value) : target.value;
+  let value: string | number | undefined;
+  
+  if (props.type === "number") {
+    // Handle empty string for number inputs
+    value = target.value === "" ? "" : Number(target.value);
+  } else {
+    value = target.value;
+  }
+  
   emit("update:modelValue", value);
 };
 </script>
