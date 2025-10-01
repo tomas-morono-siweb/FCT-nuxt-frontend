@@ -43,18 +43,6 @@ export const useClubs = () => {
     };
   };
 
-  const getByIdClub = async (id_club: string) => {
-    const club = await $fetch<Club>(`/api/clubs/${id_club}`);
-    return {
-      ...club,
-      // Convertir presupuesto de string a number para el frontend
-      presupuesto: typeof club.presupuesto === 'string' ? parseFloat(club.presupuesto) : club.presupuesto,
-      // Asegurar que jugadores sea siempre un array
-      jugadores: Array.isArray(club.jugadores) ? club.jugadores :
-        typeof club.jugadores === 'string' ? [club.jugadores] : [],
-    };
-  };
-
   const create = async (payload: Partial<Club>) => {
     try {
       return await $fetch<Club>('/api/clubs', {
@@ -84,5 +72,5 @@ export const useClubs = () => {
       method: "DELETE",
     });
 
-  return { list, get, getByIdClub, create, update, remove };
+  return { list, get, create, update, remove };
 };
