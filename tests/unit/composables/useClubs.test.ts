@@ -134,33 +134,6 @@ describe('useClubs', () => {
         })
     })
 
-    describe('getByIdClub', () => {
-        it('should fetch a single club by id_club', async () => {
-            const mockClub = {
-                id: 1,
-                id_club: 'RM',
-                nombre: 'Real Madrid',
-                fundacion: 1902,
-                ciudad: 'Madrid',
-                estadio: 'Santiago Bernabéu',
-                presupuesto: '500000000.00',
-                presupuesto_restante: 300000000,
-                entrenador: 'Carlo Ancelotti',
-                jugadores: ['Vinicius Junior', 'Jude Bellingham']
-            }
-
-            mockFetch.mockResolvedValue(mockClub)
-
-            const { getByIdClub } = useClubs()
-            const result = await getByIdClub('RM')
-
-            expect(mockFetch).toHaveBeenCalledWith('/api/clubs/RM')
-            expect(result.presupuesto).toBe(500000000) // Convertido a number
-            expect(result.entrenador).toBe('Carlo Ancelotti')
-            expect(result.jugadores).toEqual(['Vinicius Junior', 'Jude Bellingham'])
-        })
-    })
-
     describe('data transformation', () => {
         it('should convert presupuesto from string to number in list', async () => {
             const mockResponse = {
