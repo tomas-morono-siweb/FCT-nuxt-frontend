@@ -62,13 +62,7 @@ export const useClubs = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Manejar errores del backend
-      if (error.data?.error) {
-        throw {
-          error: error.data.error,
-          statusCode: error.statusCode || 400
-        } as BackendError;
-      }
+      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };
@@ -80,13 +74,7 @@ export const useClubs = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Manejar errores del backend
-      if (error.data?.error) {
-        throw {
-          error: error.data.error,
-          statusCode: error.statusCode || 400
-        } as BackendError;
-      }
+      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };
