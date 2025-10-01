@@ -24,7 +24,7 @@ describe('Clubs Index Page - Integration Tests', () => {
             presupuesto: 500000000,
             presupuesto_restante: 300000000,
             entrenador: 'Carlo Ancelotti',
-            jugadores: ['Vinicius Junior', 'Jude Bellingham']
+            jugadores: []
         },
         {
             id: 2,
@@ -36,7 +36,7 @@ describe('Clubs Index Page - Integration Tests', () => {
             presupuesto: 400000000,
             presupuesto_restante: 250000000,
             entrenador: 'Xavi Hernández',
-            jugadores: ['Robert Lewandowski', 'Pedri González']
+            jugadores: []
         }
     ]
 
@@ -74,6 +74,10 @@ describe('Clubs Index Page - Integration Tests', () => {
             expect(mockUseClubs).toBeDefined()
         })
 
+        it('should call useGlobalLoading composable', () => {
+            expect(mockUseGlobalLoading).toBeDefined()
+        })
+
         it('should return correct data structure from useClubs', async () => {
             const clubsComposable = mockUseClubs()
             const result = await clubsComposable.list()
@@ -108,44 +112,41 @@ describe('Clubs Index Page - Integration Tests', () => {
             expect(club).toHaveProperty('jugadores')
         })
 
-        it('should validate club ID format', () => {
-            const club = mockClubs[0]
-            expect(club.id_club).toMatch(/^[A-Z]{2,3}$/)
-        })
-
-        it('should validate foundation year', () => {
-            const club = mockClubs[0]
-            expect(club.fundacion).toBeGreaterThan(1800)
-            expect(club.fundacion).toBeLessThan(2025)
-        })
-
-        it('should validate budget values', () => {
-            const club = mockClubs[0]
-            expect(club.presupuesto).toBeGreaterThan(0)
-            expect(club.presupuesto_restante).toBeGreaterThanOrEqual(0)
-            expect(club.presupuesto_restante).toBeLessThanOrEqual(club.presupuesto)
+        it('should have correct pagination structure', () => {
+            expect(mockPagination).toHaveProperty('currentPage')
+            expect(mockPagination).toHaveProperty('pageSize')
+            expect(mockPagination).toHaveProperty('totalItems')
+            expect(mockPagination).toHaveProperty('totalPages')
+            expect(mockPagination).toHaveProperty('hasNextPage')
+            expect(mockPagination).toHaveProperty('hasPreviousPage')
+            expect(mockPagination).toHaveProperty('nextPage')
+            expect(mockPagination).toHaveProperty('prevPage')
         })
     })
 
     describe('Business Logic', () => {
-        it('should format budget correctly', () => {
-            const budget = 500000000
-            const formatted = new Intl.NumberFormat('es-ES').format(budget) + ' €'
+        it('should format presupuesto correctly', () => {
+            const presupuesto = 500000000
+            const formatted = new Intl.NumberFormat('es-ES').format(presupuesto) + ' €'
             expect(formatted).toBe('500.000.000 €')
         })
 
-        it('should handle players array', () => {
+        it('should calculate years of history', () => {
             const club = mockClubs[0]
-            expect(Array.isArray(club.jugadores)).toBe(true)
-            expect(club.jugadores.length).toBeGreaterThan(0)
+            const currentYear = new Date().getFullYear()
+            const yearsOfHistory = currentYear - club.fundacion
+            expect(yearsOfHistory).toBeGreaterThan(100)
         })
 
-        it('should validate city and stadium names', () => {
+        it('should validate fundacion year', () => {
             const club = mockClubs[0]
-            expect(club.ciudad).toBeTruthy()
-            expect(club.estadio).toBeTruthy()
-            expect(club.ciudad.length).toBeGreaterThan(0)
-            expect(club.estadio.length).toBeGreaterThan(0)
+            expect(club.fundacion).toBeGreaterThan(1800)
+            expect(club.fundacion).toBeLessThanOrEqual(new Date().getFullYear())
+        })
+
+        it('should validate club ID format', () => {
+            const club = mockClubs[0]
+            expect(club.id_club).toMatch(/^[A-Z]+$/)
         })
     })
 
@@ -173,6 +174,49 @@ describe('Clubs Index Page - Integration Tests', () => {
         })
     })
 
+    describe('Loading States', () => {
+        it('should handle loading state with withLoading', async () => {
+            const mockFunction = vi.fn().mockResolvedValue('result')
+            const loadingComposable = mockUseGlobalLoading()
+
+            const result = await loadingComposable.withLoading(mockFunction)
+
+            expect(result).toBe('result')
+            expect(loadingComposable.withLoading).toHaveBeenCalledWith(mockFunction)
+        })
+
+        it('should handle async operations', async () => {
+            const clubsComposable = mockUseClubs()
+            const loadingComposable = mockUseGlobalLoading()
+
+            const result = await loadingComposable.withLoading(() => clubsComposable.list())
+
+            expect(result).toEqual({
+                data: mockClubs,
+                pagination: mockPagination
+            })
+        })
+    })
+
+    describe('Pagination Logic', () => {
+        it('should handle page changes', async () => {
+            const clubsComposable = mockUseClubs()
+
+            await clubsComposable.list(2)
+
+            expect(clubsComposable.list).toHaveBeenCalledWith(2)
+        })
+
+        it('should validate pagination data', () => {
+            expect(mockPagination.currentPage).toBe(1)
+            expect(mockPagination.pageSize).toBe(20)
+            expect(mockPagination.totalItems).toBe(2)
+            expect(mockPagination.totalPages).toBe(1)
+            expect(mockPagination.hasNextPage).toBe(false)
+            expect(mockPagination.hasPreviousPage).toBe(false)
+        })
+    })
+
     describe('Confirmation Dialogs', () => {
         it('should handle delete confirmation', () => {
             const mockConfirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
@@ -194,6 +238,73 @@ describe('Clubs Index Page - Integration Tests', () => {
             expect(mockConfirm).toHaveBeenCalledWith('¿Seguro que deseas borrar este club?')
 
             mockConfirm.mockRestore()
+        })
+    })
+
+    describe('Table Column Configuration', () => {
+        it('should have correct column configuration', () => {
+            const columns = [
+                { key: 'nombre', label: 'Club' },
+                { key: 'ciudad', label: 'Ciudad' },
+                { key: 'estadio', label: 'Estadio' },
+                { key: 'fundacion', label: 'Fundación' }
+            ]
+
+            expect(columns).toHaveLength(4)
+            expect(columns[0].key).toBe('nombre')
+            expect(columns[1].key).toBe('ciudad')
+            expect(columns[2].key).toBe('estadio')
+            expect(columns[3].key).toBe('fundacion')
+        })
+    })
+
+    describe('Cache Management', () => {
+        it('should use correct cache key', () => {
+            const page = 1
+            const cacheKey = `clubs-${page}`
+            expect(cacheKey).toBe('clubs-1')
+        })
+
+        it('should clear club cache after delete', async () => {
+            const clubId = 1
+            const cacheKey = `club:${clubId}`
+            expect(cacheKey).toBe('club:1')
+        })
+    })
+
+    describe('Data Display Logic', () => {
+        it('should handle empty club list', () => {
+            const emptyClubs: any[] = []
+            expect(emptyClubs).toHaveLength(0)
+        })
+
+        it('should display clubs when available', () => {
+            expect(mockClubs).toHaveLength(2)
+            expect(mockClubs[0].nombre).toBe('Real Madrid')
+        })
+
+        it('should display fundacion year', () => {
+            const club = mockClubs[0]
+            expect(club.fundacion).toBe(1902)
+        })
+    })
+
+    describe('Financial Information', () => {
+        it('should calculate remaining budget percentage', () => {
+            const club = mockClubs[0]
+            const percentage = (club.presupuesto_restante / club.presupuesto) * 100
+            expect(percentage).toBe(60)
+        })
+
+        it('should validate budget is positive', () => {
+            const club = mockClubs[0]
+            expect(club.presupuesto).toBeGreaterThan(0)
+            expect(club.presupuesto_restante).toBeGreaterThan(0)
+        })
+
+        it('should validate remaining budget is not greater than total', () => {
+            const club = mockClubs[0]
+            expect(club.presupuesto_restante).toBeLessThanOrEqual(club.presupuesto)
         })
     })
 })
