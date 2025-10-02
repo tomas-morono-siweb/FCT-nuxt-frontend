@@ -10,7 +10,7 @@ const form = reactive<Partial<Club>>({
   nombre: "",
   ciudad: "",
   estadio: "",
-  fundacion: new Date().getFullYear(), // Current year as default
+  fundacion: new Date().getFullYear(),
   presupuesto: undefined,
 });
 
@@ -31,15 +31,33 @@ const clearErrors = () => {
 const setErrors = (error: any) => {
   clearErrors();
 
-  // Errores por campo (formato: { "campo" => "mensaje" })
-  if (error?.errores) {
+  // Caso 1: Error viene envuelto en data (formato real del backend)
+  if (error?.data?.error) {
+    const dataError = error.data.error;
+
+    // Si data.error es un objeto, son errores por campo
+    if (typeof dataError === "object") {
+      fieldErrors.value = { ...dataError };
+    }
+    // Si data.error es string, es un error general
+    else if (typeof dataError === "string") {
+      generalError.value = dataError;
+    }
+  }
+  // Caso 2: Errores directos por campo
+  else if (error?.errores) {
     fieldErrors.value = { ...error.errores };
   }
-
-  // Error general
-  if (error?.error) {
+  // Caso 3: Error general directo
+  else if (error?.error && typeof error.error === "string") {
     generalError.value = error.error;
-  } else {
+  }
+  // Caso 4: Error directo como objeto (errores por campo)
+  else if (error?.error && typeof error.error === "object") {
+    fieldErrors.value = { ...error.error };
+  }
+  // Fallback
+  else {
     generalError.value = "Ha ocurrido un error inesperado";
   }
 };

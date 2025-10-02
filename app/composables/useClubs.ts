@@ -50,7 +50,6 @@ export const useClubs = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };
@@ -62,7 +61,6 @@ export const useClubs = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };

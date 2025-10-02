@@ -24,21 +24,35 @@ export const useFormErrors = () => {
 
         if (!error) return;
 
-        // El backend envía directamente el formato esperado
         const errorData = error as BackendErrorResponse;
 
-        // Errores de validación por campo (formato: { "campo" => "mensaje" })
-        if (errorData.errores && typeof errorData.errores === 'object') {
+        // Caso 1: Error viene envuelto en data (formato real del backend)
+        if (errorData.data?.error) {
+            const dataError = errorData.data.error;
+
+            // Si data.error es un objeto, son errores por campo
+            if (typeof dataError === 'object') {
+                fieldErrors.value = { ...dataError };
+            }
+            // Si data.error es string, es un error general
+            else if (typeof dataError === 'string') {
+                generalError.value = dataError;
+            }
+        }
+        // Caso 2: Errores directos por campo
+        else if (errorData.errores && typeof errorData.errores === 'object') {
             fieldErrors.value = { ...errorData.errores };
         }
-
-        // Error general
-        if (errorData.error) {
+        // Caso 3: Error general directo
+        else if (errorData.error && typeof errorData.error === 'string') {
             generalError.value = errorData.error;
         }
-
-        // Fallback si no hay estructura reconocida
-        if (!errorData.error && !errorData.errores) {
+        // Caso 4: Error directo como objeto (errores por campo)
+        else if (errorData.error && typeof errorData.error === 'object') {
+            fieldErrors.value = { ...errorData.error };
+        }
+        // Fallback
+        else {
             if (typeof error === 'string') {
                 generalError.value = error;
             } else {

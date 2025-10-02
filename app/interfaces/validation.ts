@@ -6,7 +6,7 @@ export interface BackendError {
 // Interfaz para errores de validación del backend (mantener compatibilidad)
 export interface ValidationError {
     message: string;
-    errors?: {
+    errores?: {
         [field: string]: string[];
     };
     statusCode?: number;
@@ -25,6 +25,9 @@ export interface BackendValidationErrors {
 
 // Interfaz para la respuesta de error completa del backend
 export interface BackendErrorResponse {
-    error?: string;                    // Error general con mensaje
-    errores?: BackendValidationErrors; // Errores por campo { "campo" => "mensaje" }
+    error?: string | BackendValidationErrors; // Error general (string) o errores por campo (objeto)
+    errores?: BackendValidationErrors;        // Errores por campo { "campo" => "mensaje" }
+    data?: {
+        error?: string | BackendValidationErrors; // El formato real viene envuelto en data
+    };
 }

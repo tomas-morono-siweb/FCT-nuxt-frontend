@@ -44,7 +44,6 @@ export const usePlayers = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };
@@ -56,7 +55,6 @@ export const usePlayers = () => {
         body: payload,
       });
     } catch (error: any) {
-      // Re-lanzar el error tal cual viene del backend
       throw error;
     }
   };
