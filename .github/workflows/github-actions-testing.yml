@@ -1,16 +1,28 @@
 name: GitHub Actions Testing
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
 on: [push]
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: pnpm install
+      - run: pnpm build
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: pnpm install
+      - run: pnpm test
+
   Testing-Full-Project:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
       - run: pnpm install
-      - name: Instalando las dependencias
-        run: pnpm test
-      - name: Lanzando tests 🚀
-        run: |
-          ls ${{ github.workspace }}
+      - run: pnpm build
+      - run: pnpm test
       - run: echo "🍏 This job's status is ${{ job.status }}."
