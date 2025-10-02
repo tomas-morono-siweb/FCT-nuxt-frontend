@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Coach } from "~/interfaces/coach";
+import { formatSalary } from "~/utils/formatters";
 
 interface Props {
   coach: Coach;
@@ -14,10 +15,10 @@ const emit = defineEmits<{
   delete: [id: number];
 }>();
 
-const formatSalary = (salary: number | undefined) => {
+// Custom formatter for coaches (uses "-" instead of "Sin salario")
+const formatCoachSalary = (salary: number | undefined) => {
   if (!salary) return "-";
-  // Format with dot as thousands separator (European style)
-  return salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+  return formatSalary(salary);
 };
 
 const handleDelete = () => {
@@ -58,7 +59,7 @@ const clubName = props.coach.id_club || "-";
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-        {{ formatSalary(coach.salario) }}
+        {{ formatCoachSalary(coach.salario) }}
       </span>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
@@ -114,7 +115,7 @@ const clubName = props.coach.id_club || "-";
               v-if="coach.salario"
               class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800"
             >
-              {{ formatSalary(coach.salario) }}
+              {{ formatCoachSalary(coach.salario) }}
             </span>
           </div>
           <p

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Club } from "~/interfaces/club";
+import { formatBudget } from "~/utils/formatters";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -109,13 +110,13 @@ const { data: club, pending, error } = await useAsyncData<Club>(`club:${id}`, ()
             </div>
             <div class="rounded-lg bg-orange-50 p-4 text-center">
               <div class="text-2xl font-bold text-orange-600">
-                {{ club.presupuesto ? `${club.presupuesto.toLocaleString()} €` : "Sin presupuesto" }}
+                {{ formatBudget(club.presupuesto) }}
               </div>
               <div class="text-sm text-orange-800">Presupuesto Total</div>
             </div>
             <div class="rounded-lg bg-green-50 p-4 text-center">
               <div class="text-2xl font-bold text-green-600">
-                {{ club.presupuesto_restante ? `${club.presupuesto_restante.toLocaleString()} €` : "Sin presupuesto" }}
+                {{ formatBudget(club.presupuesto_restante) }}
               </div>
               <div class="text-sm text-green-800">Presupuesto Disponible</div>
             </div>

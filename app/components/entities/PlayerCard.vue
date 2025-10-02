@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
+import { formatSalary } from "~/utils/formatters";
 
 interface Props {
   player: Player;
@@ -13,12 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   delete: [id: number];
 }>();
-
-const formatSalary = (salary: number | undefined) => {
-  if (!salary) return "Sin salario";
-  // Format with dot as thousands separator (European style)
-  return salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
-};
 
 const handleDelete = () => {
   // Validación defensiva: verificar que el ID existe

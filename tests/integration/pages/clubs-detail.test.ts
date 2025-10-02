@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { formatBudget, formatCurrency } from '../../../app/utils/formatters'
 
 // Mock de los composables
 const mockUseClubs = vi.fn()
@@ -79,13 +80,13 @@ describe('Clubs Detail Page - Integration Tests', () => {
             expect(mockClub.nombre).toBe('Real Madrid')
         })
 
-        it('should format presupuesto with locale', () => {
-            const formattedPresupuesto = mockClub.presupuesto.toLocaleString()
-            expect(formattedPresupuesto).toContain('500')
+        it('should format presupuesto with European format', () => {
+            const formattedPresupuesto = formatCurrency(mockClub.presupuesto, false)
+            expect(formattedPresupuesto).toContain('500.000.000')
         })
 
         it('should display presupuesto with euro symbol', () => {
-            const presupuestoDisplay = `${mockClub.presupuesto.toLocaleString()} €`
+            const presupuestoDisplay = formatBudget(mockClub.presupuesto)
             expect(presupuestoDisplay).toMatch(/€$/)
         })
 
@@ -103,13 +104,15 @@ describe('Clubs Detail Page - Integration Tests', () => {
 
     describe('Financial Information Display', () => {
         it('should display presupuesto total', () => {
-            const presupuestoDisplay = mockClub.presupuesto ? `${mockClub.presupuesto.toLocaleString()} €` : 'No disponible'
+            const presupuestoDisplay = formatBudget(mockClub.presupuesto)
             expect(presupuestoDisplay).toContain('500.000.000')
+            expect(presupuestoDisplay).toContain('€')
         })
 
         it('should display presupuesto restante', () => {
-            const presupuestoRestanteDisplay = mockClub.presupuesto_restante ? `${mockClub.presupuesto_restante.toLocaleString()} €` : 'No disponible'
+            const presupuestoRestanteDisplay = formatBudget(mockClub.presupuesto_restante)
             expect(presupuestoRestanteDisplay).toContain('300.000.000')
+            expect(presupuestoRestanteDisplay).toContain('€')
         })
 
         it('should calculate remaining budget percentage', () => {
