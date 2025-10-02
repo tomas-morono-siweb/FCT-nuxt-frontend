@@ -1,6 +1,6 @@
 import type { Player } from "~/interfaces/player";
 import type { PaginatedResponse } from "~/interfaces/pagination";
-import type { BackendError } from "~/interfaces/validation";
+import type { BackendError, BackendErrorResponse } from "~/interfaces/validation";
 
 export const usePlayers = () => {
   const list = async (nombre?: string, page = 1, pageSize = 20) => {

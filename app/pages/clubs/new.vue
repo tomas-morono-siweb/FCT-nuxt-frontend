@@ -16,18 +16,49 @@ const form = reactive<Partial<Club>>({
 
 // Loading states
 const loading = ref(false);
-const error = ref("");
+
+// Sistema de errores simplificado
+const fieldErrors = ref<Record<string, string>>({});
+const generalError = ref("");
+
+// Función para limpiar errores
+const clearErrors = () => {
+  fieldErrors.value = {};
+  generalError.value = "";
+};
+
+// Función para establecer errores desde el backend
+const setErrors = (error: any) => {
+  clearErrors();
+
+  // Errores por campo (formato: { "campo" => "mensaje" })
+  if (error?.errores) {
+    fieldErrors.value = { ...error.errores };
+  }
+
+  // Error general
+  if (error?.error) {
+    generalError.value = error.error;
+  } else {
+    generalError.value = "Ha ocurrido un error inesperado";
+  }
+};
+
+// Función para obtener error de campo
+const getFieldError = (fieldName: string) => {
+  return fieldErrors.value[fieldName] || "";
+};
 
 // Submit handler
 const handleSubmit = async () => {
   loading.value = true;
-  error.value = "";
+  clearErrors();
 
   try {
     await create(form);
     await navigateTo("/clubs");
   } catch (err: any) {
-    error.value = err.error || "Error al crear el club";
+    setErrors(err);
   } finally {
     loading.value = false;
   }
@@ -69,7 +100,7 @@ const handleSubmit = async () => {
           >
             <!-- Error Message -->
             <div
-              v-if="error"
+              v-if="generalError"
               class="rounded-lg bg-red-50 p-4"
             >
               <div class="flex">
@@ -89,7 +120,7 @@ const handleSubmit = async () => {
                 <div class="ml-3">
                   <h3 class="text-sm font-medium text-red-800">Error</h3>
                   <div class="mt-2 text-sm text-red-700">
-                    {{ error }}
+                    {{ generalError }}
                   </div>
                 </div>
               </div>
@@ -103,7 +134,7 @@ const handleSubmit = async () => {
                 label="Código del Club"
                 placeholder="Ej: FCB, RMA, PSG"
                 required
-                :error="''"
+                :error="getFieldError('id_club')"
               />
 
               <!-- Nombre -->
@@ -112,7 +143,7 @@ const handleSubmit = async () => {
                 label="Nombre del Club"
                 placeholder="Nombre del club"
                 required
-                :error="''"
+                :error="getFieldError('nombre')"
               />
 
               <!-- Ciudad -->
@@ -121,7 +152,7 @@ const handleSubmit = async () => {
                 label="Ciudad"
                 placeholder="Ciudad del club"
                 required
-                :error="''"
+                :error="getFieldError('ciudad')"
               />
 
               <!-- Estadio -->
@@ -130,7 +161,7 @@ const handleSubmit = async () => {
                 label="Estadio"
                 placeholder="Nombre del estadio"
                 required
-                :error="''"
+                :error="getFieldError('estadio')"
               />
 
               <!-- Fundación -->
@@ -140,7 +171,7 @@ const handleSubmit = async () => {
                 type="number"
                 placeholder="Ej: 1900"
                 required
-                :error="''"
+                :error="getFieldError('fundacion')"
               />
 
               <!-- Presupuesto Total -->
@@ -148,7 +179,7 @@ const handleSubmit = async () => {
                 v-model="form.presupuesto"
                 label="Presupuesto Total (€)"
                 placeholder="Ej: 100000000"
-                :error="''"
+                :error="getFieldError('presupuesto')"
               />
             </div>
 

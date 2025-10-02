@@ -17,3 +17,14 @@ export interface FieldError {
     field: string;
     message: string;
 }
+
+// Nueva interfaz para errores de validación del backend con formato { campo => mensaje }
+export interface BackendValidationErrors {
+    [fieldName: string]: string;
+}
+
+// Interfaz para la respuesta de error completa del backend
+export interface BackendErrorResponse {
+    error?: string;                    // Error general con mensaje
+    errores?: BackendValidationErrors; // Errores por campo { "campo" => "mensaje" }
+}

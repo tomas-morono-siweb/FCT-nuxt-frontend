@@ -1,6 +1,6 @@
 import type { Club } from "~/interfaces/club";
 import type { PaginatedResponse } from "~/interfaces/pagination";
-import type { BackendError } from "~/interfaces/validation";
+import type { BackendError, BackendErrorResponse } from "~/interfaces/validation";
 
 export const useClubs = () => {
   const list = async (page = 1, pageSize = 20) => {
