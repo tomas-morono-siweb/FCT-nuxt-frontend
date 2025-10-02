@@ -8,6 +8,13 @@ const id = Number(route.params.id);
 const { get, update } = usePlayers();
 const { list: listClubs } = useClubs();
 
+// Form errors handling
+const formErrors = useFormErrors();
+const { setErrors, clearErrors, clearFieldError, getFieldError, hasErrors, generalError } = formErrors;
+
+// Provide form errors to child components
+provide("formErrors", formErrors);
+
 // Load player data
 const { data: player, pending, error } = await useAsyncData<Player>(`player:${id}`, () => get(id));
 
@@ -37,7 +44,6 @@ watch(
 
 // Loading states
 const loading = ref(false);
-const submitError = ref("");
 
 // Load clubs for selection - OPTIMIZADO: usar caché compartido
 const { data: clubsResponse } = await useAsyncData("clubs-list", () => listClubs(), {
@@ -64,7 +70,7 @@ const selectedClubId = computed({
 // Submit handler
 const handleSubmit = async () => {
   loading.value = true;
-  submitError.value = "";
+  clearErrors();
 
   console.log("📝 Datos del formulario antes de enviar:", JSON.stringify(form, null, 2));
 
@@ -86,7 +92,8 @@ const handleSubmit = async () => {
 
     await navigateTo(`/players/${id}`);
   } catch (err: any) {
-    submitError.value = err.error || "Error al actualizar el jugador";
+    console.log("❌ Error al actualizar jugador:", err);
+    setErrors(err);
   } finally {
     loading.value = false;
   }
@@ -145,9 +152,9 @@ const handleSubmit = async () => {
             @submit.prevent="handleSubmit"
             class="space-y-6 p-6"
           >
-            <!-- Error Message -->
+            <!-- General Error Message (solo si hay error general) -->
             <div
-              v-if="submitError"
+              v-if="generalError"
               class="rounded-lg bg-red-50 p-4"
             >
               <div class="flex">
@@ -167,7 +174,7 @@ const handleSubmit = async () => {
                 <div class="ml-3">
                   <h3 class="text-sm font-medium text-red-800">Error</h3>
                   <div class="mt-2 text-sm text-red-700">
-                    {{ submitError }}
+                    {{ generalError }}
                   </div>
                 </div>
               </div>
@@ -181,7 +188,8 @@ const handleSubmit = async () => {
                 label="Nombre"
                 placeholder="Nombre del jugador"
                 required
-                :error="''"
+                field-name="nombre"
+                @focus="clearFieldError"
               />
 
               <!-- Apellidos -->
@@ -190,15 +198,18 @@ const handleSubmit = async () => {
                 label="Apellidos"
                 placeholder="Apellidos del jugador"
                 required
-                :error="''"
+                field-name="apellidos"
+                @focus="clearFieldError"
               />
 
               <!-- Salario -->
               <UiFormField
                 v-model="form.salario"
                 label="Salario Anual (€)"
-                placeholder="Ej: 50000000"
-                :error="''"
+                placeholder="Ej: 5000000"
+                type="number"
+                field-name="salario"
+                @focus="clearFieldError"
               />
 
               <!-- Dorsal -->
@@ -207,7 +218,8 @@ const handleSubmit = async () => {
                 label="Dorsal"
                 type="number"
                 placeholder="Número de dorsal (1-99)"
-                :error="''"
+                field-name="dorsal"
+                @focus="clearFieldError"
               />
 
               <!-- Club -->
@@ -218,7 +230,8 @@ const handleSubmit = async () => {
                   { value: '', label: 'Sin club' },
                   ...(clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []),
                 ]"
-                :error="''"
+                field-name="id_club"
+                @focus="clearFieldError"
               />
             </div>
 

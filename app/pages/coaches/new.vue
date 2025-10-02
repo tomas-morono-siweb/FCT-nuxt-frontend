@@ -6,6 +6,13 @@ import type { BackendError } from "~/interfaces/validation";
 const { create } = useCoaches();
 const { list: listClubs } = useClubs();
 
+// Form errors handling
+const formErrors = useFormErrors();
+const { setErrors, clearErrors, clearFieldError, getFieldError, hasErrors, generalError } = formErrors;
+
+// Provide form errors to child components
+provide("formErrors", formErrors);
+
 // Form data
 const form = reactive<Partial<Coach>>({
   dni: "",
@@ -17,7 +24,6 @@ const form = reactive<Partial<Coach>>({
 
 // Loading states
 const loading = ref(false);
-const error = ref("");
 
 // Load clubs for selection - OPTIMIZADO: usar caché compartido
 const { data: clubsResponse } = await useAsyncData("clubs-list", () => listClubs(), {
@@ -44,13 +50,14 @@ const selectedClubId = computed({
 // Submit handler
 const handleSubmit = async () => {
   loading.value = true;
-  error.value = "";
+  clearErrors();
 
   try {
     await create(form);
     await navigateTo("/coaches");
   } catch (err: any) {
-    error.value = err.error || "Error al crear el entrenador";
+    console.log("❌ Error al crear entrenador:", err);
+    setErrors(err);
   } finally {
     loading.value = false;
   }
@@ -90,9 +97,9 @@ const handleSubmit = async () => {
             @submit.prevent="handleSubmit"
             class="space-y-6 p-6"
           >
-            <!-- Error Message -->
+            <!-- General Error Message (solo si hay error general) -->
             <div
-              v-if="error"
+              v-if="generalError"
               class="rounded-lg bg-red-50 p-4"
             >
               <div class="flex">
@@ -112,7 +119,7 @@ const handleSubmit = async () => {
                 <div class="ml-3">
                   <h3 class="text-sm font-medium text-red-800">Error</h3>
                   <div class="mt-2 text-sm text-red-700">
-                    {{ error }}
+                    {{ generalError }}
                   </div>
                 </div>
               </div>
@@ -126,7 +133,8 @@ const handleSubmit = async () => {
                 label="DNI"
                 placeholder="DNI del entrenador"
                 required
-                :error="''"
+                field-name="dni"
+                @focus="clearFieldError"
               />
 
               <!-- Nombre -->
@@ -135,7 +143,8 @@ const handleSubmit = async () => {
                 label="Nombre"
                 placeholder="Nombre del entrenador"
                 required
-                :error="''"
+                field-name="nombre"
+                @focus="clearFieldError"
               />
 
               <!-- Apellidos -->
@@ -144,23 +153,30 @@ const handleSubmit = async () => {
                 label="Apellidos"
                 placeholder="Apellidos del entrenador"
                 required
-                :error="''"
+                field-name="apellidos"
+                @focus="clearFieldError"
               />
 
               <!-- Salario -->
               <UiFormField
                 v-model="form.salario"
                 label="Salario Anual (€)"
-                placeholder="Ej: 15000000"
-                :error="''"
+                placeholder="Ej: 1500000"
+                type="number"
+                field-name="salario"
+                @focus="clearFieldError"
               />
 
               <!-- Club -->
               <UiFormField
                 v-model="selectedClubId"
                 label="Club"
-                :options="clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []"
-                :error="''"
+                :options="[
+                  { value: '', label: 'Sin club' },
+                  ...(clubs?.map((club) => ({ value: club.nombre, label: club.nombre })) || []),
+                ]"
+                field-name="id_club"
+                @focus="clearFieldError"
               />
             </div>
 
