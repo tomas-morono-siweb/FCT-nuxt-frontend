@@ -14,18 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Instalar pnpm (acción oficial). Esto garantiza que el binario quede en el PATH.
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
-
-      # 2. Instalar Node.js con caché para pnpm
+      # Node.js (LTS/actual recomendado para Nuxt 4)
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
+          cache: "pnpm" # usa pnpm-lock.yaml para cachear deps
 
+      # Corepack habilita pnpm según "packageManager" de tu package.json
+      - run: corepack enable
+      # Si quieres fijar versión (si no tienes "packageManager"):
+      # - run: corepack prepare pnpm@9.12.0 --activate
+
+      - run: pnpm --version
+
+      # Instalación, build y tests
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm test
