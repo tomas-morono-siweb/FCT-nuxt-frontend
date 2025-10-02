@@ -1,39 +1,31 @@
-name: CI (Nuxt 4 + pnpm)
+name: CI Testing
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      NUXT_TELEMETRY_DISABLED: 1
       CI: true
+      NUXT_TELEMETRY_DISABLED: 1
 
     steps:
-      # 1) Checkout del repo
       - uses: actions/checkout@v4
 
-      # 2) Node.js (LTS actual recomendado para Nuxt 4)
+      # Node.js (recomendado para Nuxt 4)
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "pnpm"
 
-      # 3) pnpm (acción oficial)
+      # pnpm (acción oficial)
       - uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
 
-      # 4) Instalar dependencias
       - run: pnpm install --frozen-lockfile
-
-      # 5) Build
       - run: pnpm build
-
-      # 6) Tests
       - run: pnpm test
