@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { inject, computed } from "vue";
+import { useFormErrors } from "~/composables/useFormErrors";
+
 interface Props {
   label: string;
   type?: "text" | "email" | "number" | "password" | "tel" | "url" | "date";
@@ -17,11 +20,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   "update:modelValue": [value: string | number | undefined];
-  "focus": [fieldName: string]; // Emitir cuando el campo recibe foco
+  focus: [fieldName: string]; // Emitir cuando el campo recibe foco
 }>();
 
 // Composable para manejar errores (opcional)
-const formErrors = inject('formErrors', null) as ReturnType<typeof useFormErrors> | null;
+const formErrors = inject("formErrors", null) as ReturnType<typeof useFormErrors> | null;
 
 // Computed para obtener el error del campo
 const fieldError = computed(() => {
@@ -29,25 +32,25 @@ const fieldError = computed(() => {
   if (props.error) {
     return props.error;
   }
-  
+
   if (formErrors && props.fieldName) {
     return formErrors.getFieldError(props.fieldName);
   }
-  
+
   return "";
 });
 
 const updateValue = (event: Event) => {
   const target = event.target as HTMLInputElement | HTMLSelectElement;
   let value: string | number | undefined;
-  
+
   if (props.type === "number") {
     // Handle empty string for number inputs
     value = target.value === "" ? "" : Number(target.value);
   } else {
     value = target.value;
   }
-  
+
   emit("update:modelValue", value);
 };
 

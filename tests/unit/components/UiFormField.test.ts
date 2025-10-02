@@ -2,14 +2,38 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import UiFormField from '../../../app/components/ui/FormField.vue'
 
+// Mock the useFormErrors composable
+const mockFormErrors = {
+    getFieldError: vi.fn(() => ''),
+    clearFieldError: vi.fn(),
+    fieldErrors: {},
+    generalError: '',
+    clearErrors: vi.fn(),
+    setErrors: vi.fn(),
+    hasErrors: false,
+    hasFieldError: vi.fn(() => false)
+}
+
+// Helper function to mount component with proper setup
+const mountComponent = (props: any, options: any = {}) => {
+    return mount(UiFormField, {
+        props,
+        global: {
+            provide: {
+                formErrors: mockFormErrors
+            },
+            ...options.global
+        },
+        ...options
+    })
+}
+
 describe('UiFormField', () => {
     describe('Props and Defaults', () => {
         it('should render with default props', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Label',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Label',
+                modelValue: ''
             })
 
             expect(wrapper.props('type')).toBe('text')
@@ -20,16 +44,14 @@ describe('UiFormField', () => {
         })
 
         it('should accept custom props', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Email',
-                    type: 'email',
-                    placeholder: 'Enter your email',
-                    required: true,
-                    error: 'Invalid email',
-                    modelValue: 'test@example.com',
-                    options: [{ value: 'option1', label: 'Option 1' }]
-                }
+            const wrapper = mountComponent({
+                label: 'Email',
+                type: 'email',
+                placeholder: 'Enter your email',
+                required: true,
+                error: 'Invalid email',
+                modelValue: 'test@example.com',
+                options: [{ value: 'option1', label: 'Option 1' }]
             })
 
             expect(wrapper.props('type')).toBe('email')
@@ -42,11 +64,9 @@ describe('UiFormField', () => {
 
     describe('Label Rendering', () => {
         it('should render label correctly', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Label',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Label',
+                modelValue: ''
             })
 
             const label = wrapper.find('label')
@@ -59,12 +79,10 @@ describe('UiFormField', () => {
         })
 
         it('should show required asterisk when required', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Required Field',
-                    required: true,
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Required Field',
+                required: true,
+                modelValue: ''
             })
 
             const asterisk = wrapper.find('span.text-error-500')
@@ -73,12 +91,10 @@ describe('UiFormField', () => {
         })
 
         it('should not show required asterisk when not required', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Optional Field',
-                    required: false,
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Optional Field',
+                required: false,
+                modelValue: ''
             })
 
             const asterisk = wrapper.find('span.text-error-500')
@@ -88,11 +104,9 @@ describe('UiFormField', () => {
 
     describe('Input Field Rendering', () => {
         it('should render input when no options provided', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Input',
-                    modelValue: 'test value'
-                }
+            const wrapper = mountComponent({
+                label: 'Test Input',
+                modelValue: 'test value'
             })
 
             const input = wrapper.find('input')
@@ -102,12 +116,10 @@ describe('UiFormField', () => {
         })
 
         it('should render correct input type', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Email Input',
-                    type: 'email',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Email Input',
+                type: 'email',
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -115,12 +127,10 @@ describe('UiFormField', () => {
         })
 
         it('should render placeholder', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Input',
-                    placeholder: 'Enter text here',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Input',
+                placeholder: 'Enter text here',
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -128,11 +138,9 @@ describe('UiFormField', () => {
         })
 
         it('should have correct CSS classes', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Input',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Input',
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -151,12 +159,10 @@ describe('UiFormField', () => {
         })
 
         it('should have required attribute when required', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Required Input',
-                    required: true,
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Required Input',
+                required: true,
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -172,12 +178,10 @@ describe('UiFormField', () => {
         ]
 
         it('should render select when options provided', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Select',
-                    modelValue: '',
-                    options: mockOptions
-                }
+            const wrapper = mountComponent({
+                label: 'Test Select',
+                modelValue: '',
+                options: mockOptions
             })
 
             const select = wrapper.find('select')
@@ -186,12 +190,10 @@ describe('UiFormField', () => {
         })
 
         it('should render all options', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Select',
-                    modelValue: '',
-                    options: mockOptions
-                }
+            const wrapper = mountComponent({
+                label: 'Test Select',
+                modelValue: '',
+                options: mockOptions
             })
 
             const options = wrapper.findAll('option')
@@ -211,12 +213,10 @@ describe('UiFormField', () => {
         })
 
         it('should have correct CSS classes for select', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Select',
-                    modelValue: '',
-                    options: mockOptions
-                }
+            const wrapper = mountComponent({
+                label: 'Test Select',
+                modelValue: '',
+                options: mockOptions
             })
 
             const select = wrapper.find('select')
@@ -227,13 +227,11 @@ describe('UiFormField', () => {
         })
 
         it('should have required attribute when required', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Required Select',
-                    required: true,
-                    modelValue: '',
-                    options: mockOptions
-                }
+            const wrapper = mountComponent({
+                label: 'Required Select',
+                required: true,
+                modelValue: '',
+                options: mockOptions
             })
 
             const select = wrapper.find('select')
@@ -243,12 +241,10 @@ describe('UiFormField', () => {
 
     describe('Error State', () => {
         it('should show error message when error provided', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Field',
-                    error: 'This field is required',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Field',
+                error: 'This field is required',
+                modelValue: ''
             })
 
             const errorMessage = wrapper.find('p.text-red-600')
@@ -257,11 +253,9 @@ describe('UiFormField', () => {
         })
 
         it('should not show error message when no error', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Field',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Field',
+                modelValue: ''
             })
 
             const errorMessage = wrapper.find('p.text-red-600')
@@ -269,12 +263,10 @@ describe('UiFormField', () => {
         })
 
         it('should apply error styles to input when error', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Field',
-                    error: 'Error message',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Field',
+                error: 'Error message',
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -284,13 +276,11 @@ describe('UiFormField', () => {
         })
 
         it('should apply error styles to select when error', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Select',
-                    error: 'Error message',
-                    modelValue: '',
-                    options: [{ value: 'option1', label: 'Option 1' }]
-                }
+            const wrapper = mountComponent({
+                label: 'Test Select',
+                error: 'Error message',
+                modelValue: '',
+                options: [{ value: 'option1', label: 'Option 1' }]
             })
 
             const select = wrapper.find('select')
@@ -302,11 +292,9 @@ describe('UiFormField', () => {
 
     describe('Events', () => {
         it('should emit update:modelValue on input change', async () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Input',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Input',
+                modelValue: ''
             })
 
             const input = wrapper.find('input')
@@ -318,12 +306,10 @@ describe('UiFormField', () => {
         })
 
         it('should emit update:modelValue on select change', async () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Select',
-                    modelValue: '',
-                    options: [{ value: 'option1', label: 'Option 1' }]
-                }
+            const wrapper = mountComponent({
+                label: 'Test Select',
+                modelValue: '',
+                options: [{ value: 'option1', label: 'Option 1' }]
             })
 
             const select = wrapper.find('select')
@@ -335,12 +321,10 @@ describe('UiFormField', () => {
         })
 
         it('should convert number input to number type', async () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Number Input',
-                    type: 'number',
-                    modelValue: 0
-                }
+            const wrapper = mountComponent({
+                label: 'Number Input',
+                type: 'number',
+                modelValue: 0
             })
 
             const input = wrapper.find('input')
@@ -352,12 +336,10 @@ describe('UiFormField', () => {
         })
 
         it('should handle empty string for number input', async () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Number Input',
-                    type: 'number',
-                    modelValue: 0
-                }
+            const wrapper = mountComponent({
+                label: 'Number Input',
+                type: 'number',
+                modelValue: 0
             })
 
             const input = wrapper.find('input')
@@ -390,11 +372,9 @@ describe('UiFormField', () => {
 
     describe('Model Value Binding', () => {
         it('should bind string model value', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'String Input',
-                    modelValue: 'test string'
-                }
+            const wrapper = mountComponent({
+                label: 'String Input',
+                modelValue: 'test string'
             })
 
             const input = wrapper.find('input')
@@ -402,12 +382,10 @@ describe('UiFormField', () => {
         })
 
         it('should bind number model value', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Number Input',
-                    type: 'number',
-                    modelValue: 42
-                }
+            const wrapper = mountComponent({
+                label: 'Number Input',
+                type: 'number',
+                modelValue: 42
             })
 
             const input = wrapper.find('input')
@@ -415,11 +393,9 @@ describe('UiFormField', () => {
         })
 
         it('should bind undefined model value', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Undefined Input',
-                    modelValue: undefined
-                }
+            const wrapper = mountComponent({
+                label: 'Undefined Input',
+                modelValue: undefined
             })
 
             const input = wrapper.find('input')
@@ -427,15 +403,13 @@ describe('UiFormField', () => {
         })
 
         it('should bind select model value', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Select Input',
-                    modelValue: 'option2',
-                    options: [
-                        { value: 'option1', label: 'Option 1' },
-                        { value: 'option2', label: 'Option 2' }
-                    ]
-                }
+            const wrapper = mountComponent({
+                label: 'Select Input',
+                modelValue: 'option2',
+                options: [
+                    { value: 'option1', label: 'Option 1' },
+                    { value: 'option2', label: 'Option 2' }
+                ]
             })
 
             const select = wrapper.find('select')
@@ -445,12 +419,10 @@ describe('UiFormField', () => {
 
     describe('Edge Cases', () => {
         it('should handle empty options array', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Empty Select',
-                    modelValue: '',
-                    options: []
-                }
+            const wrapper = mountComponent({
+                label: 'Empty Select',
+                modelValue: '',
+                options: []
             })
 
             const select = wrapper.find('select')
@@ -462,16 +434,14 @@ describe('UiFormField', () => {
         })
 
         it('should handle options with number values', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Number Select',
-                    modelValue: 2,
-                    options: [
-                        { value: 1, label: 'One' },
-                        { value: 2, label: 'Two' },
-                        { value: 3, label: 'Three' }
-                    ]
-                }
+            const wrapper = mountComponent({
+                label: 'Number Select',
+                modelValue: 2,
+                options: [
+                    { value: 1, label: 'One' },
+                    { value: 2, label: 'Two' },
+                    { value: 3, label: 'Three' }
+                ]
             })
 
             const select = wrapper.find('select')
@@ -486,12 +456,10 @@ describe('UiFormField', () => {
         it('should handle long error messages', () => {
             const longError = 'This is a very long error message that should be displayed correctly and not break the layout of the form field component'
 
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Test Field',
-                    error: longError,
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Test Field',
+                error: longError,
+                modelValue: ''
             })
 
             const errorMessage = wrapper.find('p.text-red-600')
@@ -500,11 +468,9 @@ describe('UiFormField', () => {
         })
 
         it('should handle special characters in label', () => {
-            const wrapper = mount(UiFormField, {
-                props: {
-                    label: 'Field with Special Characters: @#$%^&*()',
-                    modelValue: ''
-                }
+            const wrapper = mountComponent({
+                label: 'Field with Special Characters: @#$%^&*()',
+                modelValue: ''
             })
 
             const label = wrapper.find('label')
