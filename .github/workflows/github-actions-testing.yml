@@ -1,0 +1,14 @@
+name: GitHub Actions Testing
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Testing-Full-Project:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm i
+      - name: Instalando las dependencias
+      - run: pnpm t
+      - name: Lanzando tests 🚀
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
