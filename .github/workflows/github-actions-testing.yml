@@ -7,9 +7,9 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
-      - run: pnpm i
+      - run: pnpm install
       - name: Instalando las dependencias
-      - run: pnpm t
+        run: pnpm test
       - name: Lanzando tests 🚀
         run: |
           ls ${{ github.workspace }}

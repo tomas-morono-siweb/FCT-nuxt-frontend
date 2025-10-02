@@ -3,7 +3,6 @@ export default defineEventHandler(async (event) => {
   const { nombre, page = 1, pageSize = 20 } = query;
 
   try {
-    // Llamada real a la API de tu compañero - el backend maneja toda la paginación y filtrado
     const apiUrl = `http://127.0.0.1:8000/players?${new URLSearchParams({
       nombre: (nombre && typeof nombre === 'string') ? nombre : '',
       page: page?.toString() || '1',
@@ -20,11 +19,10 @@ export default defineEventHandler(async (event) => {
       }
     });
 
-    console.log('✅ Recibiendo jugadores de la API externa');
-    // El backend devuelve la respuesta ya paginada y filtrada, la devolvemos directamente
+    console.log('✅ Recibiendo jugadores de la API');
     return response;
   } catch (error: any) {
-    console.error('Error al recibir jugadores de la API externa');
+    console.error('Error al recibir jugadores de la API');
     return error;
   }
 });
