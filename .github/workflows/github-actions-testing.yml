@@ -14,17 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Node.js (recomendado para Nuxt 4)
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: "pnpm"
-
-      # pnpm (acción oficial)
+      # 1. Instalar pnpm (acción oficial). Esto garantiza que el binario quede en el PATH.
       - uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
+
+      # 2. Instalar Node.js con caché para pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
