@@ -181,6 +181,6 @@ The application uses **custom composables** instead of Pinia for state managemen
 
 **API Connection Issues:**
 
-- Ensure backend is running on http://clubmanager.com/
+- Ensure backend is running on http://api.clubmanager.com/
 - Check CORS configuration
 - Verify API endpoints are accessible
