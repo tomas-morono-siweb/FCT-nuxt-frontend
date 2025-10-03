@@ -5,8 +5,8 @@ export interface PaginationMeta {
     totalPages: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    nextPage?: number | null; // Campo adicional de la API real
-    prevPage?: number | null; // Campo adicional de la API real
+    nextPage?: number | null;
+    prevPage?: number | null;
 }
 
 export interface PaginatedResponse<T> {
