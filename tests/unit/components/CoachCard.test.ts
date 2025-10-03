@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import CoachCard from '../../../app/components/entities/CoachCard.vue'
 import type { Coach } from '../../../app/interfaces/coach'
-import type { Club } from '../../../app/interfaces/club'
 
 describe('CoachCard', () => {
     const mockCoach: Coach = {
@@ -13,21 +12,6 @@ describe('CoachCard', () => {
         salario: 20000000,
         id_club: 'MCI'
     }
-
-    const mockClubs: Club[] = [
-        {
-            id: 1,
-            id_club: 'MCI',
-            nombre: 'Manchester City',
-            fundacion: 1880,
-            ciudad: 'Manchester',
-            estadio: 'Etihad Stadium',
-            presupuesto: 500000000,
-            presupuesto_restante: 300000000,
-            entrenador: 'Pep Guardiola',
-            jugadores: []
-        }
-    ]
 
     const NuxtLinkStub = {
         name: 'NuxtLink',
