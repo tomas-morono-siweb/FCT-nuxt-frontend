@@ -2,13 +2,13 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
   try {
-    const apiUrl = `http://clubmanager/coaches/${id}`;
+    const apiUrl = `http://clubmanager.com/coaches/${id}`;
     await $fetch(apiUrl, {
       method: "DELETE",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://clubmanager'
+        'Origin': 'http://clubmanager.com'
       }
     });
 

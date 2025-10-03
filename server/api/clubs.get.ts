@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
   const { page = 1, pageSize = 20 } = query;
 
   try {
-    const apiUrl = `http://clubmanager/clubs?${new URLSearchParams({
+    const apiUrl = `http://clubmanager.com/clubs?${new URLSearchParams({
       page: page?.toString() || '1',
       pageSize: pageSize?.toString() || '20'
     }).toString()}`;
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://clubmanager'
+        'Origin': 'http://clubmanager.com'
       }
     });
 

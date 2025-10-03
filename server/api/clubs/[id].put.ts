@@ -3,13 +3,13 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    const apiUrl = `http://clubmanager/clubs/${id}`;
+    const apiUrl = `http://clubmanager.com/clubs/${id}`;
     const updatedClub = await $fetch(apiUrl, {
       method: "PUT",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://clubmanager'
+        'Origin': 'http://clubmanager.com'
       },
       body: body
     });

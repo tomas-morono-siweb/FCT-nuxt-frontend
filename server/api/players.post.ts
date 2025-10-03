@@ -3,13 +3,13 @@ export default defineEventHandler(async (event) => {
 
   try {
     console.log('Datos recibidos para crear jugador:', body);
-    const apiUrl = `http://clubmanager/players`;
+    const apiUrl = `http://clubmanager.com/players`;
     const newPlayer = await $fetch(apiUrl, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://clubmanager'
+        'Origin': 'http://clubmanager.com'
       },
       body: body
     });

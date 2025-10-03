@@ -67,7 +67,7 @@ npm type-check   # Run TypeScript checks
 
 This frontend connects to a Symfony backend API:
 
-- **Base URL**: http://clubmanager
+- **Base URL**: http://clubmanager.com
 - **Endpoints**:
   - `/players` - Player management
   - `/coaches` - Coach management
@@ -181,6 +181,6 @@ The application uses **custom composables** instead of Pinia for state managemen
 
 **API Connection Issues:**
 
-- Ensure backend is running on http://clubmanager/
+- Ensure backend is running on http://clubmanager.com/
 - Check CORS configuration
 - Verify API endpoints are accessible

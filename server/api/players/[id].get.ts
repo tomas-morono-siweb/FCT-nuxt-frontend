@@ -2,12 +2,12 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
   try {
-    const apiUrl = `http://clubmanager/players/${id}`;
+    const apiUrl = `http://clubmanager.com/players/${id}`;
     const player = await $fetch(apiUrl, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://clubmanager'
+        'Origin': 'http://clubmanager.com'
       }
     });
 

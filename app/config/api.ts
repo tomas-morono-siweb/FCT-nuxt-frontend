@@ -1,6 +1,6 @@
 // API Configuration
 export const API_CONFIG = {
-    BASE_URL: 'http://clubmanager',
+    BASE_URL: 'http://clubmanager.com',
     ENDPOINTS: {
         PLAYERS: '/players',
         COACHES: '/coaches',
