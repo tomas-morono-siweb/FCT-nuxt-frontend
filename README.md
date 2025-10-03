@@ -7,7 +7,7 @@ A modern, responsive football club management application built with Nuxt.js 4, 
 ### Prerequisites
 
 - **Node.js** 18+
-- **pnpm** (recommended) or npm
+- **npm** as main package manager
 - **Backend API** running in the same URI/URL you've put on the .env
 
 ### Installation
@@ -15,8 +15,8 @@ A modern, responsive football club management application built with Nuxt.js 4, 
 Install dependencies:
 
 ```bash
-# pnpm
-pnpm install
+# npm
+npm install
 ```
 
 ### Environment Setup
@@ -33,8 +33,8 @@ API_BASE_URL=base-uri-given-by-provider
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# pnpm
-pnpm dev
+# npm
+npm dev
 ```
 
 ## 📦 Production
@@ -42,32 +42,32 @@ pnpm dev
 Build the application for production:
 
 ```bash
-# pnpm
-pnpm build
+# npm
+npm build
 ```
 
 Locally preview production build:
 
 ```bash
-# pnpm
-pnpm preview
+# npm
+npm preview
 ```
 
 ## 🎯 Available Scripts
 
 ```bash
-pnpm dev          # Start development server
-pnpm build        # Build for production
-pnpm preview      # Preview production build
-pnpm lint         # Run ESLint
-pnpm type-check   # Run TypeScript checks
+npm dev          # Start development server
+npm build        # Build for production
+npm preview      # Preview production build
+npm lint         # Run ESLint
+npm type-check   # Run TypeScript checks
 ```
 
 ## 🔌 API Integration
 
 This frontend connects to a Symfony backend API:
 
-- **Base URL**: http://127.0.0.1:8000
+- **Base URL**: http://clubmanager
 - **Endpoints**:
   - `/players` - Player management
   - `/coaches` - Coach management
@@ -181,6 +181,6 @@ The application uses **custom composables** instead of Pinia for state managemen
 
 **API Connection Issues:**
 
-- Ensure backend is running on http://127.0.0.1:8000
+- Ensure backend is running on http://clubmanager/
 - Check CORS configuration
 - Verify API endpoints are accessible

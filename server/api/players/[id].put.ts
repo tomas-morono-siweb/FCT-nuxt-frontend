@@ -5,13 +5,13 @@ export default defineEventHandler(async (event) => {
   console.log(`🔄 Actualizando jugador ${id}:`, JSON.stringify(body, null, 2));
 
   try {
-    const apiUrl = `http://127.0.0.1:8000/players/${id}`;
+    const apiUrl = `http://clubmanager/players/${id}`;
     const updatedPlayer = await $fetch(apiUrl, {
       method: "PUT",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Origin': 'http://localhost:8000'
+        'Origin': 'http://clubmanager'
       },
       body: body
     });
