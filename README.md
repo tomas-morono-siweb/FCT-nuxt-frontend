@@ -67,13 +67,12 @@ npm type-check   # Run TypeScript checks
 
 This frontend connects to a Symfony backend API:
 
-- **Base URL**: http://api.clubmanager.com
+- **Base URL**: http://clubmanager.com
 - **Endpoints**:
   - `/players` - Player management
   - `/coaches` - Coach management
   - `/clubs` - Club management
 - **Methods**: GET, POST, PUT, DELETE
-- **Mock Data**: Fallback system for local development
 - **CORS**: Configured headers for cross-origin requests
 
 ## 📁 Project Structure
