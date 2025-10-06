@@ -39,7 +39,8 @@ export default defineNuxtConfig({
   ],
   modules: [
     "@nuxt/eslint",
-    "@nuxt/test-utils/module"
+    "@nuxt/test-utils/module",
+    "nuxt-auth-utils",
   ],
   runtimeConfig: {
     apiSecret: "process.env.API_KEY",

@@ -5,7 +5,6 @@ import type { Club } from "~/interfaces/club";
 const route = useRoute();
 const id = Number(route.params.id);
 const { get: getPlayer } = usePlayers();
-const { getByIdClub } = useClubs();
 
 const { data: player, pending, error } = await useAsyncData<Player>(`player:${id}`, () => getPlayer(id));
 
