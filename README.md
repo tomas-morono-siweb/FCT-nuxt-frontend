@@ -67,7 +67,7 @@ npm type-check   # Run TypeScript checks
 
 This frontend connects to a Symfony backend API:
 
-- **Base URL**: http://clubmanager.com
+- **Base URL**: http://api.clubmanager.com
 - **Endpoints**:
   - `/players` - Player management
   - `/coaches` - Coach management
