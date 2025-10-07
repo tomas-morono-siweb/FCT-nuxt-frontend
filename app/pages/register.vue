@@ -1,26 +1,26 @@
-<script setup lang="ts">
-const { isLoading, loadingMessage } = useGlobalLoading();
+<script lang="ts" setup>
+definePageMeta({
+  layout: "blank",
+});
 </script>
 
 <template>
   <div>
-    <header class="border-secondary-200 sticky top-0 z-30 border-b bg-white/95 shadow-sm backdrop-blur">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <div class="flex items-center gap-3">
+    <header class="border-b bg-white">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <div>
           <NuxtLink
             to="/"
-            class="flex items-center gap-3"
+            class="flex items-center gap-2"
           >
-            <div
-              class="from-primary-500 to-primary-600 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br shadow-md"
-            >
-              <!-- Icono de estrella deportiva -->
+            <div class="h-8 w-8">
               <svg
-                class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
+                class="text-primary-600 h-8 w-8"
               >
                 <path
                   stroke-linecap="round"
@@ -53,32 +53,7 @@ const { isLoading, loadingMessage } = useGlobalLoading();
             Clubes
           </NuxtLink>
         </div>
-
-        <div>
-          <NuxtLink
-            to="/login"
-            class="text-secondary-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
-          >
-            Iniciar sesión
-          </NuxtLink>
-          <NuxtLink
-            to="/register"
-            class="bg-primary-600 hover:bg-primary-700 ml-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-all duration-200"
-          >
-            Regístrate
-          </NuxtLink>
-        </div>
       </nav>
     </header>
-
-    <main class="mx-auto max-w-6xl px-4 py-6">
-      <slot />
-    </main>
-
-    <!-- Carga global -->
-    <UiGlobalLoading
-      :loading="isLoading"
-      :message="loadingMessage"
-    />
   </div>
 </template>

@@ -1,50 +1,48 @@
-/* eslint-disable no-useless-catch */
-import { useState } from "#app";
 import type { User } from "~/interfaces/user";
 
-interface LoginResponse {
-  user: User;
-  token: string;
-}
-
 export const useAuth = () => {
-  const user = useState<User | null>("authUser", () => null);
+  const {
+    public: { apiBase },
+  } = useRuntimeConfig();
+  const user = useState<User | null>("user", () => null);
   const token = useState<string | null>("authToken", () => null);
 
   // Llamada API login
   const login = async (email: string, password: string) => {
     try {
-      const response = await $fetch<LoginResponse>(`${process.env.API_BASE_URL}/login`, {
+      const { data } = await useFetch<{ token: string }>(() => `${apiBase}/login`, {
         method: "POST",
         body: { email, password },
       });
-      user.value = response.user;
-      token.value = response.token;
 
-      useCookie("auth_token").value = response.token;
+      console.log(data.value?.token); // check de lo que me manda el chimp
+      useCookie("auth_token").value = data.value?.token;
 
-      return response.user;
-    } catch (error: any) {
-      throw error;
+      return data.value?.token;
+    } catch {
+      throw createError({ statusCode: 401, message: "Error al recibir el token de login" });
     }
   };
 
   // Logout
   const logout = () => {
-    user.value = null;
+    // seteamos todo a null
     token.value = null;
-    useCookie("authToken").value = null;
+    useCookie("auth_token").value = null;
+
+    // redirigimos al login
+    return navigateTo("/login");
   };
 
   // Llamada API usuario logueado
   const fetchUser = async () => {
     const authToken = useCookie("auth_token").value;
-    if (authToken) return null;
+    if (!authToken) return null;
 
     try {
-      const response = await $fetch<User>(`${process.env.API_BASE_URL}/user`, {
+      const response = await $fetch<User>(`${apiBase}/me`, {
         headers: {
-          Method: "POST",
+          Method: "GET",
           Authorization: `Bearer ${authToken}`,
         },
       });
@@ -52,9 +50,10 @@ export const useAuth = () => {
       return response;
     } catch {
       logout();
+      user.value = null;
       return null;
     }
   };
 
-  return { user, token, login, logout, fetchUser };
+  return { token, login, logout, fetchUser };
 };
