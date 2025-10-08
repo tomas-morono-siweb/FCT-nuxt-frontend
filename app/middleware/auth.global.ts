@@ -13,4 +13,6 @@ export default defineNuxtRouteMiddleware((to) => {
   if (token && publicPaths.has(to.path)) {
     return navigateTo("/");
   }
+
+  console.log("Middleware auth.global funcionando");
 });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-//import { useAuth } from '~/composables/useAuth';
+import { useAuth } from '~/composables/useAuth';
 
 definePageMeta({
   layout: "blank",
@@ -47,7 +47,6 @@ async function handleLogin() {
                   id="email"
                   v-model="user.email"
                   type="email"
-                  name="email"
                   class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   placeholder="tunombre@dominio.com"
                   required
@@ -61,7 +60,6 @@ async function handleLogin() {
                   id="password"
                   v-model="user.password"
                   type="password"
-                  name="password"
                   placeholder="••••••••"
                   class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   required

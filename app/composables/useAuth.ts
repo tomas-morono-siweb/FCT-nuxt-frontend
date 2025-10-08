@@ -1,22 +1,25 @@
-import type { User } from "~/interfaces/user";
-
 export const useAuth = () => {
-  const {
-    public: { apiBase },
-  } = useRuntimeConfig();
-  const user = useState<User | null>("user", () => null);
-  const token = useState<string | null>("authToken", () => null);
+  const baseUrl = "http://api.clubmanager.com";
+  const token = useState("authToken", () => null);
 
-  // Llamada API login
+  // Login
   const login = async (email: string, password: string) => {
     try {
-      const { data } = await useFetch<{ token: string }>(() => `${apiBase}/login`, {
+      const { data } = await useFetch<{ token: string }>(() => `${baseUrl}/login`, {
         method: "POST",
-        body: { email, password },
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+        /* credentials: "include", */
       });
 
-      console.log(data.value?.token); // check de lo que me manda el chimp
+      if (data.value?.token) {
+        console.log(data.value?.token); // check de lo que me manda la API
+      } else {
+        console.log("No se ha recibido token");
+      }
+
       useCookie("auth_token").value = data.value?.token;
+      useState("authToken").value = data.value?.token;
 
       return data.value?.token;
     } catch {
@@ -29,31 +32,16 @@ export const useAuth = () => {
     // seteamos todo a null
     token.value = null;
     useCookie("auth_token").value = null;
-
+    useState("user").value = null;
+    
     // redirigimos al login
-    return navigateTo("/login");
+    navigateTo("/login");
   };
 
-  // Llamada API usuario logueado
-  const fetchUser = async () => {
-    const authToken = useCookie("auth_token").value;
-    if (!authToken) return null;
-
-    try {
-      const response = await $fetch<User>(`${apiBase}/me`, {
-        headers: {
-          Method: "GET",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      user.value = response;
-      return response;
-    } catch {
-      logout();
-      user.value = null;
-      return null;
-    }
-  };
-
-  return { token, login, logout, fetchUser };
+  console.log("Composable useAuth.ts funcionando");
+  console.log(`URL base: ${baseUrl}`);
+  console.log(`Definición del token (vacío): ${token}`);
+  console.log("*********************************************");
+  
+  return { token, login, logout};
 };
