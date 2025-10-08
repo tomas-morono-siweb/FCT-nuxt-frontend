@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware((to) => {
-  const token = useCookie("auth_token").value;
+  //const token = localStorage.getItem("auth_token");
+  const token = useState("authToken");
 
   // Rutas accesibles sin token
   const publicPaths = new Set<string>(["/login", "/register"]);
@@ -13,6 +14,4 @@ export default defineNuxtRouteMiddleware((to) => {
   if (token && publicPaths.has(to.path)) {
     return navigateTo("/");
   }
-
-  console.log("Middleware auth.global funcionando");
 });

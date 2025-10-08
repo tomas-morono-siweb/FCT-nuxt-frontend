@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { isLoading, loadingMessage } = useGlobalLoading();
+const { logout } = useAuth();
 </script>
 
 <template>
@@ -56,16 +57,11 @@ const { isLoading, loadingMessage } = useGlobalLoading();
 
         <div>
           <NuxtLink
-            to="/login"
+            to="/logout"
+            onclick="logout"
             class="text-secondary-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
           >
-            Iniciar sesión
-          </NuxtLink>
-          <NuxtLink
-            to="/register"
-            class="bg-primary-600 hover:bg-primary-700 ml-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-all duration-200"
-          >
-            Regístrate
+            Cerrar sesión
           </NuxtLink>
         </div>
       </nav>

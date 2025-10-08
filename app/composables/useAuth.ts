@@ -1,27 +1,32 @@
+import { API_CONFIG } from "~/config/api";
+
 export const useAuth = () => {
-  const baseUrl = "http://api.clubmanager.com";
   const token = useState("authToken", () => null);
   const { fetchUser } = useUseUsers();
 
   // Login
   const login = async (email: string, password: string) => {
     try {
-      const { data } = await useFetch<{ token: string }>(() => `${baseUrl}/login`, {
+      const { data } = await useFetch<{ token: string }>(() => `${API_CONFIG.BASE_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        //credentials: "include",
       });
 
+      // OJO AQUI SE MUESTRA EL TOKEN EN CONSOLA
       if (data.value?.token) {
         console.log(data.value?.token); // check de lo que me manda la API
       } else {
         console.log("No se ha recibido token");
       }
 
-      useCookie("auth_token").value = data.value?.token;
+      // Almacenamos el token en cookie y state
+      //localStorage.setItem("auth_token", data.value?.token || "");
       useState("authToken").value = data.value?.token;
-      useState("user").value = fetchUser();
+
+      // obtenemos el usuario al hacer login
+      fetchUser();
 
       return data.value?.token;
     } catch {
@@ -32,18 +37,12 @@ export const useAuth = () => {
   // Logout
   const logout = () => {
     // seteamos todo a null
-    token.value = null;
-    useCookie("auth_token").value = null;
+    useState("authToken").value = null;
     useState("user").value = null;
-    
+
     // redirigimos al login
     navigateTo("/login");
   };
 
-  console.log("Composable useAuth.ts funcionando");
-  console.log(`URL base: ${baseUrl}`);
-  console.log(`Definición del token (vacío): ${token}`);
-  console.log("*********************************************");
-  
-  return { token, login, logout};
+  return { token, login, logout };
 };
