@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/require-default-prop -->
 <script setup lang="ts">
 interface Props {
   loading?: boolean;
@@ -32,22 +33,22 @@ const buttonClasses = {
   <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
     <!-- Cancel Button -->
     <NuxtLink
-      v-if="cancelTo"
-      :to="cancelTo"
+      v-if="props.cancelTo"
+      :to="props.cancelTo"
       class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
     >
-      {{ cancelText }}
+      {{ props.cancelText }}
     </NuxtLink>
 
     <!-- Submit Button -->
     <button
       type="submit"
-      :disabled="loading"
+      :disabled="props.loading"
       :class="`inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-colors duration-200 focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${buttonClasses[variant]}`"
       @click="handleSubmit"
     >
       <svg
-        v-if="loading"
+        v-if="props.loading"
         class="mr-2 h-4 w-4 animate-spin"
         fill="none"
         stroke="currentColor"
@@ -60,7 +61,7 @@ const buttonClasses = {
           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
         />
       </svg>
-      {{ loading ? "Guardando..." : submitText }}
+      {{ props.loading ? "Guardando..." : props.submitText }}
     </button>
   </div>
 </template>

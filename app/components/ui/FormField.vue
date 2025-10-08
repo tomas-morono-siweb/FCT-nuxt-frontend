@@ -1,6 +1,7 @@
+<!-- eslint-disable vue/require-default-prop -->
 <script setup lang="ts">
 import { inject, computed } from "vue";
-import { useFormErrors } from "~/composables/useFormErrors";
+import type { useFormErrors } from "~/composables/useFormErrors";
 
 interface Props {
   label: string;
@@ -88,7 +89,7 @@ const handleFocus = () => {
       :class="{ 'border-red-500 focus:border-red-500 focus:ring-red-500': fieldError }"
       @input="updateValue"
       @focus="handleFocus"
-    />
+    >
 
     <!-- Select Field -->
     <select
