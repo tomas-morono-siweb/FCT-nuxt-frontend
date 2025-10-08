@@ -26,4 +26,6 @@ export const useUseUsers = () => {
       return error;
     }
   };
+
+  return { fetchUser };
 };

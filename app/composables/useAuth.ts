@@ -1,6 +1,7 @@
 export const useAuth = () => {
   const baseUrl = "http://api.clubmanager.com";
   const token = useState("authToken", () => null);
+  const { fetchUser } = useUseUsers();
 
   // Login
   const login = async (email: string, password: string) => {
@@ -9,7 +10,7 @@ export const useAuth = () => {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
-        /* credentials: "include", */
+        credentials: "include",
       });
 
       if (data.value?.token) {
@@ -20,6 +21,7 @@ export const useAuth = () => {
 
       useCookie("auth_token").value = data.value?.token;
       useState("authToken").value = data.value?.token;
+      useState("user").value = fetchUser();
 
       return data.value?.token;
     } catch {
