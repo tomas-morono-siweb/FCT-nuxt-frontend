@@ -61,6 +61,7 @@ npm build        # Build for production
 npm preview      # Preview production build
 npm lint         # Run ESLint
 npm type-check   # Run TypeScript checks
+sh setup-nginx.sh # Installs deps, builds the app, copies project to /var/www and launches project build in node server
 ```
 
 ## 🔌 API Integration
