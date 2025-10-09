@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { usePlayers } from '../../../app/composables/usePlayers'
 import type { Player } from '../../../app/interfaces/player'
@@ -35,7 +36,7 @@ describe('usePlayers', () => {
             const { list } = usePlayers()
             const result = await list()
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players', {
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players', {
                 query: { nombre: undefined, page: 1, pageSize: 20 }
             })
 
@@ -50,7 +51,7 @@ describe('usePlayers', () => {
 
         it('should fetch players list with search parameters', async () => {
             const mockResponse = {
-                players: [{ id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: '50000000.00', dorsal: 10, club: 'PSG', entrenador: 'Mauricio Pochettino', id_club: 'psg-001' }],
+                players: [{ id: 1, nombre: 'Lionel', apellidos: 'Messi', salario: '50000000.00', dorsal: 10, club: 'Paris Saint Germain', entrenador: 'Mauricio Pochettino', id_club: 'PSG' }],
                 pagination: {
                     current_page: 2,
                     per_page: 5,
@@ -68,7 +69,7 @@ describe('usePlayers', () => {
             const { list } = usePlayers()
             const result = await list('Messi', 2, 5)
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players', {
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players', {
                 query: { nombre: 'Messi', page: 2, pageSize: 5 }
             })
 
@@ -98,7 +99,7 @@ describe('usePlayers', () => {
             const { get } = usePlayers()
             const result = await get(1)
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players/1')
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players/1')
             expect(result.salario).toBe(50000000) // Convertido a number
             expect(result.entrenador).toBe('Mauricio Pochettino')
         })
@@ -195,7 +196,7 @@ describe('usePlayers', () => {
             const { create } = usePlayers()
             const result = await create(newPlayer)
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players', {
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players', {
                 method: 'POST',
                 body: newPlayer
             })
@@ -225,7 +226,7 @@ describe('usePlayers', () => {
             const { update } = usePlayers()
             const result = await update(1, updateData)
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players/1', {
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players/1', {
                 method: 'PUT',
                 body: updateData
             })
@@ -241,7 +242,7 @@ describe('usePlayers', () => {
             const { remove } = usePlayers()
             await remove(1)
 
-            expect(mockFetch).toHaveBeenCalledWith('/api/players/1', {
+            expect(mockFetch).toHaveBeenCalledWith('http://api.clubmanager.com/players/1', {
                 method: 'DELETE'
             })
         })
