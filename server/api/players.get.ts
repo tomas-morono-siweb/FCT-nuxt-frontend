@@ -2,8 +2,8 @@
 
 export default defineEventHandler(async (event) => {
   // TEST: probando que haya token en este scope
-  const authToken = useState("authToken");
-  console.log("Token de autenticación:", authToken);
+  // const authToken = useState("authToken");
+  // console.log("Token de autenticación:", authToken);
 
   const query = getQuery(event);
   const { nombre, page = 1, pageSize = 20 } = query;
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         'Accept': "application/json",
         "Content-Type": "application/json",
         'Origin': "http://api.clubmanager.com",
-        'Authorization': `Bearer ${authToken}`,
+        // 'Authorization': `Bearer ${authToken}`,
       },
     });
 

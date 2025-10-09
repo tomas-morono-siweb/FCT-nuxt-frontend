@@ -1,7 +1,5 @@
-import { API_CONFIG } from "~/config/api";
-
 export const useUseUsers = () => {
-  const url = `${API_CONFIG.BASE_URL}/user/me`;
+  const url = "http://api.clubmanager.com/user/me";
 
   // Llamada API para obtener usuario
   const fetchUser = async () => {

@@ -1,5 +1,3 @@
-import { API_CONFIG } from "~/config/api";
-
 export const useAuth = () => {
   const token = useState("authToken", () => null);
   const { fetchUser } = useUseUsers();
@@ -7,11 +5,10 @@ export const useAuth = () => {
   // Login
   const login = async (email: string, password: string) => {
     try {
-      const { data } = await useFetch<{ token: string }>(() => `${API_CONFIG.BASE_URL}/login`, {
+      const { data } = await useFetch<{ token: string }>(() => "http://api.clubmanager.com/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
-        //credentials: "include",
       });
 
       // OJO AQUI SE MUESTRA EL TOKEN EN CONSOLA
@@ -34,14 +31,18 @@ export const useAuth = () => {
     }
   };
 
-  // Logout
-  const logout = () => {
-    // seteamos todo a null
-    useState("authToken").value = null;
-    useState("user").value = null;
+  // Logout asíncrono (asegura redirect)
+  const logout = async () => {
+    // limpiamos state y localStorage
+    if (import.meta.client) {
+      clearNuxtState();
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+    }
+    console.log("Logout: state y localStorage limpios");
 
     // redirigimos al login
-    navigateTo("/login");
+    await navigateTo("/login");
   };
 
   return { token, login, logout };

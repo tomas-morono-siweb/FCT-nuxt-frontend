@@ -57,9 +57,9 @@ const { logout } = useAuth();
 
         <div>
           <NuxtLink
-            to="/logout"
-            onclick="logout"
-            class="text-secondary-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
+          class="text-secondary-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
+          to="/login"
+          @click="logout"
           >
             Cerrar sesión
           </NuxtLink>

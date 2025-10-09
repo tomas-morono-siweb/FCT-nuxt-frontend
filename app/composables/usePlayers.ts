@@ -4,29 +4,72 @@ import type { Player } from "~/interfaces/player";
 import type { PaginatedResponse } from "~/interfaces/pagination";
 
 export const usePlayers = () => {
-  const list = async (nombre?: string, page = 1, pageSize = 20) => {
-    const response = await $fetch<{ players: Player[]; pagination: any }>('/api/players', {
-      query: { nombre, page, pageSize },
-    });
+  // const list = async (nombre?: string, page = 1, pageSize = 20) => {
+  //   const response = await $fetch<{ players: Player[]; pagination: any }>('/api/players', {
+  //     query: { nombre, page, pageSize },
+  //   });
 
-    // Transformar la respuesta para que coincida con la interfaz esperada
-    return {
-      data: response.players.map(player => ({
-        ...player,
-        // Convertir salario de string a number para el frontend
-        salario: typeof player.salario === 'string' ? parseFloat(player.salario) : player.salario,
-      })),
-      pagination: {
-        currentPage: response.pagination.current_page,
-        pageSize: response.pagination.per_page,
-        totalItems: response.pagination.total_items,
-        totalPages: response.pagination.total_pages,
-        hasNextPage: response.pagination.has_next_page,
-        hasPreviousPage: response.pagination.has_prev_page,
-        nextPage: response.pagination.next_page,
-        prevPage: response.pagination.prev_page,
-      },
-    } as PaginatedResponse<Player>;
+  //   // Transformar la respuesta para que coincida con la interfaz esperada
+  // return {
+  //   data: response.players.map(player => ({
+  //     ...player,
+  //     // Convertir salario de string a number para el frontend
+  //     salario: typeof player.salario === 'string' ? parseFloat(player.salario) : player.salario,
+  //   })),
+  //   pagination: {
+  //     currentPage: response.pagination.current_page,
+  //     pageSize: response.pagination.per_page,
+  //     totalItems: response.pagination.total_items,
+  //     totalPages: response.pagination.total_pages,
+  //     hasNextPage: response.pagination.has_next_page,
+  //     hasPreviousPage: response.pagination.has_prev_page,
+  //     nextPage: response.pagination.next_page,
+  //     prevPage: response.pagination.prev_page,
+  //   },
+  // } as PaginatedResponse<Player>;
+  // };
+
+  const authToken = useState("authToken").value;
+
+  const list = async (nombre?: string, page?: number, pageSize?: number) => {
+    try {
+      const apiUrl = `http://api.clubmanager.com/players?${new URLSearchParams({
+        nombre: nombre?.toString() || "",
+        page: page?.toString() || "1",
+        pageSize: pageSize?.toString() || "20",
+      }).toString()}`;
+
+      const response = await $fetch<{ players: Player[]; pagination: any }>(apiUrl, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Origin: "http://api.clubmanager.com",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      console.log("✅ Recibiendo jugadores de la API");
+      return {
+        data: response.players.map((player) => ({
+          ...player,
+          // Convertir salario de string a number para el frontend
+          salario: typeof player.salario === "string" ? parseFloat(player.salario) : player.salario,
+        })),
+        pagination: {
+          currentPage: response.pagination.current_page,
+          pageSize: response.pagination.per_page,
+          totalItems: response.pagination.total_items,
+          totalPages: response.pagination.total_pages,
+          hasNextPage: response.pagination.has_next_page,
+          hasPreviousPage: response.pagination.has_prev_page,
+          nextPage: response.pagination.next_page,
+          prevPage: response.pagination.prev_page,
+        },
+      } as PaginatedResponse<Player>;
+    } catch {
+      console.error("Error al recibir jugadores de la API");
+    }
   };
 
   const get = async (id: number) => {
@@ -34,13 +77,13 @@ export const usePlayers = () => {
     return {
       ...player,
       // Convertir salario de string a number para el frontend
-      salario: typeof player.salario === 'string' ? parseFloat(player.salario) : player.salario,
+      salario: typeof player.salario === "string" ? parseFloat(player.salario) : player.salario,
     };
   };
 
   const create = async (payload: Partial<Player>) => {
     try {
-      return await $fetch<Player>('/api/players', {
+      return await $fetch<Player>("/api/players", {
         method: "POST",
         body: payload,
       });

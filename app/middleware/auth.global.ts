@@ -1,6 +1,8 @@
 export default defineNuxtRouteMiddleware((to) => {
   //const token = localStorage.getItem("auth_token");
-  const token = useState("authToken");
+
+  const token = useState("authToken").value;
+  console.log(token);
 
   // Rutas accesibles sin token
   const publicPaths = new Set<string>(["/login", "/register"]);

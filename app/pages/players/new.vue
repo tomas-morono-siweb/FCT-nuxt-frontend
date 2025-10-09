@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { Player } from "~/interfaces/player";
-import type { Club } from "~/interfaces/club";
-import type { BackendError } from "~/interfaces/validation";
 
 const { create } = usePlayers();
 const { list: listClubs } = useClubs();
 
 // Form errors handling
 const formErrors = useFormErrors();
-const { setErrors, clearErrors, clearFieldError, getFieldError, hasErrors, generalError } = formErrors;
+const { setErrors, clearErrors, clearFieldError, generalError } = formErrors;
 
 // Provide form errors to child components
 provide("formErrors", formErrors);
@@ -46,8 +44,6 @@ const selectedClubId = computed({
     form.id_club = club ? club.id_club : undefined;
   },
 });
-
-// No position options needed - API doesn't include position
 
 // Submit handler
 const handleSubmit = async () => {
@@ -96,8 +92,8 @@ const handleSubmit = async () => {
           </div>
 
           <form
-            @submit.prevent="handleSubmit"
             class="space-y-6 p-6"
+            @submit.prevent="handleSubmit"
           >
             <!-- General Error Message (solo si hay error general) -->
             <div
